@@ -34,6 +34,7 @@ Use this doctrine as the default architecture standard for this repo. Any deviat
 
 ### Application (Use Cases)
 - Orchestrates flows, validates inputs (structural validation), invokes domain logic.
+- Keeps business invariants in the domain; application-level validation should focus on command shape, authorization, orchestration, and transaction boundaries.
 - Defines ports and DTOs that are **inward-facing** and stable.
 - Handles cross-cutting concerns like transactions or unit-of-work abstractions.
 
@@ -46,6 +47,12 @@ Use this doctrine as the default architecture standard for this repo. Any deviat
 - Implement ports for external systems.
 - Translate external data structures ↔ DTOs/domain objects.
 - Handle I/O, serialization, transport, retry logic.
+
+## Composition root and framework isolation
+- **Must** keep dependency wiring, service construction, and framework bootstrapping in entry points or dedicated bootstrap/composition-root modules.
+- **Must** keep framework request/response objects, ORM models, serializer models, and transport schemas inside adapters.
+- **Should** keep transport/event-loop concerns at I/O boundaries; use async in the core only when business semantics truly require asynchronous contracts.
+- **Must not** let dependency-injection containers or service locators leak into domain entities or application use cases.
 
 ## Module/package structure guidance
 - `domain/`: entities, value objects, domain services, domain errors.

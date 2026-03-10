@@ -7,8 +7,10 @@
 
 ## Rule precedence and conflict resolution
 - Treat rules marked as **hard constraints** or **non-negotiable** as highest priority within `.clinerules/`.
+- Explicit overrides beat implicit interpretation; when a later module intentionally sharpens an earlier rule, it should say so directly.
+- More specific rules take precedence over broader rules on the same topic.
 - **Must** statements take precedence over **Should** statements.
-- If two rules with the same strength conflict, the rule in the higher-numbered file wins.
+- If two rules with the same strength and scope still conflict, treat numeric file order as a **last-resort tiebreaker** and update the ruleset to make precedence explicit.
 - Any intentional deviation must be documented in ADR/PR notes.
 
 ## Toggling modules
@@ -63,7 +65,7 @@
 - `12-command-execution-safety.md` - Hard ban on inline interpreter heredocs; require temp scripts and non-interactive git usage
 
 ## Workflows
-- `workflows/update-repo-navigation.md` - Generate project-specific navigation maps on demand
+- `workflows/update-repo-navigation.md` - Generate project-specific navigation maps when adapting this reusable ruleset to a concrete repository
 
 ## Enforcement and automation matrix
 Use this map to keep "Must" rules enforceable, not just advisory.
@@ -75,9 +77,9 @@ Interpret enforcement labels as follows:
 
 | Rule area | Primary enforcement | Secondary enforcement |
 | --- | --- | --- |
-| Naming, formatting, imports | `ruff format .`, `ruff check . --fix`, `ruff check .` | PR review |
-| Type contracts and API drift | `mypy src/ tests/` | PR review |
-| Behavior changes and regressions | `pytest tests/` | Targeted regression tests |
+| Naming, formatting, imports | Configured formatter/linter/import tools (for example `ruff format .`, `ruff check . --fix`, `ruff check .`) | PR review |
+| Type contracts and API drift | Configured type checker (for example `mypy`, `pyright`) | PR review |
+| Behavior changes and regressions | Configured test suite (for example `pytest`) | Targeted regression and contract tests |
 | Architecture boundaries (hexagonal) | Review-enforced against `02-architecture-guardrails.md` | Optional import-lint/custom boundary scripts |
 | Module/file structure conventions | Review-enforced against `05-module-structure.md` | Optional repository audit script |
 | Docs/ADR/changelog updates | Review-enforced via PR checklist | Release checklist |
@@ -94,6 +96,6 @@ These rules apply to Python projects using hexagonal architecture unless explici
 
 ## Project-specific customization
 For project-specific navigation and structure details:
-1. Use the workflow in `workflows/update-repo-navigation.md` to generate a current map
+1. Use the workflow in `workflows/update-repo-navigation.md` to generate a current map, or follow the same steps manually if the workflow file is not bundled
 2. Store project-specific documentation in `docs/` or the project root
 3. Keep `.clinerules/` generic and portable across projects

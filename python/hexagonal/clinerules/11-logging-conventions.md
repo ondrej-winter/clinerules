@@ -10,10 +10,23 @@ This file governs logging implementation mechanics. Broader code-quality expecta
 - **Must** use the module-level `LOGGER` inside functions and class methods.
 - **Must not** create per-instance loggers like `self._logger` by default.
 
+## Message construction and levels
+- **Must** use lazy log formatting (`LOGGER.info("user_id=%s", user_id)`) instead of eager f-strings in log calls.
+- **Should** keep messages stable and searchable; put highly variable details in structured context when possible.
+- **Should** choose log levels by operational actionability (`debug` for diagnostics, `info` for state transitions, `warning` for recoverable anomalies, `error` for user-visible or operator-visible failures).
+
 ## Context and structure
 - **Should** include structured context via `extra={...}` for operational logs.
+- **Should** use stable field names for recurring concepts (`request_id`, `job_id`, `component`, `adapter`, etc.).
 - **Should** include `component` or equivalent context when class attribution is useful.
+- **Should** propagate request, correlation, or job IDs when available.
+- **Must not** put secrets or very high-cardinality raw values into structured fields by default.
 - **Must** keep logger names hierarchical by using `__name__` to support selective filtering.
+
+## Exception logging
+- **Should** log an exception once at the boundary that can handle, translate, or report it.
+- **Must** avoid duplicate full-stack logging at multiple layers for the same failure.
+- Use `LOGGER.exception(...)` when the stack trace is useful at that boundary; otherwise log contextual information and re-raise or translate with `from err`.
 
 ## Exceptions
 - **May** use instance-specific loggers only when behavior requires runtime logger names or explicit logger injection.

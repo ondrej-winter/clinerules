@@ -15,6 +15,13 @@ Use these rules for all Python code in this repo to keep behavior predictable an
 - Let `ruff check . --fix` handle import ordering.
 - Prefer explicit, readable code over clever one-liners.
 
+## Python-specific defaults
+- Prefer modern type annotation syntax supported by the repository's minimum Python version.
+- Use `None` only for a legitimate, documented absence value — never as a hidden error signal.
+- Prefer timezone-aware `datetime` values for persisted or cross-process timestamps.
+- Prefer `pathlib.Path` for filesystem paths unless a library API requires `str`.
+- Never use mutable default argument values; default to `None` and create the container inside the function.
+
 ## Boundary behavior (adapter input validation)
 - Validate and normalize external inputs at **adapter boundaries** before calling application ports.
 - Keep **mapping** between external schemas and DTOs/domain objects inside adapters.
