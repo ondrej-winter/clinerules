@@ -5,6 +5,17 @@
 - Rule files are ordered by the numeric prefix (e.g., `01-`, `02-`) to keep a consistent reading order.
 - Each file should focus on a single theme (core standards, architecture, testing, etc.).
 
+## Opinionated defaults
+- This ruleset is intentionally opinionated.
+- Use `uv` for dependency management, environment management, and command execution.
+- Use `ruff` for formatting, linting, and import cleanup.
+- Use `mypy` for type checking.
+- Use `pytest` for automated tests.
+- Use `pytest-asyncio` for async tests when async code is present.
+- Use Google-style docstrings.
+- Use `pyproject.toml` and `uv.lock` as the canonical tooling and dependency configuration surface.
+- Follow hexagonal architecture with inward-pointing dependencies and explicit ports/adapters boundaries.
+
 ## Rule precedence and conflict resolution
 - Treat rules marked as **hard constraints** or **non-negotiable** as highest priority within `.clinerules/`.
 - Explicit overrides beat implicit interpretation; when a later module intentionally sharpens an earlier rule, it should say so directly.
@@ -37,21 +48,21 @@
 - When a specialized file exists, earlier files should point to it instead of repeating detailed guidance.
 
 ### Topic ownership map
-- `01-core-standards.md`: universal coding behavior and defaults
+- `01-core-standards.md`: universal coding behavior, typing defaults, error handling, and baseline logging policy
 - `02-architecture-guardrails.md`: architecture boundaries and dependency direction
 - `03-testing-standards.md`: automated testing expectations
 - `04-docs-and-adr.md`: required project documentation outside source code
 - `05-module-structure.md`: file, package, and export mechanics
 - `06-performance-and-observability.md`: performance expectations and runtime visibility
-- `07-repo-navigation.md`: repository discovery and navigation guidance
+- `07-repo-navigation.md`: project discovery and navigation guidance
 - `08-pr-and-commit-hygiene.md`: review and change-management discipline
 - `09-tooling-and-ci.md`: local quality gate and CI workflow expectations
 - `10-documentation-standards.md`: in-code documentation style only
-- `11-logging-conventions.md`: logging implementation mechanics only
+- `11-logging-conventions.md`: logging implementation mechanics and privacy-safe logging details
 - `12-command-execution-safety.md`: command execution and process safety
 
 ## Active modules
-- `01-core-standards.md` - Naming, formatting, error handling, logging
+- `01-core-standards.md` - Naming, formatting, typing defaults, error handling, baseline logging policy
 - `02-architecture-guardrails.md` - Hexagonal architecture doctrine, adapter directory structure
 - `03-testing-standards.md` - Testing pyramid, pytest conventions
 - `04-docs-and-adr.md` - README updates, ADR format, changelog notes
@@ -59,13 +70,13 @@
 - `06-performance-and-observability.md` - Profiling, tracing, metrics
 - `07-repo-navigation.md` - Generic navigation guidelines for hexagonal architecture
 - `08-pr-and-commit-hygiene.md` - PR size, commit messages, reviews
-- `09-tooling-and-ci.md` - Local quality gate, CI expectations
+- `09-tooling-and-ci.md` - `uv`/`ruff`/`mypy`/`pytest` local quality gate and CI expectations
 - `10-documentation-standards.md` - Clear, concise docstrings and comments
-- `11-logging-conventions.md` - Module-level logger standard and exceptions
+- `11-logging-conventions.md` - Module-level logger standard, structured context, and safe redaction practices
 - `12-command-execution-safety.md` - Hard ban on inline interpreter heredocs; require temp scripts and non-interactive git usage
 
 ## Workflows
-- `workflows/update-repo-navigation.md` - Generate project-specific navigation maps when adapting this reusable ruleset to a concrete repository
+- `workflows/update-repo-navigation.md` - Generate project-specific navigation maps when adapting this reusable ruleset to a concrete project
 
 ## Enforcement and automation matrix
 Use this map to keep "Must" rules enforceable, not just advisory.
@@ -77,11 +88,11 @@ Interpret enforcement labels as follows:
 
 | Rule area | Primary enforcement | Secondary enforcement |
 | --- | --- | --- |
-| Naming, formatting, imports | Configured formatter/linter/import tools (for example `ruff format .`, `ruff check . --fix`, `ruff check .`) | PR review |
-| Type contracts and API drift | Configured type checker (for example `mypy`, `pyright`) | PR review |
-| Behavior changes and regressions | Configured test suite (for example `pytest`) | Targeted regression and contract tests |
+| Naming, formatting, imports | `uv run ruff check . --fix`, `uv run ruff format .`, `uv run ruff check .` | PR review |
+| Type contracts and API drift | `uv run mypy .` | PR review |
+| Behavior changes and regressions | `uv run pytest` | Targeted regression and contract tests |
 | Architecture boundaries (hexagonal) | Review-enforced against `02-architecture-guardrails.md` | Optional import-lint/custom boundary scripts |
-| Module/file structure conventions | Review-enforced against `05-module-structure.md` | Optional repository audit script |
+| Module/file structure conventions | Review-enforced against `05-module-structure.md` | Optional project audit script |
 | Docs/ADR/changelog updates | Review-enforced via PR checklist | Release checklist |
 | Logging conventions | Review-enforced against `11-logging-conventions.md` | Runtime log sampling |
 | Command execution safety | Process-enforced (no `python - <<'PY'` patterns; git `--no-pager`/non-interactive) | PR review |

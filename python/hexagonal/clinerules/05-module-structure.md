@@ -12,7 +12,7 @@ Use these rules to keep files focused, navigable, and easy to maintain.
 - **Should** prefer cohesion and clear ownership over arbitrary file-count targets.
 - **Should** use packages when a concept has multiple responsibilities or is likely to expand.
 - **Should** group related classes/functions by responsibility, not by type.
-- **Should** keep one primary class/responsibility per file when splitting modules.
+- **Should** keep one primary responsibility per file/module when splitting modules.
 - **Must** keep import side effects minimal; importing a module should not perform I/O, network calls, or heavyweight initialization.
 - Adapter-specific structure should satisfy the architectural consistency expectations in `02-architecture-guardrails.md`.
 
@@ -20,13 +20,15 @@ Use these rules to keep files focused, navigable, and easy to maintain.
 - **Should** use `__init__.py` when you want a regular package or an intentional public package API.
 - Namespace packages are acceptable only when chosen deliberately and documented.
 - **Must** keep `__init__.py` lightweight; avoid wiring, I/O, or hidden runtime behavior in package imports.
+- **Must not** import optional/heavy dependencies in `__init__.py` only to provide a shorter import path.
 - **Should** re-export symbols only when providing a stable package-level API.
 - **Should** use `__all__` when a module/package has a curated public surface or needs explicit star-import semantics; it is not required in every `__init__.py`.
 
 ## Naming conventions for split modules
 - Module directory: `snake_case/` (e.g., `cli_adapter/`)
 - Main file: `adapter.py`, `service.py`, `writer.py`, etc. (semantic, not repetitive)
-- Supporting files: `types.py`, `validators.py`, `formatters.py`, `models.py`, `exceptions.py`, `utils.py`, etc.
+- Supporting files should prefer purpose-revealing names such as `validators.py`, `formatters.py`, `serialization.py`, `exceptions.py`, or similarly narrow modules.
+- Avoid catch-all modules such as broad `utils.py`, `helpers.py`, or `common.py` unless the scope is intentionally tiny and local to the package.
 - **Must** avoid redundant naming (use `cli_adapter/adapter.py`, not `cli_adapter/cli_adapter.py`)
 
 ## Adapter package mechanics
@@ -55,11 +57,9 @@ Use these rules to keep files focused, navigable, and easy to maintain.
 - Tightly coupled logic that would be harder to understand when separated.
 - Stable leaf modules with a single clear responsibility and no growth pressure can remain whole even if they are not tiny.
 
-## Public API and `__init__.py` conventions
-- Re-export classes/functions from subdirectory `__init__.py` to parent `__init__.py` only when you are intentionally offering a stable package API.
-- Use `__all__` when it improves clarity around the supported public surface.
-- Keep imports clean, but not at the cost of hiding ownership or creating fragile import graphs.
-- Avoid forcing consumers through deep paths for stable public APIs, while allowing direct imports for internal-only modules.
+## Public API examples for intentional re-exports
+- When exposing a stable package API, apply the `__init__.py` conventions above intentionally rather than re-exporting by default.
+- Keep ownership visible; shorter imports are useful only when they do not create fragile or surprising import graphs.
 
 ### Re-export pattern
 ```python

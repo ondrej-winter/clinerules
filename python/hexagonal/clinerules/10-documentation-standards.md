@@ -7,8 +7,9 @@ This file governs documentation written inside source code. Requirements for REA
 ## Documentation principles
 - Prefer concise explanations of contracts, invariants, side effects, and intent.
 - Docstrings should add information that names and type hints do not already make obvious.
-- Choose one docstring style for the repository (Google, NumPy, or reStructuredText) and use it consistently.
+- Use Google-style docstrings.
 - Public APIs and non-obvious behavior deserve better documentation than trivial private helpers.
+- Document units, timezones, encodings, mutability/ownership expectations, or security/trust-boundary assumptions when callers need them to use the API correctly.
 
 ## Module docstrings
 - Use a short summary for public modules or modules with non-obvious responsibilities.
@@ -24,8 +25,13 @@ This file governs documentation written inside source code. Requirements for REA
 - Document public callables and any private callable with non-obvious behavior, side effects, concurrency rules, or tricky contracts.
 - Start with a short summary sentence.
 - Document **Args**, **Returns**, **Raises**, **Yields**, or **Examples** only when they add real value for callers.
-- Call out side effects, blocking/async behavior, idempotency, and important invariants when relevant.
+- Call out side effects, blocking/async behavior, cancellation semantics, idempotency, and important invariants when relevant.
+- Document deprecation, backward-compatibility, retry, or partial-failure behavior when it affects callers.
 - Avoid duplicating type hints in prose unless clarification is needed.
+
+## Examples in documentation
+- Keep examples minimal, executable when practical, and synchronized with real behavior.
+- Prefer tested examples or snippets copied from working code over illustrative pseudo-code that can silently drift stale.
 
 ## Inline comments
 - Use sparingly for non-obvious logic only.

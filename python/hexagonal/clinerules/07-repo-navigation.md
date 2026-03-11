@@ -5,7 +5,9 @@ Use these guidelines to organize and discover code in hexagonal Python projects.
 ## Standard directory structure
 
 ### Source layout pattern
-Prefer a `src/<package_name>/` layout for libraries and reusable services. Smaller applications may use `<package_name>/` at the repository root if packaging and test imports remain clear.
+Prefer a `src/<package_name>/` layout for libraries and reusable services. Smaller applications may use `<package_name>/` at the project root if packaging and test imports remain clear.
+
+In monorepos, repeat this mental model per package/service and keep package-local entry points, tests, and docs discoverable near each package root.
 
 ```
 src/<package_name>/
@@ -42,7 +44,7 @@ tests/
 - `docs/`: Architecture decision records (ADRs), design docs
 - `examples/`: Runnable code examples and integration snippets
 - `pyproject.toml`: Primary package, build, dependency, and tool configuration
-- Legacy projects may still include `setup.py`, but new configuration should live in `pyproject.toml`
+- `uv.lock`: Locked dependency state for the project
 
 ## Common search patterns
 
@@ -69,6 +71,9 @@ rg "\b[A-Z][A-Za-z0-9_]*Adapter\(" src/
 
 ### Exploring structure
 ```bash
+# Find package roots or service roots in a monorepo
+find . -name "pyproject.toml"
+
 # View directory tree
 tree src/<package_name>/ -L 3
 
@@ -84,7 +89,7 @@ find src/ -name "__main__.py" -o -name "cli.py"
 
 ## Project-specific navigation
 
-To generate a project-specific navigation map for your repository:
+To generate a project-specific navigation map for your project:
 1. See `workflows/update-repo-navigation.md` for instructions
 2. Run the workflow when the project structure changes significantly
 3. Store the generated map in `docs/repo-navigation.md` or a similarly discoverable project-specific location outside `.clinerules/`
@@ -93,4 +98,5 @@ To generate a project-specific navigation map for your repository:
 - **Layer isolation**: Code in `domain/` should never import from `adapters/` or `application/`
 - **Port discovery**: Look in `application/ports/` to understand system boundaries
 - **Entry points**: Find wiring and configuration in entry point files (`__main__.py`, `cli.py`, or framework-specific bootstrap modules)
+- **Packaging clues**: Start with `pyproject.toml` and `uv.lock` to identify package roots, toolchain, and supported Python versions
 - **Test mirrors source**: Navigate tests using the same path as the source module being tested

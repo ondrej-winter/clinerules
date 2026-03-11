@@ -14,6 +14,7 @@ This file governs logging implementation mechanics. Broader code-quality expecta
 - **Must** use lazy log formatting (`LOGGER.info("user_id=%s", user_id)`) instead of eager f-strings in log calls.
 - **Should** keep messages stable and searchable; put highly variable details in structured context when possible.
 - **Should** choose log levels by operational actionability (`debug` for diagnostics, `info` for state transitions, `warning` for recoverable anomalies, `error` for user-visible or operator-visible failures).
+- **Should** prefer logging concise event-oriented messages plus structured fields over dumping raw payloads into the message body.
 
 ## Context and structure
 - **Should** include structured context via `extra={...}` for operational logs.
@@ -21,7 +22,13 @@ This file governs logging implementation mechanics. Broader code-quality expecta
 - **Should** include `component` or equivalent context when class attribution is useful.
 - **Should** propagate request, correlation, or job IDs when available.
 - **Must not** put secrets or very high-cardinality raw values into structured fields by default.
+- **Must** redact or avoid authentication headers, cookies, tokens, secrets, raw request/response bodies, file contents, and personal data unless there is an explicit approved need.
+- **Should** prefer allowlisted metadata (IDs, counts, sizes, status codes, durations) over raw content.
 - **Must** keep logger names hierarchical by using `__name__` to support selective filtering.
+
+## Volume management
+- **Should** sample, aggregate, or rate-limit repeated noisy logs in retry loops, polling loops, and hot paths.
+- **Should** log outcomes at meaningful boundaries rather than every low-level step when high-volume logging would hide signal.
 
 ## Exception logging
 - **Should** log an exception once at the boundary that can handle, translate, or report it.
