@@ -24,7 +24,7 @@ Use these rules to keep performance regressions visible and runtime behavior tra
 - **Should** propagate request, correlation, or job IDs across adapter boundaries when available.
 - **Should** sample or rate-limit especially noisy diagnostic logs/events in tight loops, retries, or high-volume code paths.
 - **Must** apply the same sensitive-data rules to metrics and traces that apply to logs.
-- Align logging field names and metric dimensions with `11-logging-conventions.md`.
+- Align logging field names and metric dimensions with `12-logging-conventions.md`.
 
 ## Operational notes
 - **Should** add troubleshooting notes when new failure modes are introduced.

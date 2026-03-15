@@ -2,7 +2,7 @@
 
 Use these rules to keep logging consistent and filterable across modules.
 
-This file governs logging implementation mechanics. Broader code-quality expectations still live in `01-core-standards.md`.
+This file governs logging implementation mechanics. Broader code-quality expectations still live in `02-core-standards.md`.
 
 ## Default logger pattern
 - **Must** define a module-level logger in any module that emits logs:

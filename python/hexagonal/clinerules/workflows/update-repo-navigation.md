@@ -5,6 +5,8 @@ Use this workflow when adapting the reusable hexagonal Python ruleset to a speci
 ## Goal
 Produce a short, project-specific navigation guide outside `.clinerules/` so contributors can find package roots, entry points, adapters, and tests quickly.
 
+Prefer cross-platform examples based on IDE search or `rg`/`rg --files` when documenting reusable navigation workflows.
+
 ## Recommended output location
 - `docs/repo-navigation.md`
 - or another discoverable project-owned path near the main developer docs
@@ -50,5 +52,7 @@ Produce a short, project-specific navigation guide outside `.clinerules/` so con
 
 ## Useful search commands
 - `rg "Protocol|ABC|abstractmethod" src/myproject/application/ports/`
-- `find src/myproject/adapters/ -name "adapter.py" -o -name "*_adapter.py"`
+- `rg --files src/myproject/adapters/ | rg "(^|/)(adapter\.py|.*_adapter\.py)$"`
+- `rg --files -g "pyproject.toml"`
+- `rg --files src/myproject/ | rg "(^|/)(__main__|cli)\.py$"`
 ```

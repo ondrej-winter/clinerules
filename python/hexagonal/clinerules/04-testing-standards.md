@@ -2,7 +2,7 @@
 
 Use these rules for all automated tests to keep signal high and feedback fast.
 
-**For test directory structure and organization, see `07-repo-navigation.md`.**
+**For test directory structure and organization, see `08-repo-navigation.md`.**
 
 ## Test pyramid expectations
 - **Must** keep the majority of tests as unit tests (fast, isolated, no I/O).
@@ -45,4 +45,4 @@ Use these rules for all automated tests to keep signal high and feedback fast.
 - **Should** run a focused `uv run pytest tests/...` or `uv run pytest -k <pattern>` subset during development.
 - **Must** run `uv run pytest` before handoff or PR.
 - **Should** keep slow/integration/e2e suites clearly marked so the fast default developer loop stays intentional.
-- **Must** follow the full local quality gate order in `09-tooling-and-ci.md` before handoff.
+- **Must** follow the full local quality gate order in `10-tooling-and-ci.md` before handoff.

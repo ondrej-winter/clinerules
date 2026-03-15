@@ -68,7 +68,7 @@ Use this doctrine as the default architecture standard for the codebase. Any dev
 - `application/`: use cases + ports + DTOs.
 - `adapters/`: input (CLI/HTTP/GraphQL) and output (persistence, external APIs, messaging, etc.).
 - `infrastructure/` (optional): shared infra utilities used by adapters only.
-- Detailed file splitting, package export, and `__init__.py` mechanics are governed by `05-module-structure.md`.
+- Detailed file splitting, package export, and `__init__.py` mechanics are governed by `06-module-structure.md`.
 
 ## Naming conventions (layer-aware)
 - `.../ports/` for interfaces/protocols.
@@ -86,5 +86,5 @@ Adapters at the same conceptual level **must** be organized uniformly to keep na
 
 - **Must** keep adapter structure consistent within the same conceptual category.
 - **Must** avoid mixing one-off standalone adapters with subdirectory-based adapters without a documented reason.
-- **Must** keep adapter naming and packaging aligned with the package-structure rules in `05-module-structure.md`.
-- For detailed directory, file naming, and export conventions, follow `05-module-structure.md`.
+- **Must** keep adapter naming and packaging aligned with the package-structure rules in `06-module-structure.md`.
+- For detailed directory, file naming, and export conventions, follow `06-module-structure.md`.

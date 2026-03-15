@@ -48,6 +48,8 @@ tests/
 
 ## Common search patterns
 
+Prefer cross-platform tools such as your IDE search, `rg`, and `rg --files` when sharing reusable navigation examples. If you also use shell-specific commands locally, treat them as environment-specific equivalents rather than required workflow.
+
 ### Finding definitions
 ```bash
 # Find all class/function definitions in a specific area
@@ -57,7 +59,7 @@ rg "^\s*(class|def)\s+" src/<package_name>/<area>/
 rg "Protocol|ABC|abstractmethod" src/<package_name>/application/ports/
 
 # Find all adapters
-find src/<package_name>/adapters/ -name "adapter.py" -o -name "*_adapter.py"
+rg --files src/<package_name>/adapters/ | rg "(^|/)(adapter\.py|.*_adapter\.py)$"
 ```
 
 ### Finding usage
@@ -72,19 +74,19 @@ rg "\b[A-Z][A-Za-z0-9_]*Adapter\(" src/
 ### Exploring structure
 ```bash
 # Find package roots or service roots in a monorepo
-find . -name "pyproject.toml"
+rg --files -g "pyproject.toml"
 
-# View directory tree
-tree src/<package_name>/ -L 3
+# View the package file tree
+rg --files src/<package_name>/
 
-# Fallback if tree is unavailable
-find src/<package_name>/ -maxdepth 3 -type d
+# View directories and package boundaries through files such as __init__.py
+rg --files src/<package_name>/ | rg "(^|/)__init__\.py$"
 
 # List all Python files in a layer
-find src/<package_name>/domain/ -name "*.py"
+rg --files src/<package_name>/domain/ -g "*.py"
 
 # Find entry points (CLI, main modules)
-find src/ -name "__main__.py" -o -name "cli.py"
+rg --files src/ | rg "(^|/)(__main__|cli)\.py$"
 ```
 
 ## Project-specific navigation

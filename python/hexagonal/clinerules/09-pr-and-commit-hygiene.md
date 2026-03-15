@@ -23,5 +23,5 @@ Use these rules to keep reviews fast, changesets focused, and CI reliable.
 - **Must** check that secrets, credentials, and unnecessary sensitive artifacts are not introduced in the change set.
 
 ## CI expectations
-- **Must** run the local quality gate before handoff (see `09-tooling-and-ci.md`).
+- **Must** run the local quality gate before handoff (see `10-tooling-and-ci.md`).
 - **Must** fix CI failures at the root cause; do not bypass checks.

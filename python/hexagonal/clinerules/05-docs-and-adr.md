@@ -7,7 +7,7 @@ Use these rules to keep documentation consistent and decision records traceable.
 - **Should** add short usage examples when new CLI flags or commands are introduced.
 - **Must** document new environment variables and defaults.
 - **Should** document supported Python version(s), the `uv` workflow (`uv sync`, `uv run ...`), and the local quality gate commands when they are project-relevant.
-- In-code docstring and comment style is governed separately by `10-documentation-standards.md`.
+- In-code docstring and comment style is governed separately by `11-documentation-standards.md`.
 
 ## ADR (Architecture Decision Records)
 - **Must** create an ADR when a decision impacts architecture, dependencies, or boundaries.

@@ -14,7 +14,7 @@ Use these rules to keep files focused, navigable, and easy to maintain.
 - **Should** group related classes/functions by responsibility, not by type.
 - **Should** keep one primary responsibility per file/module when splitting modules.
 - **Must** keep import side effects minimal; importing a module should not perform I/O, network calls, or heavyweight initialization.
-- Adapter-specific structure should satisfy the architectural consistency expectations in `02-architecture-guardrails.md`.
+- Adapter-specific structure should satisfy the architectural consistency expectations in `03-architecture-guardrails.md`.
 
 ## Package and `__init__.py` conventions
 - **Should** use `__init__.py` when you want a regular package or an intentional public package API.

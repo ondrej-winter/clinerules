@@ -2,7 +2,7 @@
 
 Use these rules to keep documentation helpful without being verbose.
 
-This file governs documentation written inside source code. Requirements for README updates, ADRs, and changelog notes live in `04-docs-and-adr.md`.
+This file governs documentation written inside source code. Requirements for README updates, ADRs, and changelog notes live in `05-docs-and-adr.md`.
 
 ## Documentation principles
 - Prefer concise explanations of contracts, invariants, side effects, and intent.
