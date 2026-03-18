@@ -1,3 +1,8 @@
+---
+name: write-adr
+description: Create an Architecture Decision Record with the next sequential number, a clear title, and documented consequences.
+---
+
 # Skill: Write an Architecture Decision Record (ADR)
 
 Use this skill when the user asks to document an architectural decision,
