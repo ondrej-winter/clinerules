@@ -9,8 +9,6 @@ hexagonal (ports & adapters) architecture.
 - The user has told you `<app_name>` (the project / package name).
 - The user has told you `<python_version>` (e.g. `3.13`).
 
----
-
 ## Steps
 
 ### 1 — Initialise the project with uv
@@ -116,7 +114,7 @@ Add a minimal `.pre-commit-config.yaml`:
 ```yaml
 repos:
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.4.0      # pin to latest stable
+    rev: v0.4.0 # pin to latest stable
     hooks:
       - id: ruff
         args: ["--fix"]
@@ -136,21 +134,20 @@ All three commands must exit with code 0 before proceeding.
 ### 7 — Create a minimal README
 
 Write a `README.md` that describes:
+
 - What the application does.
 - How to install dependencies (`uv sync --all-extras`).
 - How to run quality checks (`ruff`, `mypy`, `pytest`).
 - High-level architecture overview (domain / application / adapters).
 
----
-
 ## Hexagonal architecture conventions to follow
 
-| Layer | Directory | Rule |
-|---|---|---|
-| Domain | `src/<app_name>/domain/` | No imports from `application` or `adapters`. Pure Python only. |
-| Application | `src/<app_name>/application/` | Depends only on `domain`. Defines port interfaces (ABCs or Protocols). |
-| Adapters (input) | `src/<app_name>/adapters/input/` | Calls into `application`. Never imports from `domain` directly. |
-| Adapters (output) | `src/<app_name>/adapters/output/` | Implements port interfaces from `application`. |
+| Layer             | Directory                         | Rule                                                                   |
+| ----------------- | --------------------------------- | ---------------------------------------------------------------------- |
+| Domain            | `src/<app_name>/domain/`          | No imports from `application` or `adapters`. Pure Python only.         |
+| Application       | `src/<app_name>/application/`     | Depends only on `domain`. Defines port interfaces (ABCs or Protocols). |
+| Adapters (input)  | `src/<app_name>/adapters/input/`  | Calls into `application`. Never imports from `domain` directly.        |
+| Adapters (output) | `src/<app_name>/adapters/output/` | Implements port interfaces from `application`.                         |
 
 Enforce these rules via import linter (e.g. `import-linter`) or document them in
 `ARCHITECTURE.md` at the root of the project.

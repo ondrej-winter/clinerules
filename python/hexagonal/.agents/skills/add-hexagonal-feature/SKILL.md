@@ -9,8 +9,6 @@ business capability in a Python hexagonal (ports & adapters) project.
 - The user has described the feature and you understand its inputs, outputs, and
   the business rule it encodes.
 
----
-
 ## Steps
 
 ### 1 — Name the use case
@@ -27,6 +25,7 @@ Create or update files under `src/<app_name>/domain/`:
 - **Domain event** — something that happened (e.g. `OrderPlaced`).
 
 Rules:
+
 - Domain objects must be **pure Python** — no framework imports, no I/O.
 - Use `@dataclass(frozen=True)` for value objects.
 - Raise domain-specific exceptions (not HTTP errors, not DB errors).
@@ -87,6 +86,7 @@ class <UseCaseName>:
 ```
 
 Rules:
+
 - The application service **only** depends on domain objects and port interfaces.
 - It must not import from `adapters/`.
 - It must not perform I/O directly (no `open()`, `requests`, DB calls).
@@ -130,8 +130,6 @@ uv run pytest --cov --cov-report=term-missing
 ```
 
 All checks must pass before considering the feature complete.
-
----
 
 ## Dependency direction reminder
 

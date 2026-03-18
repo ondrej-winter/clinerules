@@ -3,14 +3,10 @@
 Use this skill when the user asks to document an architectural decision, record a
 design choice, or create an ADR.
 
----
-
 ## Prerequisites
 
 - An `docs/adr/` directory exists in the project (create it if not).
 - ADRs are numbered sequentially: `0001`, `0002`, …
-
----
 
 ## Steps
 
@@ -49,29 +45,32 @@ Use active voice: "We will use X because Y."
 ## Consequences
 
 ### Positive
+
 - …
 
 ### Negative / trade-offs
+
 - …
 
 ### Neutral
+
 - …
 
 ## Alternatives considered
 
 | Option | Reason rejected |
-|--------|----------------|
-| … | … |
+| ------ | --------------- |
+| …      | …               |
 ```
 
 ### 4 — Set the status
 
-| Status | When to use |
-|---|---|
-| `Proposed` | Decision is under discussion. |
-| `Accepted` | Decision is agreed and in effect. |
-| `Deprecated` | Decision was once accepted but is no longer followed. |
-| `Superseded by [NNNN](…)` | A newer ADR replaces this one. |
+| Status                    | When to use                                           |
+| ------------------------- | ----------------------------------------------------- |
+| `Proposed`                | Decision is under discussion.                         |
+| `Accepted`                | Decision is agreed and in effect.                     |
+| `Deprecated`              | Decision was once accepted but is no longer followed. |
+| `Superseded by [NNNN](…)` | A newer ADR replaces this one.                        |
 
 Default to `Accepted` unless the user explicitly says it is still being discussed.
 
@@ -83,8 +82,6 @@ decision log table:
 ```markdown
 | [<NNNN>](./<NNNN>-<slug>.md) | <Short Title> | <Date> | Accepted |
 ```
-
----
 
 ## Good ADR practices
 
