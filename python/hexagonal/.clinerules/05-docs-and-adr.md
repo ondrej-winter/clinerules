@@ -1,4 +1,4 @@
-# Docs rules: README updates, ADR format, changelog notes, API docs
+# Documentation rules: README updates, ADRs, changelog notes, API docs
 
 Use these rules to keep documentation consistent and decision records traceable.
 
@@ -9,8 +9,8 @@ Use these rules to keep documentation consistent and decision records traceable.
 - **Should** document supported Python version(s), the `uv` workflow (`uv sync`, `uv run ...`), and the local quality gate commands when they are project-relevant.
 - In-code docstring and comment style is governed separately by `11-documentation-standards.md`.
 
-## ADR (Architecture Decision Records)
-- **Must** create an ADR when a decision impacts architecture, dependencies, or boundaries.
+## ADRs (Architecture Decision Records)
+- **Must** create an ADR when a decision materially affects architecture, dependencies, or boundaries.
 - **Must** include at minimum: **Context**, **Decision**, **Consequences**, **Alternatives**.
 - **Should** also record ADR metadata such as **Status**, **Date**, and supersedes/replaces links when applicable.
 - **Should** include links to related issues/PRs.

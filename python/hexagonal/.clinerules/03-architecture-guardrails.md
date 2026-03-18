@@ -16,12 +16,12 @@ Use this doctrine as the default architecture standard for the codebase. Any dev
 - **Infrastructure**: Frameworks, SDKs, DB drivers, HTTP clients, serializers, etc. Lives only in adapters.
 
 ## Dependency rules (allowed/forbidden)
-✅ **Allowed**
+Allowed:
 - Domain → Domain (same layer)
 - Application → Domain
 - Adapters → Application ports + Domain (through ports or DTOs)
 
-❌ **Forbidden**
+Forbidden:
 - Domain → Application, Adapters, Infrastructure
 - Application → Adapters, Infrastructure
 - Adapter → Adapter (unless through application ports)

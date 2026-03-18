@@ -3,7 +3,7 @@
 ## Structure and ordering
 - Files in `.clinerules/` are **active** rules.
 - This ruleset is an **opinionated reusable profile** for Python projects using hexagonal architecture with Cline.
-- Rule files are ordered by a sortable prefix (for example `00-`, `01-`, `02-`, `03-`) to keep a consistent reading order.
+- Rule files use sortable prefixes (for example `00-`, `01-`, `02-`, `03-`) to keep the reading order stable.
 - Each file should focus on a single theme (core standards, architecture, testing, etc.).
 
 ## Opinionated defaults
@@ -22,12 +22,12 @@
 - Explicit overrides beat implicit interpretation; when a later module intentionally sharpens an earlier rule, it should say so directly.
 - More specific rules take precedence over broader rules on the same topic.
 - **Must** statements take precedence over **Should** statements.
-- If two rules with the same strength and scope still conflict, treat file order as a **last-resort tiebreaker** and update the ruleset to make precedence explicit.
+- If two rules with the same strength and scope still conflict, treat file order as a **last-resort tiebreaker** and then update the ruleset to make precedence explicit.
 - Any intentional deviation must be documented in ADR/PR notes.
 
 ## Reusable-asset portability
 - Keep this ruleset copyable into another repository without assuming a specific local folder workflow beyond `.clinerules/` itself.
-- Do not require repository-specific maintenance conventions such as sibling “bank”, “disabled”, or archive folders inside reusable rule content.
+- Do not require repository-specific maintenance conventions such as sibling "bank", "disabled", or archive folders inside reusable rule content.
 - If a host repository wants local enable/disable mechanics, document them in repo-specific maintainer docs rather than in the reusable rules themselves.
 
 ## Adding or updating rules
@@ -82,7 +82,7 @@
 - `workflows/update-repo-navigation.md` - Generate project-specific navigation maps when adapting this reusable ruleset to a concrete project
 
 ## Enforcement and automation matrix
-Use this map to keep "Must" rules enforceable, not just advisory.
+Use this map to keep "Must" rules enforceable rather than merely advisory.
 
 Interpret enforcement labels as follows:
 - **Tool-enforced**: verified directly by automated tooling.
@@ -110,6 +110,6 @@ These rules apply to Python projects using hexagonal architecture unless explici
 
 ## Project-specific customization
 For project-specific navigation and structure details:
-1. Use the workflow in `workflows/update-repo-navigation.md` to generate a current map, or follow the same steps manually if the workflow file is not bundled
-2. Store project-specific documentation in `docs/` or the project root
-3. Keep `.clinerules/` generic and portable across projects
+1. Use the workflow in `workflows/update-repo-navigation.md` to generate a current map, or follow the same steps manually if the workflow file is not bundled.
+2. Store project-specific documentation in `docs/` or the project root.
+3. Keep `.clinerules/` generic and portable across projects.

@@ -40,8 +40,8 @@ This file governs documentation written inside source code. Requirements for REA
 - Tag temporary workarounds with an issue/reference when possible.
 
 ## What NOT to document in code
-- ❌ Feature lists → belongs in README
-- ❌ Architecture patterns → belongs in ADRs
-- ❌ Performance claims → belongs in benchmarks/docs
-- ❌ Marketing language ("rich", "powerful", "advanced")
-- ❌ Redundant restatements of type hints or parameter names
+- Feature lists → belongs in README
+- Architecture patterns → belongs in ADRs
+- Performance claims → belongs in benchmarks/docs
+- Marketing language ("rich", "powerful", "advanced")
+- Redundant restatements of type hints or parameter names

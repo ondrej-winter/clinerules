@@ -16,25 +16,25 @@ This module defines non-negotiable command execution constraints.
 - **Should** remove temporary script files after execution unless retention is needed for debugging.
 
 ## Required pattern
-✅ **Allowed approach**
+Allowed approach:
 1. Create a temporary `.py` file.
 2. Execute it with `uv run python /absolute/path/to/temp_script.py`.
 3. Capture output/exit code as needed.
 4. Clean up the temporary file when done.
 
 ## Disallowed pattern
-❌ **Forbidden approach**
+Forbidden approach:
 - `python - <<'PY'`
 - `uv run python - <<'PY'`
 - Any multiline Python passed directly via stdin to the interpreter.
 
 ## Git non-interactive pattern
-✅ **Preferred approach**
+Preferred approach:
 - `git --no-pager diff --stat`
 - `git --no-pager log --oneline -n 20`
 - `git commit --no-edit` (only when this behavior is explicitly appropriate)
 
-❌ **Avoid when not explicitly requested**
+Avoid when not explicitly requested:
 - Commands that trigger pagers or interactive editors and wait for user input.
 
 ## Destructive and remote command safety

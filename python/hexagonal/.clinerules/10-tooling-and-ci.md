@@ -1,4 +1,4 @@
-# Tooling & CI Conventions (Python)
+# Tooling and CI conventions
 
 This ruleset uses an opinionated toolchain:
 - `uv` for dependency management, environment management, and command execution
@@ -8,8 +8,8 @@ This ruleset uses an opinionated toolchain:
 
 Run project tooling through `uv run ...` and keep tool configuration in `pyproject.toml`.
 
-## Local Quality Gate (must pass before creating PR)
-Run this workflow at the end of each coding session when code has been changed, and always before handoff.
+## Local quality gate
+Run this workflow at the end of each coding session when code changes, and always before handoff.
 
 When validating changes, use this order:
 
@@ -34,9 +34,9 @@ When validating changes, use this order:
    - Docs build or examples smoke tests
 
 ## Expectations
-- Generated code MUST satisfy `uv run ruff check .`, `uv run mypy .`, and `uv run pytest` with zero unapproved failures.
-- Code MUST be formatted with `uv run ruff format .`.
-- If you change behavior, you MUST add/adjust tests and run the relevant impacted suites.
+- Generated code **must** satisfy `uv run ruff check .`, `uv run mypy .`, and `uv run pytest` with no unapproved failures.
+- Code **must** be formatted with `uv run ruff format .`.
+- If behavior changes, you **must** add or adjust tests and run the relevant impacted suites.
 - Do not disable lint rules unless explicitly requested; prefer refactoring.
 - CI failures must be fixed at the root cause.
 
@@ -45,7 +45,7 @@ When validating changes, use this order:
 - If a change impacts only a subset of tests, run that subset first,
   but still complete `uv run pytest` before handoff.
 - In monorepos, run the same `uv run ...` gates from the affected package/service root plus any impacted shared gates.
-- Pre-commit hooks are helpful fast feedback, but they do **not** replace the full local quality gate.
+- Pre-commit hooks provide helpful fast feedback, but they do **not** replace the full local quality gate.
 - For flaky or slow tests, document the reason and mitigation in the handoff notes.
 - If any step fails, address the underlying issue rather than proceeding to the next step.
 - Do not bypass `pyproject.toml`-backed tool configuration with ad hoc flags in the final validation run.

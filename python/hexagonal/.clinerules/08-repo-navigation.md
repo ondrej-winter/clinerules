@@ -1,4 +1,4 @@
-# Repository navigation guidelines for hexagonal architecture
+# Repository navigation guidelines for hexagonal Python projects
 
 Use these guidelines to organize and discover code in hexagonal Python projects.
 
@@ -37,7 +37,7 @@ tests/
 └── e2e/                   # Optional end-to-end scenarios
 ```
 
-**Note:** Test directories should mirror the source structure for easy navigation. `e2e/` may be organized by user flow instead of strict source mirroring.
+Test directories should mirror the source structure where practical for easier navigation. `e2e/` may be organized by user flow instead of strict source mirroring.
 
 ## Documentation and configuration
 - `README.md`: Project onboarding, setup, and usage
@@ -92,9 +92,9 @@ rg --files src/ | rg "(^|/)(__main__|cli)\.py$"
 ## Project-specific navigation
 
 To generate a project-specific navigation map for your project:
-1. See `workflows/update-repo-navigation.md` for instructions
-2. Run the workflow when the project structure changes significantly
-3. Store the generated map in `docs/repo-navigation.md` or a similarly discoverable project-specific location outside `.clinerules/`
+1. See `workflows/update-repo-navigation.md` for instructions.
+2. Run the workflow when the project structure changes significantly.
+3. Store the generated map in `docs/repo-navigation.md` or a similarly discoverable project-specific location outside `.clinerules/`.
 
 ## Navigation principles
 - **Layer isolation**: Code in `domain/` should never import from `adapters/` or `application/`
