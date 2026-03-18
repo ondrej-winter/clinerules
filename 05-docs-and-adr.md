@@ -11,9 +11,7 @@ Use these rules to keep documentation consistent and decision records traceable.
 
 ## ADRs (Architecture Decision Records)
 - **Must** create an ADR when a decision materially affects architecture, dependencies, or boundaries.
-- **Must** include at minimum: **Context**, **Decision**, **Consequences**, **Alternatives**.
-- **Should** also record ADR metadata such as **Status**, **Date**, and supersedes/replaces links when applicable.
-- **Should** include links to related issues/PRs.
+- When an ADR is needed, use the `write-adr` skill for the creation process, file naming, numbering, and template.
 - Put architectural rationale in ADRs rather than module docstrings or inline comments.
 
 ## Changelog notes
