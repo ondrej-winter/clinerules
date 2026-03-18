@@ -41,12 +41,14 @@
 - Prefer one requirement per bullet so review discussions can reference a single rule precisely.
 - Use **Must** only for review-blocking requirements.
 - Use **Should** for strong defaults that may allow justified exceptions.
+- When step-by-step execution guidance already exists in a skill, keep the rule focused on policy and reference the skill by name.
 - When a later module intentionally overrides or sharpens an earlier rule, make that override explicit.
 
 ## Ownership and specialization
 - Earlier files should define broad policy and defaults for their topic.
 - Later specialized files should define detailed mechanics for narrower subtopics.
 - When a specialized file exists, earlier files should point to it instead of repeating detailed guidance.
+- Use skills for reusable procedures and workflows rather than embedding those mechanics into rule files.
 
 ### Topic ownership map
 - `01-cline-operating-guidance.md`: lightweight Cline operating behavior, scope control, and validation discipline
@@ -82,7 +84,7 @@
 - `workflows/update-repo-navigation.md` - Generate project-specific navigation maps when adapting this reusable ruleset to a concrete project
 
 ## Related skills
-- `../agents/skills/write-adr/SKILL.md` - Use for ADR creation procedure, numbering, naming, and template details; keep `05-docs-and-adr.md` focused on policy
+- `write-adr` - Use for ADR creation procedure, numbering, naming, and template details; keep `05-docs-and-adr.md` focused on policy
 
 ## Enforcement and automation matrix
 Use this map to keep "Must" rules enforceable rather than merely advisory.
