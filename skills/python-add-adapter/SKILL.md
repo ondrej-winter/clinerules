@@ -1,3 +1,8 @@
+---
+name: python-add-adapter
+description: Add an input or output adapter to a Python hexagonal project while keeping business logic in the application layer.
+---
+
 # Skill: Add an Adapter
 
 Use this skill to add an input adapter (HTTP endpoint, CLI command, event consumer) or an output adapter (database repository, HTTP client, message publisher) to a Python hexagonal project.

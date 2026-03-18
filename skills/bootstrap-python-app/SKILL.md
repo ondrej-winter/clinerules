@@ -1,3 +1,8 @@
+---
+name: bootstrap-python-app
+description: Initialize a new Python project with a hexagonal architecture layout, core tooling, and quality checks.
+---
+
 # Skill: Bootstrap a Python Hexagonal Application
 
 Use this skill when the user asks to initialise a new Python project that follows

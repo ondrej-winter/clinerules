@@ -1,3 +1,8 @@
+---
+name: add-hexagonal-feature
+description: Implement a new feature or use case in a Python hexagonal project, including domain modeling, ports, application service, and tests.
+---
+
 # Skill: Add a Hexagonal Feature
 
 Use this skill when the user asks to implement a new feature, use case, or

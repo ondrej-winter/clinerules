@@ -1,3 +1,8 @@
+---
+name: python-add-port
+description: Add a technology-agnostic application port interface to a Python hexagonal project for a new use case or dependency.
+---
+
 # Skill: Add a Port
 
 Use this skill to add an application port interface to a Python hexagonal
