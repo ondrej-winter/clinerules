@@ -81,6 +81,9 @@
 ## Workflows
 - `workflows/update-repo-navigation.md` - Generate project-specific navigation maps when adapting this reusable ruleset to a concrete project
 
+## Related skills
+- `../agents/skills/write-adr/SKILL.md` - Use for ADR creation procedure, numbering, naming, and template details; keep `05-docs-and-adr.md` focused on policy
+
 ## Enforcement and automation matrix
 Use this map to keep "Must" rules enforceable rather than merely advisory.
 
