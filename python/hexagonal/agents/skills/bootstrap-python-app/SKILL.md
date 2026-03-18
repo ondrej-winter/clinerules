@@ -3,10 +3,10 @@ name: bootstrap-python-app
 description: Initialize a new Python project with a hexagonal architecture layout, core tooling, and quality checks.
 ---
 
-# Skill: Bootstrap a Python Hexagonal Application
+# Bootstrap a Python Hexagonal Application
 
-Use this skill when the user asks to initialise a new Python project that follows
-hexagonal (ports & adapters) architecture.
+Use this skill when the user asks to initialize a new Python project that uses
+hexagonal (ports and adapters) architecture.
 
 ## Prerequisites
 
@@ -56,8 +56,9 @@ Create every directory and `__init__.py` file listed above.
 
 ### 3 — Configure pyproject.toml
 
-Replace or merge the generated `pyproject.toml` with the following structure (keep
-any values `uv init` already set for `name`, `version`, `requires-python`):
+Replace or merge the generated `pyproject.toml` with the following structure.
+Keep any values `uv init` already set for `name`, `version`, and
+`requires-python`.
 
 ```toml
 [build-system]
@@ -83,7 +84,7 @@ packages = ["src/<app_name>"]
 
 [tool.ruff]
 line-length = 100
-target-version = "py<python_version_nodot>"   # e.g. py313
+target-version = "py<python_version_nodot>" # e.g. py313
 
 [tool.ruff.lint]
 select = ["E", "F", "I", "UP", "B", "SIM"]
@@ -119,12 +120,14 @@ Add a minimal `.pre-commit-config.yaml`:
 ```yaml
 repos:
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.4.0 # pin to latest stable
+    rev: v0.4.0
     hooks:
       - id: ruff
         args: ["--fix"]
       - id: ruff-format
 ```
+
+Use an appropriate pinned version for the project if you do not keep `v0.4.0`.
 
 ### 6 — Verify the setup
 
@@ -147,12 +150,12 @@ Write a `README.md` that describes:
 
 ## Hexagonal architecture conventions to follow
 
-| Layer             | Directory                         | Rule                                                                   |
-| ----------------- | --------------------------------- | ---------------------------------------------------------------------- |
-| Domain            | `src/<app_name>/domain/`          | No imports from `application` or `adapters`. Pure Python only.         |
-| Application       | `src/<app_name>/application/`     | Depends only on `domain`. Defines port interfaces (ABCs or Protocols). |
-| Adapters (input)  | `src/<app_name>/adapters/input/`  | Calls into `application`. Never imports from `domain` directly.        |
-| Adapters (output) | `src/<app_name>/adapters/output/` | Implements port interfaces from `application`.                         |
+| Layer             | Directory                         | Rule                                                                    |
+| ----------------- | --------------------------------- | ----------------------------------------------------------------------- |
+| Domain            | `src/<app_name>/domain/`          | No imports from `application` or `adapters`. Pure Python only.          |
+| Application       | `src/<app_name>/application/`     | Depends only on `domain`. Defines port interfaces as ABCs or Protocols. |
+| Adapters (input)  | `src/<app_name>/adapters/input/`  | Calls into `application`. Never imports from `domain` directly.         |
+| Adapters (output) | `src/<app_name>/adapters/output/` | Implements port interfaces from `application`.                          |
 
-Enforce these rules via import linter (e.g. `import-linter`) or document them in
-`ARCHITECTURE.md` at the root of the project.
+Enforce these rules with an import linter such as `import-linter`, or document
+them in a root-level `ARCHITECTURE.md`.
