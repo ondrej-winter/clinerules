@@ -4,6 +4,10 @@ Collection of curated clinerules.
 
 Currently includes a Python hexagonal-architecture ruleset for Cline, focused on practical repository standards and development workflow guidance.
 
+## Repository tools
+
+- `tools/tokens/repo_token_map.py`: Scans `shared/` and `python/` recursively and writes one tree-style Markdown token map at `tools/tokens/repo-token-map.md`.
+
 ## Repository-specific inventory
 
 This section is repo-specific. Paths below describe where assets live in this repository.
