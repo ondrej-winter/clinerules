@@ -16,27 +16,29 @@ Drives the application -- receives external input and calls an application servi
 ```
 src/<app_name>/adapters/input/<adapter_name>/
     __init__.py
-    <adapter_name>.py
+    adapter.py
 ```
 
-Re-export the public symbol and declare `__all__` in `__init__.py`:
+Keep `__init__.py` lightweight. Re-export the intended public symbol only when you want a stable package-level API, and declare `__all__` when that curated surface adds clarity:
 
 ```python
-from <app_name>.adapters.input.<adapter_name>.<adapter_name> import router
+from .adapter import router
 
 __all__ = ["router"]
 ```
 
 ### 2 - Implement
 
-- Accept external input, map to command/query, call the service via its port, map result/exception back to external format.
+- Accept external input, map it to an application command/query DTO, call the application through its input port or service entry point, and map the result or exception back to the external format.
 - Do not import from `domain/` directly.
 - Keep all business logic in the application service.
 - Map domain exceptions to adapter-level error responses.
 
 ### 3 - Test
 
-Place tests under `tests/integration/<adapter_name>/`. Test through the framework's test client; inject a fake application service to keep tests fast and isolated.
+Place tests under `tests/integration/<adapter_name>/`. Test through the framework's test client or transport boundary, and inject a fake or stubbed application service where possible to keep the tests focused on adapter behavior.
+
+Add unit tests only if the adapter package contains meaningful mapping or serialization helpers that warrant direct, framework-free verification.
 
 ## Output adapter
 
@@ -47,13 +49,13 @@ Implements a port interface and talks to external infrastructure.
 ```
 src/<app_name>/adapters/output/<adapter_name>/
     __init__.py
-    <adapter_name>.py
+    adapter.py
 ```
 
-Re-export the public symbol and declare `__all__` in `__init__.py`:
+Keep `__init__.py` lightweight. Re-export the intended public symbol only when you want a stable package-level API, and declare `__all__` when that curated surface adds clarity:
 
 ```python
-from <app_name>.adapters.output.<adapter_name>.<adapter_name> import <AdapterName>
+from .adapter import <AdapterName>
 
 __all__ = ["<AdapterName>"]
 ```
@@ -63,7 +65,8 @@ __all__ = ["<AdapterName>"]
 - Implement all port interface methods.
 - Map infrastructure types to domain objects inside the adapter -- never leak them out.
 - Raise domain exceptions, not infrastructure exceptions.
+- Keep framework clients, ORM models, serializers, and transport-specific configuration inside the adapter package.
 
 ### 3 - Test
 
-Write a unit test with a fake/stub of the port first. Follow with an integration test against a real or containerised infrastructure instance.
+Write unit tests against the adapter using fakes, stubs, or mocks around the infrastructure boundary where practical. Follow with integration tests against the real framework or infrastructure boundary when the adapter behavior depends on actual driver, network, or persistence integration.

@@ -33,11 +33,11 @@ cd <app_name>
 │       │   ├── __init__.py
 │       │   └── ports/
 │       │       └── __init__.py
-│       └── adapters/        # Inbound & outbound adapter implementations
+│       └── adapters/        # Input & output adapter implementations
 │           ├── __init__.py
-│           ├── inbound/
+│           ├── input/
 │           │   └── __init__.py
-│           └── outbound/
+│           └── output/
 │               └── __init__.py
 ├── tests/
 │   ├── __init__.py
@@ -149,8 +149,8 @@ Write a `README.md` that describes:
 |---|---|---|
 | Domain | `src/<app_name>/domain/` | No imports from `application` or `adapters`. Pure Python only. |
 | Application | `src/<app_name>/application/` | Depends only on `domain`. Defines port interfaces (ABCs or Protocols). |
-| Adapters (inbound) | `src/<app_name>/adapters/inbound/` | Calls into `application`. Never imports from `domain` directly. |
-| Adapters (outbound) | `src/<app_name>/adapters/outbound/` | Implements port interfaces from `application`. |
+| Adapters (input) | `src/<app_name>/adapters/input/` | Calls into `application`. Never imports from `domain` directly. |
+| Adapters (output) | `src/<app_name>/adapters/output/` | Implements port interfaces from `application`. |
 
 Enforce these rules via import linter (e.g. `import-linter`) or document them in
 `ARCHITECTURE.md` at the root of the project.

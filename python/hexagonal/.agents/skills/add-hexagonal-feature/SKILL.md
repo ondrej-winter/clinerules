@@ -45,9 +45,9 @@ class <Entity>:
 
 Create port interfaces under `src/<app_name>/application/ports/`:
 
-- **Inbound port** (driven) — the interface the use case exposes to the outside
+- **Input port** (driven) — the interface the use case exposes to the outside
   world. Typically a `Protocol` or `ABC` with a single `execute(command)` method.
-- **Outbound port** (driving) — the interface the use case needs from
+- **Output port** (driving) — the interface the use case needs from
   infrastructure (e.g. a repository, an email sender).
 
 ```python
@@ -117,8 +117,8 @@ def test_<use_case_name>_raises_when_<condition>() -> None:
 
 ### 6 — Wire up adapters (only if needed for this feature)
 
-If the feature requires a new inbound entry point (HTTP endpoint, CLI command,
-event handler) or a new outbound implementation (DB repo, API client), follow
+If the feature requires a new input entry point (HTTP endpoint, CLI command,
+event handler) or a new output implementation (DB repo, API client), follow
 the **Add Adapter** skill for that step.
 
 ### 7 — Run quality checks
@@ -136,8 +136,8 @@ All checks must pass before considering the feature complete.
 ## Dependency direction reminder
 
 ```
-adapters/inbound  →  application  →  domain
-adapters/outbound →  (implements application/ports)
+adapters/input   →  application  →  domain
+adapters/output  →  (implements application/ports)
 ```
 
 Never let an arrow point in the opposite direction.

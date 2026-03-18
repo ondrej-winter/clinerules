@@ -11,11 +11,10 @@ Drop-in SKILL.md files that guide Cline through common development tasks:
 
 | Skill | Path | Purpose |
 |---|---|---|
-| Bootstrap app | `cline/bootstrap-python-app/SKILL.md` | Initialise a Python app repo with `uv`, `ruff`, `mypy`, `pytest`, and a hexagonal `src/` layout |
-| Run quality checks | `cline/run-quality-checks/SKILL.md` | Run `ruff`, `mypy`, and `pytest --cov` in order with clear pass/fail reporting |
-| Add hexagonal feature | `cline/add-hexagonal-feature/SKILL.md` | Domain model → port interfaces → application service → unit tests |
-| Add adapter | `cline/add-adapter/SKILL.md` | Add an inbound (HTTP, CLI, event) or outbound (DB, API client) adapter with integration tests |
-| Write ADR | `cline/write-adr/SKILL.md` | Scaffold a numbered Architecture Decision Record under `docs/adr/` |
+| Bootstrap app | `python/hexagonal/.agents/skills/bootstrap-python-app/SKILL.md` | Initialise a Python app repo with `uv`, `ruff`, `mypy`, `pytest`, and a hexagonal `src/` layout |
+| Add hexagonal feature | `python/hexagonal/.agents/skills/add-hexagonal-feature/SKILL.md` | Domain model → port interfaces → application service → unit tests |
+| Add adapter | `python/hexagonal/.agents/skills/python-add-adapter/SKILL.md` | Add an input (HTTP, CLI, event) or output (DB, API client) adapter with layered testing guidance |
+| Write ADR | `python/hexagonal/.agents/skills/write-adr/SKILL.md` | Scaffold a numbered Architecture Decision Record under `docs/adr/` |
 
 ### GitHub Actions workflow templates
 
