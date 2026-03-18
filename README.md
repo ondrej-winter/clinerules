@@ -19,7 +19,7 @@ Drop-in SKILL.md files that guide Cline through common development tasks:
 | Bootstrap app         | `python/hexagonal/.agents/skills/bootstrap-python-app/SKILL.md`  | Initialise a Python app repo with `uv`, `ruff`, `mypy`, `pytest`, and a hexagonal `src/` layout  |
 | Add hexagonal feature | `python/hexagonal/.agents/skills/add-hexagonal-feature/SKILL.md` | Domain model → port interfaces → application service → unit tests                                |
 | Add adapter           | `python/hexagonal/.agents/skills/python-add-adapter/SKILL.md`    | Add an input (HTTP, CLI, event) or output (DB, API client) adapter with layered testing guidance |
-| Write ADR             | `python/hexagonal/.agents/skills/write-adr/SKILL.md`             | Scaffold a numbered Architecture Decision Record under `docs/adr/`                               |
+| Write ADR             | `shared/.agents/skills/write-adr/SKILL.md`                       | Scaffold a numbered Architecture Decision Record under `docs/adr/`                               |
 
 #### GitHub Actions workflow templates
 
