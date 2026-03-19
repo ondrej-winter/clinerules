@@ -2,7 +2,7 @@
 
 Scanned roots: shared, python
 Files counted: 22
-Total tokens: 15817
+Total tokens: 15811
 Tokenizer encoding: cl100k_base
 
 ## Tree
@@ -16,8 +16,8 @@ Tokenizer encoding: cl100k_base
 │   └── clinerules/ (358)
 │       └── workflows/ (358)
 │           └── improve.md (358)
-└── python/ (14779)
-    └── hexagonal/ (14779)
+└── python/ (14773)
+    └── hexagonal/ (14773)
         ├── agents/ (3457)
         │   └── skills/ (3457)
         │       ├── add-hexagonal-feature/ (762)
@@ -28,10 +28,10 @@ Tokenizer encoding: cl100k_base
         │       │   └── SKILL.md (591)
         │       └── python-add-port/ (957)
         │           └── SKILL.md (957)
-        └── clinerules/ (11322)
-            ├── workflows/ (866)
+        └── clinerules/ (11316)
+            ├── workflows/ (865)
             │   ├── improve.md (358)
-            │   └── update-repo-navigation.md (508)
+            │   └── update-repo-navigation.md (507)
             ├── 00-readme.md (1771)
             ├── 01-cline-operating-guidance.md (376)
             ├── 02-core-standards.md (828)
@@ -45,5 +45,5 @@ Tokenizer encoding: cl100k_base
             ├── 10-tooling-and-ci.md (617)
             ├── 11-documentation-standards.md (543)
             ├── 12-logging-conventions.md (620)
-            └── 13-command-execution-safety.md (591)
+            └── 13-command-execution-safety.md (586)
 ```
