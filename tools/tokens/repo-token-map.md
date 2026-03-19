@@ -1,35 +1,38 @@
 # Repo token map
 
 Scanned roots: shared, python
-Files counted: 20
-Total tokens: 14661
+Files counted: 22
+Total tokens: 15817
 Tokenizer encoding: cl100k_base
 
 ## Tree
 
 ```text
-├── shared/ (1009)
-│   ├── agents/ (651)
-│   │   └── skills/ (651)
-│   │       └── write-adr/ (651)
-│   │           └── SKILL.md (651)
+├── shared/ (1038)
+│   ├── agents/ (680)
+│   │   └── skills/ (680)
+│   │       └── write-adr/ (680)
+│   │           └── SKILL.md (680)
 │   └── clinerules/ (358)
 │       └── workflows/ (358)
 │           └── improve.md (358)
-└── python/ (13652)
-    └── hexagonal/ (13652)
-        ├── agents/ (2723)
-        │   └── skills/ (2723)
-        │       ├── add-hexagonal-feature/ (1055)
-        │       │   └── SKILL.md (1055)
-        │       ├── bootstrap-python-app/ (1109)
-        │       │   └── SKILL.md (1109)
-        │       └── python-add-adapter/ (559)
-        │           └── SKILL.md (559)
-        └── clinerules/ (10929)
-            ├── workflows/ (508)
+└── python/ (14779)
+    └── hexagonal/ (14779)
+        ├── agents/ (3457)
+        │   └── skills/ (3457)
+        │       ├── add-hexagonal-feature/ (762)
+        │       │   └── SKILL.md (762)
+        │       ├── bootstrap-python-app/ (1147)
+        │       │   └── SKILL.md (1147)
+        │       ├── python-add-adapter/ (591)
+        │       │   └── SKILL.md (591)
+        │       └── python-add-port/ (957)
+        │           └── SKILL.md (957)
+        └── clinerules/ (11322)
+            ├── workflows/ (866)
+            │   ├── improve.md (358)
             │   └── update-repo-navigation.md (508)
-            ├── 00-readme.md (1736)
+            ├── 00-readme.md (1771)
             ├── 01-cline-operating-guidance.md (376)
             ├── 02-core-standards.md (828)
             ├── 03-architecture-guardrails.md (1108)
