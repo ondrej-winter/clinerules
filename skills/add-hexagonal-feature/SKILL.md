@@ -6,7 +6,10 @@ description: Implement a new feature or use case in a Python hexagonal project, 
 # Skill: Add a Hexagonal Feature
 
 Use this skill to implement a new feature, use case, or business capability in
-a Python hexagonal (ports and adapters) project.
+a Python hexagonal project.
+
+This skill focuses on the application and domain changes needed to add a use
+case cleanly. Use companion skills for adapter-specific work when needed.
 
 ## Prerequisites
 
@@ -16,13 +19,13 @@ a Python hexagonal (ports and adapters) project.
 
 ## Steps
 
-### 1 — Name the use case
+### 1. Name the use case
 
 Choose a clear verb-noun name for the use case, for example `PlaceOrder`,
 `RegisterUser`, or `SendNotification`. Use that name consistently for the
 related files and classes.
 
-### 2 — Model the domain (if new concepts are needed)
+### 2. Model the domain if needed
 
 Create or update files under `src/<app_name>/domain/`:
 
@@ -34,7 +37,7 @@ Rules:
 
 - Domain objects must be pure Python with no framework imports or I/O.
 - Use `@dataclass(frozen=True)` for value objects.
-- Raise domain-specific exceptions (not HTTP errors, not DB errors).
+- Raise domain-specific exceptions, not HTTP or database errors.
 
 ```python
 # src/<app_name>/domain/<entity>.py
@@ -45,7 +48,7 @@ class <Entity>:
     id: str
 ```
 
-### 3 — Define port interfaces
+### 3. Define the ports
 
 Create port interfaces under `src/<app_name>/application/ports/`:
 
@@ -64,7 +67,10 @@ class <EntityRepository>Port(Protocol):
     def save(self, entity: <Entity>) -> None: ...
 ```
 
-### 4 — Implement the application service
+Define only the operations the application needs. Keep the interfaces focused
+and technology-agnostic.
+
+### 4. Implement the application service
 
 Create the use case implementation under `src/<app_name>/application/`:
 
@@ -79,12 +85,12 @@ class <UseCaseName>:
 
 Rules:
 
-- The application service **only** depends on domain objects and port interfaces.
+- The application service depends only on domain objects and port interfaces.
 - It must not import from `adapters/`.
 - It must not perform I/O directly, including `open()`, HTTP calls, or database
   access.
 
-### 5 — Write unit tests first (TDD encouraged)
+### 5. Write unit tests first
 
 Create tests under `tests/unit/`:
 
@@ -97,6 +103,8 @@ def test_<use_case_name>_happy_path() -> None:
     use_case.execute(<Command>(...))
     repo.save.assert_called_once()
 ```
+
+TDD is encouraged when it fits the change.
 
 - Use `MagicMock` or a hand-written fake for outbound ports, never real
   infrastructure.

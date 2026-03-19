@@ -53,7 +53,9 @@ Examples:
 - `EmailSenderPort`
 - `PaymentGatewayPort`
 
-## 1 - Choose the file and name
+## Steps
+
+### 1. Choose the file and name
 
 Create the interface under:
 
@@ -78,7 +80,7 @@ Avoid technology-specific names such as:
 - `PostgresPort`
 - `S3AdapterPort`
 
-## 2 - Define the interface
+### 2. Define the interface
 
 Use `Protocol` by default for lightweight structural typing. Use `ABC` only
 when you need shared abstract behavior or stricter inheritance semantics.
@@ -97,10 +99,10 @@ class CreateInvoicePort(Protocol):
         ...
 ```
 
-For output ports, follow the same pattern: define only the operations the
+For output ports, follow the same pattern. Define only the operations the
 application needs, using domain objects or application DTOs in the signature.
 
-## 3 - Keep the port clean
+### 3. Keep the port clean
 
 Rules:
 
@@ -116,7 +118,7 @@ For input ports, a single `execute(...)` method is often enough.
 For output ports, define only the operations the application needs. Do not
 mirror a full ORM, SDK, or driver API.
 
-## 4 - Wire dependencies in the right direction
+### 4. Wire dependencies in the right direction
 
 Follow this direction:
 
@@ -125,7 +127,7 @@ input adapters -> input ports -> application service
 application service -> output ports -> output adapters
 ```
 
-That means:
+In practice:
 
 - input adapters depend on input port contracts
 - application services implement input ports
@@ -134,11 +136,11 @@ That means:
 
 Never let a port import an adapter or mention a specific framework.
 
-## 5 - Test appropriately
+### 5. Test appropriately
 
 Ports are interfaces, so they usually need little or no direct testing.
 
-Test the behavior around the port instead:
+Test the surrounding behavior instead:
 
 - unit test that the application service honors the input port contract
 - unit test that application services call output ports as expected
@@ -147,7 +149,7 @@ Test the behavior around the port instead:
 If the project uses runtime-checkable protocols or shared contract fixtures, add
 small targeted tests only when they provide clear value.
 
-## 6 - Keep related changes aligned
+### 6. Keep related changes aligned
 
 When adding a new port, also review whether the same change needs:
 
@@ -156,5 +158,5 @@ When adding a new port, also review whether the same change needs:
 - new command, query, or result DTOs
 - dependency injection or composition-root wiring updates
 
-Use companion skills for those follow-up tasks rather than putting adapter or
+Use companion skills for those follow-up tasks instead of putting adapter or
 framework logic into the port itself.

@@ -5,25 +5,27 @@ description: Initialize a new Python project with a hexagonal architecture layou
 
 # Bootstrap a Python Hexagonal Application
 
-Use this skill when the user asks to initialize a new Python project that uses
-hexagonal (ports and adapters) architecture.
+Use this skill to initialize a new Python project with a hexagonal
+(ports-and-adapters) architecture.
 
 ## Prerequisites
 
 - `uv` is installed on the machine (`brew install uv` / `pip install uv`).
-- The user has told you `<app_name>` (the project / package name).
-- The user has told you `<python_version>` (e.g. `3.13`).
+- You know `<app_name>` (the project and package name).
+- You know `<python_version>` (for example `3.13`).
 
 ## Steps
 
-### 1 — Initialise the project with uv
+### 1. Initialize the project with uv
 
 ```bash
 uv init <app_name> --python <python_version>
 cd <app_name>
 ```
 
-### 2 — Create the hexagonal src/ layout
+Run the remaining steps from the project root.
+
+### 2. Create the hexagonal `src/` layout
 
 ```
 <app_name>/
@@ -54,11 +56,11 @@ cd <app_name>
 
 Create every directory and `__init__.py` file listed above.
 
-### 3 — Configure pyproject.toml
+### 3. Configure pyproject.toml
 
-Replace or merge the generated `pyproject.toml` with the following structure.
-Keep any values `uv init` already set for `name`, `version`, and
-`requires-python`.
+Replace or merge the generated `pyproject.toml` so it follows this structure.
+Keep the values `uv init` already set for `name`, `version`, and
+`requires-python` unless the user asked for something else.
 
 ```toml
 [build-system]
@@ -102,13 +104,13 @@ addopts = "--cov=src --cov-report=term-missing"
 
 > Replace `<python_version_nodot>` with the version without the dot (e.g. `313`).
 
-### 4 — Install dev dependencies
+### 4. Install dev dependencies
 
 ```bash
 uv sync --all-extras
 ```
 
-### 5 — Set up ruff and pre-commit (optional but recommended)
+### 5. Set up pre-commit (optional but recommended)
 
 ```bash
 uv add --dev pre-commit
@@ -120,16 +122,16 @@ Add a minimal `.pre-commit-config.yaml`:
 ```yaml
 repos:
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.4.0
+    rev: <pinned_version>
     hooks:
       - id: ruff
         args: ["--fix"]
       - id: ruff-format
 ```
 
-Use an appropriate pinned version for the project if you do not keep `v0.4.0`.
+Replace `<pinned_version>` with an appropriate pinned release.
 
-### 6 — Verify the setup
+### 6. Verify the setup
 
 ```bash
 uv run ruff check .
@@ -139,14 +141,14 @@ uv run pytest
 
 All three commands must exit with code 0 before proceeding.
 
-### 7 — Create a minimal README
+### 7. Write a minimal README
 
-Write a `README.md` that describes:
+Write a `README.md` that includes:
 
 - What the application does.
 - How to install dependencies (`uv sync --all-extras`).
 - How to run quality checks (`ruff`, `mypy`, `pytest`).
-- High-level architecture overview (domain / application / adapters).
+- A high-level architecture overview (domain / application / adapters).
 
 ## Hexagonal architecture conventions to follow
 
@@ -157,5 +159,5 @@ Write a `README.md` that describes:
 | Adapters (input)  | `src/<app_name>/adapters/input/`  | Calls into `application`. Never imports from `domain` directly.         |
 | Adapters (output) | `src/<app_name>/adapters/output/` | Implements port interfaces from `application`.                          |
 
-Enforce these rules with an import linter such as `import-linter`, or document
-them in a root-level `ARCHITECTURE.md`.
+If appropriate for the project, enforce these rules with an import linter such
+as `import-linter`, or document them in a root-level `ARCHITECTURE.md`.
