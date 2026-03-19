@@ -1,11 +1,11 @@
-# Workflow: update project navigation map
+# Workflow: update repo navigation
 
-Use this workflow when adapting the reusable hexagonal Python ruleset to a specific project.
+Use this workflow when adapting the reusable hexagonal Python rules to a specific project.
 
 ## Goal
-Produce a short, project-specific navigation guide outside `.clinerules/` so contributors can find package roots, entry points, adapters, and tests quickly.
+Produce a short, project-specific navigation guide outside `.clinerules/` so contributors can quickly find package roots, entry points, adapters, and tests.
 
-Prefer cross-platform examples based on IDE search or `rg`/`rg --files` when documenting reusable navigation workflows.
+When documenting reusable navigation workflows, prefer cross-platform examples based on IDE search or `rg`/`rg --files`.
 
 ## Recommended output location
 - `docs/repo-navigation.md`
@@ -19,10 +19,10 @@ Prefer cross-platform examples based on IDE search or `rg`/`rg --files` when doc
    - `application/`
    - `adapters/input/`
    - `adapters/output/`
-   - shared infrastructure/bootstrap modules, if present
+   - shared infrastructure or bootstrap modules, if present
 4. Map the test layout (`tests/unit/`, `tests/integration/`, `tests/e2e/`, shared fixtures, contract tests).
 5. Record the most useful project-specific search commands for ports, adapters, entry points, and tests.
-6. Save the navigation guide outside `.clinerules/` and update it whenever structure changes materially.
+6. Save the navigation guide outside `.clinerules/` and update it whenever the structure changes significantly.
 
 ## Suggested template
 ```md
