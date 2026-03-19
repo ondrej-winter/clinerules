@@ -11,7 +11,7 @@ capture a design choice, or create an ADR.
 ## Goal
 
 Create a new ADR in `docs/adr/` with the next sequential number, a clear title,
-and a concise explanation of the decision and its consequences.
+and a concise record of the decision and its consequences.
 
 ## Steps
 
@@ -21,8 +21,8 @@ Use `docs/adr/`. Create it if it does not already exist.
 
 ### 2. Determine the next ADR number
 
-Inspect the existing files in `docs/adr/`, find the highest four-digit prefix,
-and increment it by one.
+Inspect the files in `docs/adr/`, find the highest four-digit prefix, and
+increment it by one.
 
 - If no ADRs exist yet, start with `0001`.
 - Example: if `0003-...` is the latest ADR, use `0004`.
@@ -43,7 +43,7 @@ Example:
 # <NNNN>. <Short Title in Title Case>
 
 Date: <YYYY-MM-DD>
-Status: Proposed | Accepted | Deprecated | Superseded by [<NNNN>](./<NNNN>-<slug>.md)
+Status: Proposed | Accepted | Deprecated | Superseded by [NNNN](./<NNNN>-<slug>.md)
 
 ## Context
 
@@ -52,8 +52,8 @@ necessary.
 
 ## Decision
 
-State the decision clearly in one or two sentences.
-Prefer active voice, for example: "We will use X because Y."
+State the decision clearly in one or two sentences. Prefer active voice, for
+example: "We will use X because Y."
 
 ## Consequences
 
@@ -78,7 +78,7 @@ Prefer active voice, for example: "We will use X because Y."
 
 ### 5. Set the status
 
-Use the status that matches the user's intent:
+Choose the status that matches the user's intent:
 
 | Status                                     | Use when                                                  |
 | ------------------------------------------ | --------------------------------------------------------- |
@@ -87,8 +87,8 @@ Use the status that matches the user's intent:
 | `Deprecated`                               | The decision was once accepted but is no longer followed. |
 | `Superseded by [NNNN](./<NNNN>-<slug>.md)` | A newer ADR replaces this one.                            |
 
-If the user does not specify a status, default to `Accepted` for a documented
-current decision.
+If the user does not specify a status, default to `Accepted` for a current
+documented decision.
 
 ### 6. Update the ADR index if one exists
 
@@ -100,7 +100,7 @@ If `docs/adr/README.md` or `docs/adr/index.md` exists, append an entry such as:
 
 ## Good ADR practices
 
-- Focus on why, not implementation detail.
+- Focus on why, not implementation details.
 - Keep the context factual and specific.
 - Record one decision per ADR.
 - Link related ADRs, issues, or PRs when helpful.
