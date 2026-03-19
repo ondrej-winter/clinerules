@@ -1,10 +1,10 @@
-# Command execution safety: no inline interpreter heredocs
+# Command execution safety
 
-This module defines non-negotiable command execution constraints.
+Use these rules to keep command execution safe, explicit, and non-interactive.
 
 ## Hard constraints
 - **Must not** run inline interpreter heredocs such as `python - <<'PY' ... PY` or `uv run python - <<'PY' ... PY`.
-- **Must not** use equivalent stdin-fed inline interpreter patterns for Python execution.
+- **Must not** use equivalent stdin-fed inline Python execution patterns.
 - **Must** write Python code to a temporary script file and execute that file instead.
 - **Must** prefer direct, non-interactive CLI commands where possible before creating any script.
 - **Must not** pipe remote scripts directly into a shell or interpreter (for example `curl ... | sh`). Download, inspect, and execute only when explicitly required.
@@ -15,14 +15,14 @@ This module defines non-negotiable command execution constraints.
 - **Should** use dry-run, preview, or listing variants before destructive commands when feasible.
 - **Should** remove temporary script files after execution unless retention is needed for debugging.
 
-## Required pattern
-Allowed approach:
+## Required Python execution pattern
+Preferred approach:
 1. Create a temporary `.py` file.
 2. Execute it with `uv run python /absolute/path/to/temp_script.py`.
 3. Capture output/exit code as needed.
 4. Clean up the temporary file when done.
 
-## Disallowed pattern
+## Disallowed Python execution pattern
 Forbidden approach:
 - `python - <<'PY'`
 - `uv run python - <<'PY'`
@@ -35,7 +35,7 @@ Preferred approach:
 - `git commit --no-edit` (only when this behavior is explicitly appropriate)
 
 Avoid when not explicitly requested:
-- Commands that trigger pagers or interactive editors and wait for user input.
+- Commands that trigger pagers or interactive editors.
 
 ## Destructive and remote command safety
 - Prefer commands scoped to explicit files, directories, refs, or resources instead of broad globs or repository-wide destructive operations.
@@ -44,4 +44,4 @@ Avoid when not explicitly requested:
 
 ## Enforcement
 - Treat this rule as a hard constraint in reviews and operational practice.
-- Any deviation must be explicitly requested and documented in handoff/PR notes.
+- Any deviation must be explicitly requested and documented in handoff or PR notes.
