@@ -100,6 +100,10 @@ would otherwise be hard to discover.
 - `python-add-port` - Define a focused input or output port contract in the application layer
 - `python-add-adapter` - Implement an input or output adapter against an existing port
 - `write-adr` - Record significant architectural decisions and consequences
+- `format-python-code` - Formats Python code using ruff and applies safe auto-fixes.
+- `lint-python-code` - Lints Python code using ruff and mypy for type checking.
+- `run-python-tests` - Runs automated tests for a Python project using pytest.
+- `run-local-quality-gate` - Orchestrates the execution of Python code formatting, linting, type checking, and testing.
 
 ### Typical delegation patterns
 - From `bootstrap-python-app`
@@ -121,6 +125,10 @@ would otherwise be hard to discover.
   - use `write-adr` when integration choices should be documented
 - From `write-adr`
   - use it as a documentation companion to feature, port, adapter, or bootstrap work when decisions have lasting architectural impact
+- From `run-local-quality-gate`
+  - use `format-python-code` to apply auto-fixes and format the codebase.
+  - use `lint-python-code` to perform linting and type checking.
+  - use `run-python-tests` to execute all automated tests.
 
 ## Enforcement and automation matrix
 Use this map to keep "Must" rules enforceable rather than merely advisory.

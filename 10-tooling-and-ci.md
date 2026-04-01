@@ -9,25 +9,14 @@ This ruleset uses an opinionated toolchain:
 Run project tooling through `uv run ...` and keep tool configuration in `pyproject.toml`.
 
 ## Local quality gate
-Run this workflow at the end of each coding session when code changes, and always before handoff.
+Use the `run-local-quality-gate` skill to execute the full local quality gate workflow.
 
 When validating changes, use this order:
 
-1. **Auto-fix + format**
-   - `uv run ruff check . --fix`
-   - `uv run ruff format .`
+1. **Run Local Quality Gate**
+   - Use the `run-local-quality-gate` skill.
 
-2. **Lint (no auto-fixes)**
-   - `uv run ruff check .`
-
-3. **Type check**
-   - `uv run mypy .`
-
-4. **Tests**
-   - Run focused impacted tests first during development
-   - `uv run pytest`
-
-5. **Optional project gates**
+2. **Optional project gates**
    - Coverage thresholds
    - Security/static-analysis checks
    - Dependency/license audits

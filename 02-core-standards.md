@@ -11,8 +11,7 @@ Use these rules for all Python code in the project to keep behavior predictable 
 - **Tests**: `test_<behavior>()` focused on the behavior under test.
 
 ## Formatting
-- Use `uv run ruff format .`; **do not** hand-format or fight the formatter.
-- Use `uv run ruff check . --fix` for import ordering and other safe auto-fixes.
+- Use the `format-python-code` skill to apply auto-fixes and format the codebase.
 - Prefer explicit, readable code over clever one-liners.
 
 ## Typing and API contracts
