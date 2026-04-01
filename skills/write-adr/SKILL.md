@@ -39,6 +39,8 @@ Example:
 
 ### 4. Fill in the ADR template
 
+Use today's date for the Date field.
+
 ```markdown
 # <NNNN>. <Short Title in Title Case>
 
@@ -57,19 +59,15 @@ example: "We will use X because Y."
 
 ## Consequences
 
-### Positive
-
-- ...
-
-### Negative / trade-offs
-
-- ...
-
-### Neutral
+List consequences below. Use subsections (Positive / Negative / Neutral) when
+there are multiple categories. For simple decisions a flat list is fine.
 
 - ...
 
 ## Alternatives considered
+
+Include this section when meaningful alternatives were evaluated. Omit it when
+the decision follows an obvious convention with no real alternatives.
 
 | Option | Reason rejected |
 | ------ | --------------- |
@@ -92,9 +90,20 @@ documented decision.
 
 ### 6. Update the ADR index if one exists
 
-If `docs/adr/README.md` or `docs/adr/index.md` exists, append an entry such as:
+If `docs/adr/README.md` or `docs/adr/index.md` exists and already contains a
+table, append an entry such as:
 
 ```markdown
+| [<NNNN>](./<NNNN>-<slug>.md) | <Short Title> | <Date> | <Status> |
+```
+
+If the index file does not exist yet, create it with a header:
+
+```markdown
+# Architecture Decision Records
+
+| ADR                          | Title         | Date   | Status   |
+| ---------------------------- | ------------- | ------ | -------- |
 | [<NNNN>](./<NNNN>-<slug>.md) | <Short Title> | <Date> | <Status> |
 ```
 
