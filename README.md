@@ -7,6 +7,9 @@ Currently includes a Python hexagonal-architecture ruleset for Cline, focused on
 ## Repository tools
 
 - `tools/tokens/repo_token_map.py`: Scans `shared/` and `python/` recursively and writes one tree-style Markdown token map at `tools/tokens/repo-token-map.md`.
+- `tools/sync-shared/sync_shared.py`: Copies shared repository assets into their configured target locations. It supports file and directory sources, and each source can sync to multiple targets.
+
+Current sync behavior is configured in the script manifest. One source can fan out to multiple repo-relative targets, and directory sources are copied recursively.
 
 ## Repository-specific inventory
 
