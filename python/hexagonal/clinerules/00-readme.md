@@ -84,7 +84,43 @@
 - `workflows/update-repo-navigation.md` - Generate project-specific navigation maps when adapting this reusable ruleset to a concrete project
 
 ## Related skills
-- `write-adr` - Use for ADR creation procedure, numbering, naming, and template details; keep `05-docs-and-adr.md` focused on policy
+
+Skills should own focused procedures. When one skill needs a neighboring task,
+it should reference the related skill by name and decision context instead of
+repeating the full procedure. Keep those references portable and optional
+unless a dependency is truly mandatory.
+
+Prefer short inline references inside the relevant step. Add a dedicated
+`Related skills` section only when a skill has several common handoffs that
+would otherwise be hard to discover.
+
+### Skill relationship index
+- `bootstrap-python-app` - Initialize a new Python hexagonal project with base tooling and structure
+- `add-hexagonal-feature` - Add an end-to-end use case across domain, application, and tests
+- `python-add-port` - Define a focused input or output port contract in the application layer
+- `python-add-adapter` - Implement an input or output adapter against an existing port
+- `write-adr` - Record significant architectural decisions and consequences
+
+### Typical delegation patterns
+- From `bootstrap-python-app`
+  - use `add-hexagonal-feature` when the project is ready for the first use case
+  - use `python-add-port` when defining a new boundary before feature implementation
+  - use `python-add-adapter` when connecting infrastructure or transports
+  - use `write-adr` when setup choices need durable documentation
+- From `add-hexagonal-feature`
+  - use `python-add-port` when the feature needs a new application boundary
+  - use `python-add-adapter` when the feature needs an input or output adapter
+  - use `write-adr` when the feature introduces a meaningful architectural decision
+- From `python-add-port`
+  - use `add-hexagonal-feature` when the work is broader than defining the port
+  - use `python-add-adapter` when an adapter must implement the new contract
+  - use `write-adr` when boundary design needs explicit rationale
+- From `python-add-adapter`
+  - use `python-add-port` when the required boundary does not exist yet
+  - use `add-hexagonal-feature` when adapter work is part of a full use case change
+  - use `write-adr` when integration choices should be documented
+- From `write-adr`
+  - use it as a documentation companion to feature, port, adapter, or bootstrap work when decisions have lasting architectural impact
 
 ## Enforcement and automation matrix
 Use this map to keep "Must" rules enforceable rather than merely advisory.

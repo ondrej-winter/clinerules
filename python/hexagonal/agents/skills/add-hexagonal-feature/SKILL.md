@@ -9,7 +9,9 @@ Use this skill to implement a new feature, use case, or business capability in
 a Python hexagonal project.
 
 This skill focuses on the application and domain changes needed to add a use
-case cleanly. Use companion skills for adapter-specific work when needed.
+case cleanly. It owns feature-level orchestration across domain,
+application, and tests. When the change requires a new port or adapter, use
+the specialized skill for that procedure instead of duplicating it here.
 
 ## Prerequisites
 
@@ -48,28 +50,18 @@ class <Entity>:
     id: str
 ```
 
-### 3. Define the ports
+### 3. Define or confirm the required ports
 
-Create port interfaces under `src/<app_name>/application/ports/`:
+Identify the application boundaries the feature needs:
 
-- **Input port** — the interface the use case implements. Typically a
-  `Protocol` or `ABC` with a single `execute(command)` method. Input adapters
-  depend on this interface.
-- **Output port** — the interface the use case needs from infrastructure, such
-  as a repository or event publisher.
+- an input port when an external caller invokes a new use case
+- one or more output ports when the application needs infrastructure
+  dependencies such as repositories, publishers, or gateways
 
-```python
-from typing import Protocol
-
-class <UseCaseNamePort>(Protocol):
-    def execute(self, command: <Command>) -> <Result>: ...
-
-class <EntityRepositoryPort>(Protocol):
-    def save(self, entity: <Entity>) -> None: ...
-```
-
-Define only the operations the application needs. Keep the interfaces focused
-and technology-agnostic.
+If a required port does not exist yet, use `python-add-port` for the detailed
+procedure. In this skill, keep the focus on deciding which boundaries the
+feature needs and making sure the application service depends only on those
+port contracts.
 
 ### 4. Implement the application service
 
@@ -90,6 +82,8 @@ Rules:
 - It must not import from `adapters/`.
 - It must not perform I/O directly, including `open()`, HTTP calls, or database
   access.
+- If the feature needs a new adapter implementation for an existing or new
+  port, use `python-add-adapter` for that procedure.
 
 ### 5. Write unit tests
 

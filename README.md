@@ -39,12 +39,13 @@ This section is repo-specific. Paths below describe where assets live in this re
 
 Drop-in SKILL.md files that guide Cline through common development tasks:
 
-| Skill                 | Path                                                             | Purpose                                                                                          |
-| --------------------- | ---------------------------------------------------------------- | ------------------------------------------------------------------------------------------------ |
-| Bootstrap app         | `python/hexagonal/.agents/skills/bootstrap-python-app/SKILL.md`  | Initialise a Python app repo with `uv`, `ruff`, `mypy`, `pytest`, and a hexagonal `src/` layout  |
-| Add hexagonal feature | `python/hexagonal/.agents/skills/add-hexagonal-feature/SKILL.md` | Domain model → port interfaces → application service → unit tests                                |
-| Add adapter           | `python/hexagonal/.agents/skills/python-add-adapter/SKILL.md`    | Add an input (HTTP, CLI, event) or output (DB, API client) adapter with layered testing guidance |
-| Write ADR             | `shared/.agents/skills/write-adr/SKILL.md`                       | Scaffold a numbered Architecture Decision Record under `docs/adr/`                               |
+| Skill                 | Path                                                            | Purpose                                                                                          |
+| --------------------- | --------------------------------------------------------------- | ------------------------------------------------------------------------------------------------ |
+| Bootstrap app         | `python/hexagonal/agents/skills/bootstrap-python-app/SKILL.md`  | Initialise a Python app repo with `uv`, `ruff`, `mypy`, `pytest`, and a hexagonal `src/` layout  |
+| Add hexagonal feature | `python/hexagonal/agents/skills/add-hexagonal-feature/SKILL.md` | Domain model → application boundaries → application service → unit tests                         |
+| Add port              | `python/hexagonal/agents/skills/python-add-port/SKILL.md`       | Define a focused input or output port contract in the application layer                          |
+| Add adapter           | `python/hexagonal/agents/skills/python-add-adapter/SKILL.md`    | Add an input (HTTP, CLI, event) or output (DB, API client) adapter with layered testing guidance |
+| Write ADR             | `python/hexagonal/agents/skills/write-adr/SKILL.md`             | Scaffold a numbered Architecture Decision Record under `docs/adr/`                               |
 
 #### GitHub Actions workflow templates
 

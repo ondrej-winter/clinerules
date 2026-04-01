@@ -7,10 +7,16 @@ description: Add an input or output adapter to a Python hexagonal project while 
 
 Add an input or output adapter to a Python hexagonal project while keeping business logic in the application layer.
 
+This skill owns adapter implementation. If the required application boundary
+does not exist yet, define the port first with `python-add-port`.
+
 ## Prerequisites
 
 - The relevant port interface exists in `src/<app_name>/application/ports/`.
 - The adapter technology has been chosen and any required library is installed (for example with `uv add <library>`).
+
+If the port does not exist yet, use `python-add-port` before implementing the
+adapter.
 
 ## Input adapter
 
