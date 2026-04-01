@@ -19,6 +19,16 @@ uv run tools/sync-shared/sync_shared.py delete
 uv run tools/sync-shared/sync_shared.py reset
 ```
 
+Make targets:
+
+```bash
+make sync
+make sync-delete
+make sync-reset
+make tokens
+make update
+```
+
 ## Repository-specific inventory
 
 This section is repo-specific. Paths below describe where assets live in this repository.

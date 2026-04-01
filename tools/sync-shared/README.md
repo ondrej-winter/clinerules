@@ -34,6 +34,14 @@ uv run tools/sync-shared/sync_shared.py reset
 
 If no command is provided, `sync` is used by default.
 
+From the repository root, you can also use:
+
+```bash
+make sync
+make sync-delete
+make sync-reset
+```
+
 Recommended workflow:
 
 1. Edit shared content under `shared/`

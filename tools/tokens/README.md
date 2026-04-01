@@ -12,6 +12,12 @@ This folder contains the repository token mapping tool.
 uv run tools/tokens/repo_token_map.py
 ```
 
+From the repository root, you can also use:
+
+```bash
+make tokens
+```
+
 Generated output:
 
 - `tools/tokens/repo-token-map.md`
