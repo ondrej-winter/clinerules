@@ -2,7 +2,7 @@
 
 Scanned roots: shared, python
 Files counted: 22
-Total tokens: 15811
+Total tokens: 15861
 Tokenizer encoding: cl100k_base
 
 ## Tree
@@ -16,18 +16,18 @@ Tokenizer encoding: cl100k_base
 │   └── clinerules/ (358)
 │       └── workflows/ (358)
 │           └── improve.md (358)
-└── python/ (14773)
-    └── hexagonal/ (14773)
-        ├── agents/ (3457)
-        │   └── skills/ (3457)
-        │       ├── add-hexagonal-feature/ (762)
-        │       │   └── SKILL.md (762)
-        │       ├── bootstrap-python-app/ (1147)
-        │       │   └── SKILL.md (1147)
-        │       ├── python-add-adapter/ (591)
-        │       │   └── SKILL.md (591)
-        │       └── python-add-port/ (957)
-        │           └── SKILL.md (957)
+└── python/ (14823)
+    └── hexagonal/ (14823)
+        ├── agents/ (3507)
+        │   └── skills/ (3507)
+        │       ├── add-hexagonal-feature/ (801)
+        │       │   └── SKILL.md (801)
+        │       ├── bootstrap-python-app/ (1149)
+        │       │   └── SKILL.md (1149)
+        │       ├── python-add-adapter/ (599)
+        │       │   └── SKILL.md (599)
+        │       └── python-add-port/ (958)
+        │           └── SKILL.md (958)
         └── clinerules/ (11316)
             ├── workflows/ (865)
             │   ├── improve.md (358)
