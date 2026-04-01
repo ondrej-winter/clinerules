@@ -11,6 +11,9 @@ A port defines an application-layer boundary. It describes either how the
 outside world uses the application or what the application needs from external
 systems. A port is not an adapter and must remain technology-agnostic.
 
+This skill owns the detailed procedure for defining new application ports.
+Keep feature orchestration and adapter implementation in related skills.
+
 ## When to use this skill
 
 Use this skill when you need to:
@@ -150,5 +153,9 @@ When adding a new port, check whether the same change needs:
 - new command, query, or result DTOs
 - dependency injection or composition-root wiring updates
 
-Use companion skills for those follow-up tasks instead of putting adapter or
-framework logic into the port itself.
+If a required adapter does not exist yet, use `python-add-adapter` for that
+follow-up work instead of embedding adapter logic into the port.
+
+If the overall change is a complete end-to-end use case spanning domain,
+application service, and tests, use `add-hexagonal-feature` as the primary
+feature workflow and use this skill only for the port-definition part.
