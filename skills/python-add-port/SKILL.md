@@ -3,10 +3,9 @@ name: python-add-port
 description: Add a technology-agnostic application port interface to a Python hexagonal project for a new use case or dependency.
 ---
 
-# Skill: Add a Port
+# Add a Port
 
-Use this skill to add an application port interface to a Python hexagonal
-project.
+Use this skill to add a port interface to a Python hexagonal project.
 
 A port defines an application-layer boundary. It describes either how the
 outside world uses the application or what the application needs from external
@@ -63,22 +62,17 @@ Create the interface under:
 src/<app_name>/application/ports/
 ```
 
-Prefer a focused file name that matches the responsibility, for example:
+Use a focused file name that matches the responsibility, for example:
 
 - `<use_case_name>_port.py`
 - `<dependency_name>_port.py`
 
-Use names that describe the business capability or dependency, not the
-technology. Good examples:
+Name both the file and the class by business capability or dependency, not by
+technology.
 
-- `CreateInvoicePort`
-- `CustomerRepositoryPort`
+Good: `CreateInvoicePort`, `CustomerRepositoryPort`
 
-Avoid technology-specific names such as:
-
-- `FastAPIPort`
-- `PostgresPort`
-- `S3AdapterPort`
+Avoid: `FastAPIPort`, `PostgresPort`, `S3AdapterPort`
 
 ### 2. Define the interface
 
@@ -99,12 +93,10 @@ class CreateInvoicePort(Protocol):
         ...
 ```
 
-For output ports, follow the same pattern. Define only the operations the
-application needs, using domain objects or application DTOs in the signature.
+For output ports, follow the same pattern using domain objects or application
+DTOs in the signature.
 
 ### 3. Keep the port clean
-
-Rules:
 
 - Keep ports in the application layer.
 - Do not import from `adapters/` or infrastructure libraries.
@@ -140,7 +132,7 @@ Never let a port import an adapter or mention a specific framework.
 
 Ports are interfaces, so they usually need little or no direct testing.
 
-Test the surrounding behavior instead:
+Test surrounding behavior instead:
 
 - unit test that the application service honors the input port contract
 - unit test that application services call output ports as expected
@@ -149,9 +141,9 @@ Test the surrounding behavior instead:
 If the project uses runtime-checkable protocols or shared contract fixtures, add
 small targeted tests only when they provide clear value.
 
-### 6. Keep related changes aligned
+### 6. Review related changes
 
-When adding a new port, also review whether the same change needs:
+When adding a new port, check whether the same change needs:
 
 - a new application service implementing the input port
 - a new output adapter implementing the output port
