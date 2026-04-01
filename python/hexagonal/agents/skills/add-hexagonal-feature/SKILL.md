@@ -52,18 +52,19 @@ class <Entity>:
 
 Create port interfaces under `src/<app_name>/application/ports/`:
 
-- **Input port** — the interface the use case exposes to the outside world.
-  Typically a `Protocol` or `ABC` with a single `execute(command)` method.
+- **Input port** — the interface the use case implements. Typically a
+  `Protocol` or `ABC` with a single `execute(command)` method. Input adapters
+  depend on this interface.
 - **Output port** — the interface the use case needs from infrastructure, such
-  as a repository or email sender.
+  as a repository or event publisher.
 
 ```python
 from typing import Protocol
 
-class <UseCaseName>Port(Protocol):
+class <UseCaseNamePort>(Protocol):
     def execute(self, command: <Command>) -> <Result>: ...
 
-class <EntityRepository>Port(Protocol):
+class <EntityRepositoryPort>(Protocol):
     def save(self, entity: <Entity>) -> None: ...
 ```
 
@@ -76,7 +77,7 @@ Create the use case implementation under `src/<app_name>/application/`:
 
 ```python
 class <UseCaseName>:
-    def __init__(self, repository: <EntityRepository>Port) -> None:
+    def __init__(self, repository: <EntityRepositoryPort>) -> None:
         self._repository = repository
 
     def execute(self, command: <Command>) -> <Result>:
@@ -90,7 +91,7 @@ Rules:
 - It must not perform I/O directly, including `open()`, HTTP calls, or database
   access.
 
-### 5. Write unit tests first
+### 5. Write unit tests
 
 Create tests under `tests/unit/`:
 
@@ -104,7 +105,8 @@ def test_<use_case_name>_happy_path() -> None:
     repo.save.assert_called_once()
 ```
 
-TDD is encouraged when it fits the change.
+TDD is encouraged when it fits the change. Writing tests before the
+implementation is fine and often preferable.
 
 - Use `MagicMock` or a hand-written fake for outbound ports, never real
   infrastructure.
