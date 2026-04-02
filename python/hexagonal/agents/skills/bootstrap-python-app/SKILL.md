@@ -154,12 +154,12 @@ Write a `README.md` that includes:
 
 ## Hexagonal architecture conventions
 
-| Layer             | Directory                         | Rule                                                                    |
-| ----------------- | --------------------------------- | ----------------------------------------------------------------------- |
-| Domain            | `src/<app_name>/domain/`          | No imports from `application` or `adapters`. Pure Python only.          |
-| Application       | `src/<app_name>/application/`     | Depends only on `domain`. Defines port interfaces as ABCs or Protocols. |
-| Adapters (input)  | `src/<app_name>/adapters/input/`  | Calls into `application`. Never imports from `domain` directly.         |
-| Adapters (output) | `src/<app_name>/adapters/output/` | Implements port interfaces from `application`.                          |
+| Layer             | Directory                         | Rule                                                                                 |
+| ----------------- | --------------------------------- | ------------------------------------------------------------------------------------ |
+| Domain            | `src/<app_name>/domain/`          | No imports from `application` or `adapters`. Pure Python only.                       |
+| Application       | `src/<app_name>/application/`     | Depends only on `domain`. Defines port interfaces as ABCs or Protocols.              |
+| Adapters (input)  | `src/<app_name>/adapters/input/`  | Calls into `application`. Uses domain types only through application ports and DTOs. |
+| Adapters (output) | `src/<app_name>/adapters/output/` | Implements port interfaces from `application`.                                       |
 
 If appropriate for the project, enforce these rules with an import linter such
 as `import-linter`, or document them in a root-level `ARCHITECTURE.md`.

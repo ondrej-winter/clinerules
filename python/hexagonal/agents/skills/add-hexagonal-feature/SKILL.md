@@ -108,6 +108,8 @@ implementation is fine and often preferable.
 
 ## Dependency direction reminder
 
+The canonical dependency rules are in `03-architecture-guardrails.md`. This diagram is a quick reference only.
+
 ```
 adapters/input   →  application  →  domain
 adapters/output  →  (implements application/ports)
