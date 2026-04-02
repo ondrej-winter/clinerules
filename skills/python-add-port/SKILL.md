@@ -115,7 +115,7 @@ mirror a full ORM, SDK, or driver API.
 
 ### 4. Wire dependencies in the right direction
 
-Follow this direction:
+The arrows below show call/invocation flow (who calls whom), not import dependency direction. For dependency direction rules, see `03-architecture-guardrails.md`.
 
 ```text
 input adapters -> input ports -> application service

@@ -27,14 +27,6 @@ Use the `lint-python-code` skill to perform linting and type checking.
 
 Use the `run-python-tests` skill to execute all automated tests.
 
-## Full Quality Gate Workflow
-
-The recommended order for running the local quality gate is:
-
-1.  `format-python-code`
-2.  `lint-python-code`
-3.  `run-python-tests`
-
 ## When a step fails
 
 - If any step fails, stop and fix the underlying issue before proceeding to the next step.
