@@ -35,7 +35,7 @@ This file governs logging implementation mechanics. Broader code-quality expecta
 - **Must** avoid duplicate full-stack logging at multiple layers for the same failure.
 - Use `LOGGER.exception(...)` when the stack trace is useful at that boundary; otherwise log contextual information and re-raise or translate with `from err`.
 
-## Exceptions
+## Permitted deviations
 - **May** use instance-specific loggers only when behavior requires runtime logger names or explicit logger injection.
 - **Must** document the reason in a short inline comment when deviating from the default pattern.
 
