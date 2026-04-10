@@ -1,0 +1,16 @@
+#!/bin/bash
+# Logs all file operations to .cline-logs/cline-file-activity.log in the workspace
+
+INPUT=$(cat)
+WORKSPACE=$(echo "$INPUT" | jq -r '.workspaceRoots[0] // empty')
+TOOL=$(echo "$INPUT" | jq -r '.preToolUse.tool')
+FILE_PATH=$(echo "$INPUT" | jq -r '.preToolUse.parameters.path // "N/A"')
+LOG_DIR="$WORKSPACE/.cline-logs"
+LOG_FILE="$LOG_DIR/cline-file-activity.log"
+
+# Log to file
+mkdir -p "$LOG_DIR"
+echo "$(date '+%H:%M:%S') - $TOOL: $FILE_PATH" >> "$LOG_FILE"
+
+# Always allow the operation
+echo '{"cancel":false}'
