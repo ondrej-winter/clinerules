@@ -21,13 +21,20 @@ SYNC_MAP: tuple[SyncEntry, ...] = (
     SyncEntry(
         source='shared/clinerules/workflows/improve.md',
         targets=(
-            'python/hexagonal/clinerules/workflows/improve.md',
+            'python/hexagonal/clinerules/workflows/',
             '.clinerules/workflows',
         ),
     ),
     SyncEntry(
         source='shared/agents/skills/write-adr',
         targets=('python/hexagonal/agents/skills/write-adr',),
+    ),
+    SyncEntry(
+        source='shared/clinerules/hooks/PreToolUse',
+        targets=(
+            'python/hexagonal/clinerules/hooks/',
+            '.clinerules/hooks',
+        ),
     ),
 )
 
