@@ -5,7 +5,7 @@ description: Focused improvement workflow. Audit, simplify, improve, and proofre
 
 # Improve
 
-Perform a focused improvement workflow on the provided target.
+Review the provided target with a focused improvement pass.
 
 Audit, simplify, improve, and proofread it without unnecessary expansion, overengineering, or speculative edits.
 
@@ -27,6 +27,7 @@ Work in a lightweight, practical review mode:
 
 - prefer small, high-value improvements
 - preserve the original intent
+- avoid unnecessary rewrites
 - avoid changing meaning unless clearly needed
 - avoid new abstractions unless they remove obvious complexity
 - simplify rather than elaborate
@@ -45,21 +46,22 @@ Work in a lightweight, practical review mode:
    - grammar, spelling, or punctuation problems
    - awkward phrasing
    - obvious maintainability problems
-3. Apply improvements directly to the target.
+3. Improve the target directly.
 4. Keep edits pragmatic and proportional to the material.
 5. Tighten formatting and structure where it helps.
 6. Leave strong content alone.
 
 ## Output
 
-After applying improvements, produce:
+Produce:
 
 1. a short audit summary
 2. a concise list of key improvements made
 
 ## Constraints
 
-- Do not overengineer or make speculative edits without clear justification.
+- Do not overengineer.
+- Do not make speculative edits without clear justification.
 - Do not invent requirements, facts, or context.
 - Do not change tone unless it improves clarity and fit.
 - Keep the result lean, practical, and internally consistent.

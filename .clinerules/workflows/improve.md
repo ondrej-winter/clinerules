@@ -1,4 +1,11 @@
-Perform a focused improvement workflow on the provided target.
+---
+name: improve
+description: Focused improvement workflow. Audit, simplify, improve, and proofread a target without unnecessary expansion or speculative edits.
+---
+
+# Improve
+
+Review the provided target with a focused improvement pass.
 
 Audit, simplify, improve, and proofread it without unnecessary expansion, overengineering, or speculative edits.
 
@@ -50,13 +57,12 @@ Produce:
 
 1. a short audit summary
 2. a concise list of key improvements made
-3. the improved final version
 
 ## Constraints
 
 - Do not overengineer.
-- Do not invent requirements, facts, or context.
 - Do not make speculative edits without clear justification.
+- Do not invent requirements, facts, or context.
 - Do not change tone unless it improves clarity and fit.
 - Keep the result lean, practical, and internally consistent.
 - Prefer obvious, defensible improvements over subjective rewriting.
