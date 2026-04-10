@@ -48,6 +48,13 @@ Recommended workflow:
 2. Optionally clear generated targets with `delete`
 3. Repopulate targets with `sync` or use `reset`
 
+Run `make sync` after shared-source edits so the derived targets under
+`python/hexagonal/` stay aligned with their sources.
+
+If you change shared content and repository inventory docs in the same update,
+run `make sync` before final review so generated targets reflect the current
+source of truth.
+
 ## Configure mappings
 
 Update `SYNC_MAP` in `tools/sync-shared/sync_shared.py`.
