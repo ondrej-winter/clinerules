@@ -2,9 +2,9 @@
 # Logs all file operations to .cline-logs/cline-file-activity.log in the workspace
 
 INPUT=$(cat)
-WORKSPACE=$(echo "$INPUT" | jq -r '.workspaceRoots[0] // empty')
-TOOL=$(echo "$INPUT" | jq -r '.preToolUse.tool')
-FILE_PATH=$(echo "$INPUT" | jq -r '.preToolUse.parameters.path // "N/A"')
+WORKSPACE=$(echo "$INPUT" | jq -r '.workspaceRoots[0]')
+TOOL=$(echo "$INPUT" | jq -r '.preToolUse.toolName')
+FILE_PATH=$(echo "$INPUT" | jq -r '.preToolUse.parameters.path')
 LOG_DIR="$WORKSPACE/.cline-logs"
 LOG_FILE="$LOG_DIR/cline-file-activity.log"
 
