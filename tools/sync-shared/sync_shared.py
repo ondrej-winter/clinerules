@@ -36,6 +36,13 @@ SYNC_MAP: tuple[SyncEntry, ...] = (
             '.clinerules/hooks',
         ),
     ),
+    SyncEntry(
+        source='shared/clinerules/hooks/pretooluse.py',
+        targets=(
+            'python/hexagonal/clinerules/hooks/',
+            '.clinerules/hooks',
+        ),
+    ),
 )
 
 
