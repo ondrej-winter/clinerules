@@ -3,25 +3,26 @@ name: write-adr
 description: Create an Architecture Decision Record with the next sequential number, a clear title, and documented consequences.
 ---
 
-# Skill: Write an Architecture Decision Record (ADR)
+# Write an Architecture Decision Record (ADR)
 
 Use this skill when the user asks to document an architectural decision,
 capture a design choice, or create an ADR.
 
 ## Goal
 
-Create a new ADR in `docs/adr/` with the next sequential number, a clear title,
-and a concise record of the decision and its consequences.
+Create a new ADR in the ADR directory with the next sequential number, a clear
+title, and a concise record of the decision and its consequences.
 
 ## Steps
 
-### 1. Ensure the ADR directory exists
+### 1. Locate the ADR directory
 
-Use `docs/adr/`. Create it if it does not already exist.
+Use the repository's ADR directory. If none exists, use `<adr_directory>` and
+create it.
 
 ### 2. Determine the next ADR number
 
-Inspect the files in `docs/adr/`, find the highest four-digit prefix, and
+Inspect the files in the ADR directory, find the highest four-digit prefix, and
 increment it by one.
 
 - If no ADRs exist yet, start with `0001`.
@@ -31,11 +32,11 @@ increment it by one.
 
 Use this file name format:
 
-`docs/adr/<NNNN>-<short-title-kebab-case>.md`
+`<adr_directory>/<NNNN>-<short-title-kebab-case>.md`
 
 Example:
 
-`docs/adr/0004-standardize-api-error-format.md`
+`<adr_directory>/0004-standardize-api-error-format.md`
 
 ### 4. Fill in the ADR template
 
@@ -59,8 +60,8 @@ example: "We will use X because Y."
 
 ## Consequences
 
-List consequences below. Use subsections (Positive / Negative / Neutral) when
-there are multiple categories. For simple decisions a flat list is fine.
+List the consequences. Use subsections such as Positive, Negative, and Neutral
+when helpful. For simple decisions, a flat list is fine.
 
 - ...
 
@@ -83,21 +84,20 @@ Choose the status that matches the user's intent:
 | `Proposed`                                 | The decision is still under discussion.                   |
 | `Accepted`                                 | The decision has been agreed and is in effect.            |
 | `Deprecated`                               | The decision was once accepted but is no longer followed. |
-| `Superseded by [NNNN](./<NNNN>-<slug>.md)` | A newer ADR replaces this one.                            |
+| `Superseded by [NNNN](./<NNNN>-<slug>.md)` | A newer ADR replaces it.                                  |
 
-If the user does not specify a status, default to `Accepted` for a current
-documented decision.
+If the user does not specify a status, default to `Accepted`.
 
 ### 6. Update the ADR index if one exists
 
-If `docs/adr/README.md` or `docs/adr/index.md` exists and already contains a
-table, append an entry such as:
+If an ADR index file such as `README.md` or `index.md` exists in the ADR
+directory and already contains a table, append an entry such as:
 
 ```markdown
 | [<NNNN>](./<NNNN>-<slug>.md) | <Short Title> | <Date> | <Status> |
 ```
 
-If the index file does not exist yet, create it with a header:
+If no ADR index file exists, create one with a header such as:
 
 ```markdown
 # Architecture Decision Records
