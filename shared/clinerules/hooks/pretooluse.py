@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
-"""Log supported PreToolUse tool arguments and always allow them.
+"""Log selected PreToolUse tool arguments and always allow them.
 
-Current support is explicit and tool-specific. `read_file` logs its file path,
-and the mapping below is ready to extend with more tools as needed.
+Tool argument logging is explicit and tool-specific. Extend the formatter
+mapping below as additional tools need structured summaries.
 """
 
 from __future__ import annotations
@@ -17,10 +17,18 @@ import sys
 ToolArgumentFormatter = Callable[[dict[str, object]], str]
 
 
+def _stringify_one_line(value: object) -> str:
+    try:
+        text = json.dumps(value, ensure_ascii=False, sort_keys=True)
+    except TypeError:
+        text = str(value)
+    return ' '.join(text.splitlines())
+
+
 def _format_value(value: object) -> str:
     if value is None:
         return 'N/A'
-    return str(value)
+    return _stringify_one_line(value)
 
 
 def _format_path(parameters: dict[str, object]) -> str:
@@ -32,44 +40,85 @@ def _format_key_values(parameters: dict[str, object], *keys: str) -> str:
     return ', '.join(parts) if parts else 'no arguments'
 
 
+def _format_search_files(parameters: dict[str, object]) -> str:
+    return _format_key_values(parameters, 'path', 'regex', 'file_pattern')
+
+
+def _format_access_mcp_resource(parameters: dict[str, object]) -> str:
+    return _format_key_values(parameters, 'server_name', 'uri')
+
+
+def _format_ask_followup_question(parameters: dict[str, object]) -> str:
+    return _format_key_values(parameters, 'question')
+
+
+def _format_attempt_completion(parameters: dict[str, object]) -> str:
+    return _format_key_values(parameters, 'result', 'command')
+
+
+def _format_browser_action(parameters: dict[str, object]) -> str:
+    return _format_key_values(parameters, 'action', 'url', 'coordinate', 'text')
+
+
+def _format_execute_command(parameters: dict[str, object]) -> str:
+    return _format_key_values(parameters, 'command', 'requires_approval')
+
+
+def _format_new_task(parameters: dict[str, object]) -> str:
+    return _format_key_values(parameters, 'context')
+
+
+def _format_plan_mode_respond(parameters: dict[str, object]) -> str:
+    return _format_key_values(parameters, 'response')
+
+
+def _format_use_mcp_tool(parameters: dict[str, object]) -> str:
+    return _format_key_values(parameters, 'server_name', 'tool_name')
+
+
+def _format_web_fetch(parameters: dict[str, object]) -> str:
+    return _format_key_values(parameters, 'url', 'prompt')
+
+
+def _format_no_arguments(_: dict[str, object]) -> str:
+    return 'no arguments'
+
+
 SUPPORTED_TOOL_ARGUMENT_FORMATTERS: dict[str, ToolArgumentFormatter] = {
-    # File and directory tools.
     'write_to_file': _format_path,
     'read_file': _format_path,
     'replace_in_file': _format_path,
-    'search_files': _format_key_values,
+    'search_files': _format_search_files,
     'list_files': _format_path,
     'list_code_definition_names': _format_path,
-    # General tools requested for support.
-    'access_mcp_resource': lambda parameters: _format_key_values(parameters, 'server_name', 'uri'),
-    'ask_followup_question': lambda parameters: _format_key_values(parameters, 'question'),
-    'attempt_completion': lambda parameters: _format_key_values(parameters, 'result', 'command'),
-    'browser_action': lambda parameters: _format_key_values(parameters, 'action', 'url', 'coordinate', 'text'),
-    'execute_command': lambda parameters: _format_key_values(parameters, 'command'),
-    'focus_chain': lambda parameters: 'no arguments',
-    'load_mcp_documentation': lambda parameters: 'no arguments',
-    'new_task': lambda parameters: _format_key_values(parameters, 'context'),
-    'plan_mode_respond': lambda parameters: _format_key_values(parameters, 'response'),
-    'use_mcp_tool': lambda parameters: _format_key_values(parameters, 'server_name', 'tool_name'),
-    'web_fetch': lambda parameters: _format_key_values(parameters, 'url', 'prompt'),
+    'access_mcp_resource': _format_access_mcp_resource,
+    'ask_followup_question': _format_ask_followup_question,
+    'attempt_completion': _format_attempt_completion,
+    'browser_action': _format_browser_action,
+    'execute_command': _format_execute_command,
+    'focus_chain': _format_no_arguments,
+    'load_mcp_documentation': _format_no_arguments,
+    'new_task': _format_new_task,
+    'plan_mode_respond': _format_plan_mode_respond,
+    'use_mcp_tool': _format_use_mcp_tool,
+    'web_fetch': _format_web_fetch,
 }
 
 
 def get_tracked_tool_arguments(tool_name: str, parameters: dict[str, object]) -> str:
-    """Return the tracked argument summary for a supported tool.
-
-    Today we explicitly support `read_file` plus several other tool shapes.
-    Add new tool formatters to `SUPPORTED_TOOL_ARGUMENT_FORMATTERS` as more
-    tools need structured logging.
-    """
+    """Return a structured argument summary for a supported tool."""
 
     formatter = SUPPORTED_TOOL_ARGUMENT_FORMATTERS.get(tool_name)
     if formatter:
-        if tool_name == 'search_files':
-            return _format_key_values(parameters, 'path', 'regex', 'file_pattern')
-        return formatter(parameters)
+        try:
+            return formatter(parameters)
+        except Exception as error:
+            return (
+                f'format_error={_stringify_one_line(error)}, '
+                f'raw_parameters={_stringify_one_line(parameters)}'
+            )
 
-    return 'unsupported tool'
+    return f'unsupported tool, raw_parameters={_stringify_one_line(parameters)}'
 
 
 def main() -> int:
@@ -82,10 +131,17 @@ def main() -> int:
     workspace_roots = payload.get('workspaceRoots') or []
     workspace_root = workspace_roots[0] if workspace_roots else None
 
-    pre_tool_use = payload.get('preToolUse') or {}
-    tool_name = pre_tool_use.get('toolName') or pre_tool_use.get('tool') or 'unknown'
-    parameters = pre_tool_use.get('parameters') or {}
-    tool_arguments = get_tracked_tool_arguments(tool_name, parameters)
+    try:
+        pre_tool_use = payload.get('preToolUse') or {}
+        tool_name = pre_tool_use.get('toolName') or pre_tool_use.get('tool') or 'unknown'
+        parameters = pre_tool_use.get('parameters') or {}
+        tool_arguments = get_tracked_tool_arguments(tool_name, parameters)
+    except Exception as error:
+        tool_name = 'unknown'
+        tool_arguments = (
+            f'payload_error={_stringify_one_line(error)}, '
+            f'raw_payload={_stringify_one_line(payload)}'
+        )
 
     if workspace_root:
         log_dir = Path(workspace_root) / '.cline-logs'
