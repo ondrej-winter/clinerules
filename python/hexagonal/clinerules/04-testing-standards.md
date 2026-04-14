@@ -2,7 +2,7 @@
 
 Use these rules for all automated tests to keep signal high and feedback fast.
 
-**For test directory structure and organization, see `08-repo-navigation.md`.**
+For test directory structure and organization, see `08-repo-navigation.md`.
 
 ## Test pyramid expectations
 - **Must** keep the majority of tests as unit tests (fast, isolated, no I/O).
@@ -14,10 +14,10 @@ Use these rules for all automated tests to keep signal high and feedback fast.
 - **Must** keep tests deterministic and isolated; avoid hidden reliance on wall clock time, randomness, ambient environment variables, or test order.
 - **Should** control time, randomness, filesystem, and network behavior explicitly through fixtures, fakes, or test helpers.
 - **Should** prefer small builders/factories over large shared fixtures when setup starts hiding the behavior under test.
-- **Must not** rely on live external services in the default local or CI test suite.
+- **Must not** rely on live external services in the default local or CI suites.
 
 ## Pytest conventions
-- **Must** name tests `test_<behavior>()` with clear, behavior-oriented names.
+- **Must** name tests `test_<behavior>()` with clear behavior-oriented names.
 - **Must** use `pytest` fixtures for shared setup; avoid module-level globals.
 - **Should** use `@pytest.mark.parametrize` for behavior matrices instead of repetitive copy-pasted tests.
 - **Should** use markers (`@pytest.mark.slow`, `@pytest.mark.integration`) for long-running suites.
@@ -28,7 +28,7 @@ Use these rules for all automated tests to keep signal high and feedback fast.
 - **Must** avoid mocking domain entities or value objects.
 - **Should** use fakes for external dependencies when deterministic behavior is needed.
 - **Should** prefer fakes or thin test doubles over deep mock chains that mirror implementation details.
-- When multiple adapters implement the same important port, **should** define shared contract tests that each implementation must satisfy.
+- When multiple adapters implement the same important port, **should** use shared contract tests that each implementation must satisfy.
 
 ## Async and boundary testing
 - **Should** use `pytest-asyncio` consistently when testing async code.
@@ -38,11 +38,11 @@ Use these rules for all automated tests to keep signal high and feedback fast.
 ## Coverage and regression expectations
 - **Must** add or update tests when behavior changes.
 - **Should** add regression tests for bugs before fixing them.
-- **Should** add property-based tests (for example with Hypothesis) or edge-case matrix tests for domain invariants and parser/serializer boundaries when the input space is broad.
+- **Should** add property-based tests (for example with Hypothesis) or edge-case matrix tests when domain invariants or parser/serializer boundaries have a broad input space.
 - **Should** keep coverage stable or improving; document intentional gaps in PR notes.
 
 ## Running tests
 - Use the `run-python-tests` skill to execute all automated tests.
-- During development, use the `run-python-tests` skill with focused options to run a subset of tests.
-- Before handoff or PR, use the `run-python-tests` skill to run all tests.
+- During development, use focused `run-python-tests` options to run a subset of tests.
+- Before handoff or a PR, use the `run-python-tests` skill to run the full test suite.
 - For the full local quality gate, follow the order in `10-tooling-and-ci.md`.

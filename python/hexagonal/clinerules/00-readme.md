@@ -19,15 +19,15 @@
 
 ## Rule precedence and conflict resolution
 - Treat rules marked as **hard constraints** or **non-negotiable** as highest priority within `.clinerules/`.
-- Explicit overrides beat implicit interpretation; when a later module intentionally sharpens an earlier rule, it should say so directly.
+- Explicit overrides beat implicit interpretation. When a later module intentionally sharpens an earlier rule, it should say so directly.
 - More specific rules take precedence over broader rules on the same topic.
 - **Must** statements take precedence over **Should** statements.
-- If two rules with the same strength and scope still conflict, treat file order as a **last-resort tiebreaker** and then update the ruleset to make precedence explicit.
+- If two rules with the same strength and scope still conflict, use file order only as a **last-resort tiebreaker**, then update the ruleset to make precedence explicit.
 - Any intentional deviation must be documented in ADR/PR notes.
 
 ## Reusable-asset portability
 - Keep this ruleset copyable into another repository without assuming a specific local folder workflow beyond `.clinerules/` itself.
-- Do not require repository-specific maintenance conventions such as sibling "bank", "disabled", or archive folders inside reusable rule content.
+- Do not require repository-specific maintenance conventions such as sibling "bank," "disabled," or archive folders inside reusable rule content.
 - If a host repository wants local enable/disable mechanics, document them in repo-specific maintainer docs rather than in the reusable rules themselves.
 
 ## Adding or updating rules
@@ -41,14 +41,14 @@
 - Prefer one requirement per bullet so review discussions can reference a single rule precisely.
 - Use **Must** only for review-blocking requirements.
 - Use **Should** for strong defaults that may allow justified exceptions.
-- When step-by-step execution guidance already exists in a skill, keep the rule focused on policy and reference the skill by name.
+- When step-by-step guidance already exists in a skill, keep the rule focused on policy and reference the skill by name.
 - When a later module intentionally overrides or sharpens an earlier rule, make that override explicit.
 
 ## Ownership and specialization
 - Earlier files should define broad policy and defaults for their topic.
 - Later specialized files should define detailed mechanics for narrower subtopics.
 - When a specialized file exists, earlier files should point to it instead of repeating detailed guidance.
-- Use skills for reusable procedures and workflows rather than embedding those mechanics into rule files.
+- Use skills for reusable procedures instead of embedding that guidance in rule files.
 
 ### Topic ownership map
 - `01-cline-operating-guidance.md`: lightweight Cline operating behavior, scope control, and validation discipline
@@ -86,14 +86,9 @@
 
 ## Related skills
 
-Skills should own focused procedures. When one skill needs a neighboring task,
-it should reference the related skill by name and decision context instead of
-repeating the full procedure. Keep those references portable and optional
-unless a dependency is truly mandatory.
+Skills should own focused procedures. When one skill needs a neighboring task, reference the related skill by name and decision context instead of repeating the full procedure. Keep those references portable and optional unless a dependency is truly mandatory.
 
-Prefer short inline references inside the relevant step. Add a dedicated
-`Related skills` section only when a skill has several common handoffs that
-would otherwise be hard to discover.
+Prefer short inline references inside the relevant step. Add a dedicated `Related skills` section only when a skill has several common handoffs that would otherwise be hard to discover.
 
 ### Skill relationship index
 - `bootstrap-python-app` - Initialize a new Python hexagonal project with base tooling and structure
@@ -153,7 +148,7 @@ Interpret enforcement labels as follows:
 ## Rules-to-enforcement alignment
 - Hard constraints should be backed by tool enforcement where practical; otherwise, mark them as review-enforced or process-enforced.
 - If automation cannot fully enforce a rule, write the rule so a reviewer can still evaluate compliance consistently.
-- Keep rule text, examples, and tooling configuration aligned; when they differ intentionally, document the reason in the relevant rule file or PR notes.
+- Keep rule text, examples, and tooling configuration aligned. When they differ intentionally, document the reason in the relevant rule file or PR notes.
 
 ## Scope
 These rules apply to Python projects using hexagonal architecture unless explicitly stated otherwise.
