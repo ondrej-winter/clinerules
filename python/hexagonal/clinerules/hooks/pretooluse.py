@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
-"""Log selected PreToolUse tool arguments and always allow them.
+"""Log PreToolUse tool arguments and always allow the tool call.
 
 Tool argument logging is explicit and tool-specific. Extend the formatter
-mapping below as additional tools need structured summaries.
+mapping as more tools need structured summaries.
 """
 
 from __future__ import annotations
@@ -14,6 +14,7 @@ from pathlib import Path
 import sys
 
 
+LOG_FILE_NAME = 'cline-file-activity.log'
 ToolArgumentFormatter = Callable[[dict[str, object]], str]
 
 
@@ -31,13 +32,26 @@ def _format_value(value: object) -> str:
     return _stringify_one_line(value)
 
 
-def _format_path(parameters: dict[str, object]) -> str:
+def _as_dict(value: object) -> dict[str, object]:
+    return value if isinstance(value, dict) else {}
+
+
+def _as_str(value: object, *, default: str) -> str:
+    return value if isinstance(value, str) and value else default
+
+
+def _get_parameter_summary(parameters: dict[str, object], *keys: str) -> str:
+    if not keys:
+        return 'no arguments'
+    return ', '.join(f"{key}={_format_value(parameters.get(key))}" for key in keys)
+
+
+def _format_path_value(parameters: dict[str, object]) -> str:
     return _format_value(parameters.get('path') or parameters.get('absolutePath'))
 
 
 def _format_key_values(parameters: dict[str, object], *keys: str) -> str:
-    parts = [f"{key}={_format_value(parameters.get(key))}" for key in keys]
-    return ', '.join(parts) if parts else 'no arguments'
+    return _get_parameter_summary(parameters, *keys)
 
 
 def _format_search_files(parameters: dict[str, object]) -> str:
@@ -64,20 +78,28 @@ def _format_execute_command(parameters: dict[str, object]) -> str:
     return _format_key_values(parameters, 'command', 'requires_approval')
 
 
-def _format_new_task(parameters: dict[str, object]) -> str:
-    return _format_key_values(parameters, 'context')
+def _format_apply_patch(parameters: dict[str, object]) -> str:
+    patch_input = parameters.get('input')
+    if patch_input is None:
+        return 'input=N/A'
+
+    line_count = len(str(patch_input).splitlines())
+    return f'input_lines={line_count}'
 
 
 def _format_plan_mode_respond(parameters: dict[str, object]) -> str:
     return _format_key_values(parameters, 'response')
 
 
-def _format_use_mcp_tool(parameters: dict[str, object]) -> str:
-    return _format_key_values(parameters, 'server_name', 'tool_name')
+def _format_generate_explanation(parameters: dict[str, object]) -> str:
+    return _format_key_values(parameters, 'title', 'from_ref', 'to_ref')
 
 
-def _format_web_fetch(parameters: dict[str, object]) -> str:
-    return _format_key_values(parameters, 'url', 'prompt')
+def _format_use_subagents(parameters: dict[str, object]) -> str:
+    prompt_keys = sorted(
+        key for key in parameters if key.startswith('prompt_') and parameters.get(key)
+    )
+    return f'prompt_count={len(prompt_keys)}'
 
 
 def _format_no_arguments(_: dict[str, object]) -> str:
@@ -85,23 +107,20 @@ def _format_no_arguments(_: dict[str, object]) -> str:
 
 
 SUPPORTED_TOOL_ARGUMENT_FORMATTERS: dict[str, ToolArgumentFormatter] = {
-    'write_to_file': _format_path,
-    'read_file': _format_path,
-    'replace_in_file': _format_path,
+    'read_file': _format_path_value,
+    'apply_patch': _format_apply_patch,
     'search_files': _format_search_files,
-    'list_files': _format_path,
-    'list_code_definition_names': _format_path,
+    'list_files': _format_path_value,
+    'list_code_definition_names': _format_path_value,
     'access_mcp_resource': _format_access_mcp_resource,
     'ask_followup_question': _format_ask_followup_question,
     'attempt_completion': _format_attempt_completion,
     'browser_action': _format_browser_action,
     'execute_command': _format_execute_command,
-    'focus_chain': _format_no_arguments,
     'load_mcp_documentation': _format_no_arguments,
-    'new_task': _format_new_task,
     'plan_mode_respond': _format_plan_mode_respond,
-    'use_mcp_tool': _format_use_mcp_tool,
-    'web_fetch': _format_web_fetch,
+    'generate_explanation': _format_generate_explanation,
+    'use_subagents': _format_use_subagents,
 }
 
 
@@ -121,6 +140,39 @@ def get_tracked_tool_arguments(tool_name: str, parameters: dict[str, object]) ->
     return f'unsupported tool, raw_parameters={_stringify_one_line(parameters)}'
 
 
+def _get_tool_details(payload: dict[str, object]) -> tuple[str, str]:
+    try:
+        pre_tool_use = _as_dict(payload.get('preToolUse'))
+        tool_name = _as_str(
+            pre_tool_use.get('toolName') or pre_tool_use.get('tool'),
+            default='unknown',
+        )
+        parameters = _as_dict(pre_tool_use.get('parameters'))
+        tool_summary = get_tracked_tool_arguments(tool_name, parameters)
+    except Exception as error:
+        tool_name = 'unknown'
+        tool_summary = (
+            f'payload_error={_stringify_one_line(error)}, '
+            f'raw_payload={_stringify_one_line(payload)}'
+        )
+
+    return tool_name, tool_summary
+
+
+def _append_log_entry(workspace_root: str | Path, tool_name: str, tool_summary: str) -> None:
+    log_dir = Path(workspace_root) / '.cline-logs'
+    log_file = log_dir / LOG_FILE_NAME
+
+    try:
+        log_dir.mkdir(parents=True, exist_ok=True)
+        with log_file.open('a', encoding='utf-8') as handle:
+            handle.write(
+                f"{datetime.now().strftime('%H:%M:%S')} - {tool_name}: {tool_summary}\n"
+            )
+    except OSError:
+        pass
+
+
 def main() -> int:
     try:
         payload = json.load(sys.stdin)
@@ -131,30 +183,10 @@ def main() -> int:
     workspace_roots = payload.get('workspaceRoots') or []
     workspace_root = workspace_roots[0] if workspace_roots else None
 
-    try:
-        pre_tool_use = payload.get('preToolUse') or {}
-        tool_name = pre_tool_use.get('toolName') or pre_tool_use.get('tool') or 'unknown'
-        parameters = pre_tool_use.get('parameters') or {}
-        tool_arguments = get_tracked_tool_arguments(tool_name, parameters)
-    except Exception as error:
-        tool_name = 'unknown'
-        tool_arguments = (
-            f'payload_error={_stringify_one_line(error)}, '
-            f'raw_payload={_stringify_one_line(payload)}'
-        )
+    tool_name, tool_arguments = _get_tool_details(payload)
 
     if workspace_root:
-        log_dir = Path(workspace_root) / '.cline-logs'
-        log_file = log_dir / 'cline-file-activity.log'
-
-        try:
-            log_dir.mkdir(parents=True, exist_ok=True)
-            with log_file.open('a', encoding='utf-8') as handle:
-                handle.write(
-                    f"{datetime.now().strftime('%H:%M:%S')} - {tool_name}: {tool_arguments}\n"
-                )
-        except OSError:
-            pass
+        _append_log_entry(workspace_root, tool_name, tool_arguments)
 
     print(json.dumps({'cancel': False}))
     return 0

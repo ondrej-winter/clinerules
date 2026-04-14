@@ -22,7 +22,7 @@ SYNC_MAP: tuple[SyncEntry, ...] = (
         source='shared/clinerules/workflows/improve.md',
         targets=(
             'python/hexagonal/clinerules/workflows/',
-            '.clinerules/workflows',
+            '.clinerules/workflows/',
         ),
     ),
     SyncEntry(
@@ -33,14 +33,14 @@ SYNC_MAP: tuple[SyncEntry, ...] = (
         source='shared/clinerules/hooks/PreToolUse',
         targets=(
             'python/hexagonal/clinerules/hooks/',
-            '.clinerules/hooks',
+            '.clinerules/hooks/',
         ),
     ),
     SyncEntry(
         source='shared/clinerules/hooks/pretooluse.py',
         targets=(
             'python/hexagonal/clinerules/hooks/',
-            '.clinerules/hooks',
+            '.clinerules/hooks/',
         ),
     ),
 )
@@ -72,16 +72,23 @@ def resolve_repo_path(relative_path: str) -> Path:
     return path
 
 
+def resolve_file_target(source: Path, target_relative: str) -> Path:
+    if target_relative.endswith(('/', '\\')):
+        return resolve_repo_path(str(Path(target_relative) / source.name))
+
+    return resolve_repo_path(target_relative)
+
+
 def sync_file(source_relative: str, target_relative: str) -> None:
     source = resolve_repo_path(source_relative)
-    target = resolve_repo_path(target_relative)
+    target = resolve_file_target(source, target_relative)
 
     if not source.is_file():
         raise FileNotFoundError(f"Missing source file: {source_relative}")
 
     target.parent.mkdir(parents=True, exist_ok=True)
     shutil.copy2(source, target)
-    print(f"Synced {source_relative} -> {target_relative}")
+    print(f"Synced {source_relative} -> {target.relative_to(REPO_ROOT)}")
 
 
 def sync_directory(source_relative: str, target_relative: str) -> None:
@@ -134,10 +141,20 @@ def delete_target(target_relative: str) -> None:
     print(f"Deleted directory target: {target_relative}")
 
 
+def delete_entry_targets(entry: SyncEntry) -> None:
+    source = resolve_repo_path(entry.source)
+
+    for target_relative in entry.targets:
+        if source.is_file():
+            delete_target(str(resolve_file_target(source, target_relative).relative_to(REPO_ROOT)))
+            continue
+
+        delete_target(target_relative)
+
+
 def delete_all_targets() -> None:
     for entry in SYNC_MAP:
-        for target in entry.targets:
-            delete_target(target)
+        delete_entry_targets(entry)
 
 
 def main() -> int:

@@ -7,7 +7,7 @@ description: Focused improvement workflow. Audit, simplify, improve, and proofre
 
 Review the provided target with a focused improvement pass.
 
-Audit, simplify, improve, and proofread it without unnecessary expansion, overengineering, or speculation.
+Audit, simplify, and proofread it without unnecessary expansion.
 
 ## Goal
 
@@ -29,8 +29,8 @@ Work in a lightweight, practical review mode:
 - preserve the original intent
 - avoid unnecessary rewrites
 - avoid changing meaning unless needed
-- avoid new abstractions unless they remove obvious complexity
-- simplify rather than elaborate
+- avoid introducing abstractions unless they remove obvious complexity
+- simplify rather than expand
 - remove noise, redundancy, and awkward phrasing
 
 ## Process
@@ -53,10 +53,10 @@ Work in a lightweight, practical review mode:
 
 ## Output
 
-Produce:
+Provide both of the following:
 
 1. A short audit summary.
-2. A concise list of key improvements.
+2. A concise list of the key improvements made.
 
 ## Constraints
 
@@ -67,4 +67,4 @@ Produce:
 - Keep the result lean, practical, and internally consistent.
 - Prefer obvious, defensible improvements over subjective rewriting.
 
-The final result should be simpler, clearer, shorter where possible, and proofread.
+The final result should be clearer, simpler, shorter where possible, and fully proofread.

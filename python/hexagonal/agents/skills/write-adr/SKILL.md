@@ -6,7 +6,7 @@ description: Create an Architecture Decision Record with the next sequential num
 # Write an Architecture Decision Record (ADR)
 
 Use this skill when the user asks to document an architectural decision,
-capture a design choice, or create an ADR.
+record a design choice, or create an ADR.
 
 ## Goal
 
@@ -17,12 +17,15 @@ title, and a concise record of the decision and its consequences.
 
 ### 1. Locate the ADR directory
 
-Use the repository's ADR directory. If none exists, use `<adr_directory>` and
-create it.
+Use an existing ADR directory if the repository already has one. Common names
+include `adr/` and `docs/adr/`.
+
+If no ADR directory exists, use `<adr_directory>` as a placeholder and create
+it.
 
 ### 2. Determine the next ADR number
 
-Inspect the files in the ADR directory, find the highest four-digit prefix, and
+Inspect the files in the ADR directory, find the highest four-digit prefix, then
 increment it by one.
 
 - If no ADRs exist yet, start with `0001`.
@@ -37,6 +40,9 @@ Use this file name format:
 Example:
 
 `<adr_directory>/0004-standardize-api-error-format.md`
+
+Derive the slug from the ADR title by converting it to kebab-case and removing
+unnecessary filler words when helpful.
 
 ### 4. Fill in the ADR template
 
@@ -68,7 +74,7 @@ when helpful. For simple decisions, a flat list is fine.
 ## Alternatives considered
 
 Include this section when meaningful alternatives were evaluated. Omit it when
-the decision follows an obvious convention with no real alternatives.
+the decision follows an obvious convention or has no real alternatives.
 
 | Option | Reason rejected |
 | ------ | --------------- |
@@ -86,18 +92,23 @@ Choose the status that matches the user's intent:
 | `Deprecated`                               | The decision was once accepted but is no longer followed. |
 | `Superseded by [NNNN](./<NNNN>-<slug>.md)` | A newer ADR replaces it.                                  |
 
-If the user does not specify a status, default to `Accepted`.
+If the user does not specify a status, default to `Proposed`. Use `Accepted`
+only when the user clearly indicates that the decision is already in effect.
 
-### 6. Update the ADR index if one exists
+### 6. Update or create the ADR index
 
-If an ADR index file such as `README.md` or `index.md` exists in the ADR
-directory and already contains a table, append an entry such as:
+If the ADR directory already contains an index file such as `README.md` or
+`index.md`, update it.
+
+- If it already contains an ADR table, append an entry such as:
 
 ```markdown
 | [<NNNN>](./<NNNN>-<slug>.md) | <Short Title> | <Date> | <Status> |
 ```
 
-If no ADR index file exists, create one with a header such as:
+- If an index file exists but does not yet contain an ADR table, add one.
+- If no ADR index file exists, create one such as `README.md` with a header
+  like:
 
 ```markdown
 # Architecture Decision Records
@@ -112,5 +123,6 @@ If no ADR index file exists, create one with a header such as:
 - Focus on why, not implementation details.
 - Keep the context factual and specific.
 - Record one decision per ADR.
+- Keep the decision statement short and explicit.
 - Link related ADRs, issues, or PRs when helpful.
 - Do not delete old ADRs; deprecate or supersede them.
