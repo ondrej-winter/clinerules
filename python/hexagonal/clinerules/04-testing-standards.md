@@ -17,18 +17,22 @@ For test directory structure and organization, see `08-repo-navigation.md`.
 - **Must not** rely on live external services in the default local or CI suites.
 
 ## Pytest conventions
+- **Must** use `pytest` as the default test framework.
+- **Must not** introduce new `unittest.TestCase`-based tests.
 - **Must** name tests `test_<behavior>()` with clear behavior-oriented names.
 - **Must** use `pytest` fixtures for shared setup; avoid module-level globals.
+- **Should** prefer pytest-native assertions, fixtures, and parametrization over `unittest` assertions and `setUp`/`tearDown` hooks.
 - **Should** use `@pytest.mark.parametrize` for behavior matrices instead of repetitive copy-pasted tests.
 - **Should** use markers (`@pytest.mark.slow`, `@pytest.mark.integration`) for long-running suites.
 - **Must** keep assertions focused on observable outcomes, not implementation details.
+- Legacy `unittest` tests may be migrated opportunistically, but **should not** be expanded in new work.
 
 ## Mocks, stubs, and fakes
 - **Must** mock output ports in application tests to verify orchestration.
 - **Must** avoid mocking domain entities or value objects.
 - **Should** use fakes for external dependencies when deterministic behavior is needed.
 - **Should** prefer fakes or thin test doubles over deep mock chains that mirror implementation details.
-- When multiple adapters implement the same important port, **should** use shared contract tests that each implementation must satisfy.
+- **Should** use shared contract tests when multiple adapters implement the same important port.
 
 ## Async and boundary testing
 - **Should** use `pytest-asyncio` consistently when testing async code.
