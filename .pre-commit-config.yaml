@@ -27,6 +27,11 @@ repos:
       - id: trailing-whitespace
   - repo: local
     hooks:
+      - id: check-shared-sync
+        name: check-shared-sync
+        entry: python3 tools/sync-shared/sync_shared.py check
+        language: system
+        pass_filenames: false
       - id: validate-repo
         name: validate-repo
         entry: python3 tools/validate_repo.py

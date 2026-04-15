@@ -14,6 +14,7 @@ For test directory structure and organization, see `08-repo-navigation.md`.
 - **Must** keep tests deterministic and isolated; avoid hidden reliance on wall clock time, randomness, ambient environment variables, or test order.
 - **Should** control time, randomness, filesystem, and network behavior explicitly through fixtures, fakes, or test helpers.
 - **Should** prefer small builders/factories over large shared fixtures when setup starts hiding the behavior under test.
+- **Should** place tests in directories that mirror the source responsibility, such as `tests/unit/domain/`, `tests/unit/application/`, and `tests/unit/adapters/input/`.
 - **Must not** rely on live external services in the default local or CI suites.
 
 ## Pytest conventions
@@ -28,10 +29,11 @@ For test directory structure and organization, see `08-repo-navigation.md`.
 - Legacy `unittest` tests may be migrated opportunistically, but **should not** be expanded in new work.
 
 ## Mocks, stubs, and fakes
-- **Must** mock output ports in application tests to verify orchestration.
+- **Must** isolate output ports in application tests with mocks, fakes, or stubs so orchestration stays deterministic.
 - **Must** avoid mocking domain entities or value objects.
 - **Should** use fakes for external dependencies when deterministic behavior is needed.
-- **Should** prefer fakes or thin test doubles over deep mock chains that mirror implementation details.
+- **Should** prefer hand-written fakes or thin test doubles over broad `MagicMock` usage and deep mock chains that mirror implementation details.
+- **Should** use interaction mocks only when verifying orchestration is clearer than asserting on fake state.
 - **Should** use shared contract tests when multiple adapters implement the same important port.
 
 ## Async and boundary testing

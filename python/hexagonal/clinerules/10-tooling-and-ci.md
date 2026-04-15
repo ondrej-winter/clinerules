@@ -8,6 +8,11 @@ This ruleset uses an opinionated toolchain:
 
 Run project tooling through `uv run ...`. Keep tool configuration in `pyproject.toml`.
 
+## Dependency groups
+- Keep runtime dependencies in the main `dependencies` list under `[project]` and development-only tooling in dependency groups such as `[dependency-groups].dev`.
+- For local development, prefer `uv sync --group dev` when you only need the standard development toolchain.
+- Use `uv sync --all-groups` when a project defines multiple dependency groups that should be installed together.
+
 ## Local quality gate
 Use the `run-local-quality-gate` skill to run the full local quality gate.
 
@@ -31,6 +36,7 @@ When validating changes, use this order:
 
 ## Usage clarifications
 - Run the full quality gate before handoff, even if only a single file changed.
+- Sync the required dependency groups before running the quality gate so `ruff`, `mypy`, `pytest`, and related tools come from the project's managed environment.
 - If a change affects only a subset of tests, run that subset first, but still complete `uv run pytest` before handoff.
 - In monorepos, run the same `uv run ...` gates from the affected package/service root plus any impacted shared gates.
 - Pre-commit hooks provide fast feedback, but they do **not** replace the full local quality gate.

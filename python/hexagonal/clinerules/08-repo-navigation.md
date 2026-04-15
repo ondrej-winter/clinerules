@@ -19,7 +19,7 @@ src/<package_name>/
 ├── application/            # Use cases and orchestration
 │   ├── use_cases/          # Application use cases
 │   ├── ports/              # Input/output ports (interfaces)
-│   └── dtos/               # Data transfer objects
+│   └── dtos/               # Command/query/result DTOs and other application boundary types
 └── adapters/               # External system interfaces
     ├── input/              # Driving adapters (CLI, HTTP, GraphQL)
     └── output/             # Driven adapters (DB, APIs, messaging)
@@ -31,9 +31,13 @@ tests/
 ├── unit/                   # Fast, isolated unit tests
 │   ├── domain/            # Domain logic tests
 │   ├── application/       # Use case tests
-│   └── adapters/          # Adapter unit tests
+│   └── adapters/
+│       ├── input/         # Driving adapter unit tests
+│       └── output/        # Driven adapter unit tests
 ├── integration/           # Integration tests with I/O
-│   └── adapters/          # Adapter integration tests
+│   └── adapters/
+│       ├── input/         # Driving adapter integration tests
+│       └── output/        # Driven adapter integration tests
 └── e2e/                   # Optional end-to-end scenarios
 ```
 
@@ -57,6 +61,9 @@ rg "^\s*(class|def)\s+" src/<package_name>/<area>/
 
 # Find all ports (interfaces)
 rg "Protocol|ABC|abstractmethod" src/<package_name>/application/ports/
+
+# Find application DTOs such as commands, queries, and results
+rg --files src/<package_name>/application/dtos/
 
 # Find all adapters
 rg --files src/<package_name>/adapters/ | rg "(^|/)(adapter\.py|.*_adapter\.py)$"
@@ -99,6 +106,7 @@ To generate a project-specific navigation map:
 ## Navigation principles
 - **Layer isolation**: Code in `domain/` should not import from `adapters/` or `application/`
 - **Port discovery**: Look in `application/ports/` to understand system boundaries
+- **DTO discovery**: Look in `application/dtos/` for command, query, and result types that define the application boundary
 - **Entry points**: Find wiring and configuration in entry point files (`__main__.py`, `cli.py`, or framework-specific bootstrap modules)
 - **Packaging clues**: Start with `pyproject.toml` and `uv.lock` to identify package roots, toolchain, and supported Python versions
 - **Test mirroring**: Navigate tests using the same path as the source module under test

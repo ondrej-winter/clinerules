@@ -11,6 +11,7 @@ It supports:
 - file sources
 - directory sources
 - multiple targets per source
+- non-mutating drift checks
 - deleting all configured targets
 - reset mode for delete-then-sync
 
@@ -18,6 +19,12 @@ It supports:
 
 ```bash
 uv run tools/sync-shared/sync_shared.py sync
+```
+
+Verify that configured targets still match their shared sources:
+
+```bash
+uv run tools/sync-shared/sync_shared.py check
 ```
 
 Delete all configured targets:
@@ -45,11 +52,15 @@ make sync-reset
 Recommended workflow:
 
 1. Edit shared content under `shared/`
-2. Optionally clear generated targets with `delete`
-3. Repopulate targets with `sync` or use `reset`
+2. Repopulate targets with `sync` or use `reset`
+3. Run `check` before final review or pre-commit to confirm the derived targets
+   still match their shared sources
 
 Run `make sync` after shared-source edits so the derived targets under
 `python/hexagonal/` stay aligned with their sources.
+
+Run `uv run tools/sync-shared/sync_shared.py check` when you want a non-mutating
+verification pass, such as in pre-commit or before handoff.
 
 If you change shared content and repository inventory docs in the same update,
 run `make sync` before final review so generated targets reflect the current

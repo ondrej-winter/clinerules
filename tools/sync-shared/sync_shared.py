@@ -17,6 +17,14 @@ class SyncEntry:
     targets: tuple[str, ...]
 
 
+@dataclass(frozen=True)
+class SyncCheckIssue:
+    source: Path
+    target: Path
+    issue: str
+    details: str | None = None
+
+
 SYNC_MAP: tuple[SyncEntry, ...] = (
     SyncEntry(
         source='shared/clinerules/workflows/improve.md',
@@ -53,7 +61,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         'command',
         nargs='?',
-        choices=('sync', 'delete', 'reset'),
+        choices=('sync', 'delete', 'reset', 'check'),
         default='sync',
         help='Command to run. Defaults to sync.',
     )
@@ -77,6 +85,80 @@ def resolve_file_target(source: Path, target_relative: str) -> Path:
         return resolve_repo_path(str(Path(target_relative) / source.name))
 
     return resolve_repo_path(target_relative)
+
+
+def compare_paths(source: Path, target: Path) -> list[SyncCheckIssue]:
+    if not target.exists():
+        return [SyncCheckIssue(source=source, target=target, issue='missing_target')]
+
+    if source.is_file() and target.is_file():
+        if source.read_bytes() != target.read_bytes():
+            return [
+                SyncCheckIssue(
+                    source=source,
+                    target=target,
+                    issue='content_mismatch',
+                )
+            ]
+        return []
+
+    if source.is_dir() and target.is_dir():
+        issues: list[SyncCheckIssue] = []
+        source_entries = {item.name: item for item in source.iterdir()}
+        target_entries = {item.name: item for item in target.iterdir()}
+
+        for name in sorted(source_entries):
+            target_entry = target_entries.get(name)
+            if target_entry is None:
+                issues.append(
+                    SyncCheckIssue(
+                        source=source_entries[name],
+                        target=target / name,
+                        issue='missing_target',
+                    )
+                )
+                continue
+            issues.extend(compare_paths(source_entries[name], target_entry))
+
+        for name in sorted(set(target_entries) - set(source_entries)):
+            issues.append(
+                SyncCheckIssue(
+                    source=source / name,
+                    target=target_entries[name],
+                    issue='content_mismatch',
+                    details='target has extra path not present in source',
+                )
+            )
+
+        return issues
+
+    source_kind = 'directory' if source.is_dir() else 'file'
+    target_kind = 'directory' if target.is_dir() else 'file'
+    return [
+        SyncCheckIssue(
+            source=source,
+            target=target,
+            issue='type_mismatch',
+            details=f'source is a {source_kind}, target is a {target_kind}',
+        )
+    ]
+
+
+def collect_sync_issues(entry: SyncEntry) -> list[SyncCheckIssue]:
+    source = resolve_repo_path(entry.source)
+    issues: list[SyncCheckIssue] = []
+
+    if source.is_file():
+        for target_relative in entry.targets:
+            issues.extend(compare_paths(source, resolve_file_target(source, target_relative)))
+        return issues
+
+    if source.is_dir():
+        for target_relative in entry.targets:
+            issues.extend(compare_paths(source, resolve_repo_path(target_relative)))
+        return issues
+
+    raise FileNotFoundError(f"Missing source path: {entry.source}")
 
 
 def sync_file(source_relative: str, target_relative: str) -> None:
@@ -157,8 +239,32 @@ def delete_all_targets() -> None:
         delete_entry_targets(entry)
 
 
+def check_all_targets() -> int:
+    issues: list[SyncCheckIssue] = []
+    for entry in SYNC_MAP:
+        issues.extend(collect_sync_issues(entry))
+
+    if not issues:
+        print('All configured sync targets are aligned.')
+        return 0
+
+    for issue in sorted(issues, key=lambda item: (str(item.target), item.issue, str(item.source))):
+        summary = (
+            f"{issue.issue}: {issue.source.relative_to(REPO_ROOT)} -> "
+            f"{issue.target.relative_to(REPO_ROOT)}"
+        )
+        if issue.details:
+            summary = f'{summary} ({issue.details})'
+        print(summary)
+
+    return 1
+
+
 def main() -> int:
     args = parse_args()
+
+    if args.command == 'check':
+        return check_all_targets()
 
     if args.command in {'delete', 'reset'}:
         delete_all_targets()

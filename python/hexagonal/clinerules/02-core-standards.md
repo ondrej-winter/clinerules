@@ -17,6 +17,8 @@ Use these rules for all Python code in the project to keep behavior predictable 
 ## Typing and API contracts
 - Public functions, public methods, ports, DTOs, and application/domain boundary types **must** have explicit type annotations, including return types.
 - Prefer domain/application types in core APIs; keep transport schemas, ORM models, and framework request/response types inside adapters.
+- When the application layer needs command, query, or result objects, define them under `application/dtos/` and name them by intent (for example `CreateInvoiceCommand`, `ListInvoicesQuery`, `CreateInvoiceResult`).
+- Port signatures may use domain types directly when they are the natural business boundary; otherwise prefer application DTOs from `application/dtos/` over transport or framework types.
 - Avoid `Any`; use it only at narrowly contained boundaries to untyped third-party code. Document the reason when it persists beyond a thin shim.
 - Prefer standard-library typing constructs supported by the project's minimum Python version (for example `Protocol`, `TypedDict`, `Literal`, `Self`, `TypeAlias`, and `collections.abc` generics).
 - Use `typing_extensions` only when the project's minimum Python version does not yet provide the required construct.
@@ -33,7 +35,7 @@ Use these rules for all Python code in the project to keep behavior predictable 
 
 ## Boundary behavior (adapter input validation)
 - Validate and normalize external inputs at **adapter boundaries** before calling application ports.
-- Keep **mapping** between external schemas and DTOs/domain objects inside adapters.
+- Keep **mapping** between external schemas and application DTOs or other port-approved domain types inside adapters.
 - For broader hexagonal boundary doctrine, see `03-architecture-guardrails.md`.
 
 ## Error handling

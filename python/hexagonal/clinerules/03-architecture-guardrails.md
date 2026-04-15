@@ -19,12 +19,13 @@ Use this doctrine as the default architecture standard for the codebase. Any dev
 Allowed:
 - Domain → Domain (same layer)
 - Application → Domain
-- Adapters → Application ports + Domain (through ports or DTOs)
+- Adapters → Application ports + approved domain/application boundary types exposed by those ports
 
 Forbidden:
 - Domain → Application, Adapters, Infrastructure
 - Application → Adapters, Infrastructure
 - Adapter → Adapter (unless through application ports)
+- Driving adapters → Domain orchestration directly (bypassing application ports)
 
 ## Layer responsibilities
 ### Domain
@@ -45,11 +46,15 @@ Forbidden:
 - Ports are defined in the application layer only.
 - Prefer small, explicit port contracts expressed via `Protocol` or ABCs.
 - Port signatures must use domain/application types rather than transport schemas, ORM models, or framework request/response objects.
+- Keep command, query, and result DTOs under `application/dtos/` when the application boundary needs dedicated request/response objects.
 
 ### Adapters
 - Implement ports for external systems.
+- Driving adapters call input ports and usually translate external data into application DTOs or other domain/application types explicitly accepted by the port.
+- Driven adapters implement output ports and may construct the domain/application types required by those port signatures.
 - Translate external data structures ↔ DTOs/domain objects.
 - Handle I/O, serialization, transport, and retry logic.
+- Do not orchestrate domain behavior directly inside adapters.
 
 ## Composition root and framework isolation
 - **Must** keep dependency wiring, service construction, and framework bootstrapping in entry points or dedicated bootstrap/composition-root modules.
@@ -65,7 +70,7 @@ Forbidden:
 
 ## Module/package structure guidance
 - `domain/`: entities, value objects, domain services, domain errors.
-- `application/`: use cases + ports + DTOs.
+- `application/`: use cases + ports + DTOs under `application/dtos/`.
 - `adapters/`: input (CLI/HTTP/GraphQL) and output (persistence, external APIs, messaging, etc.).
 - `infrastructure/` (optional): shared infra utilities used by adapters only.
 - Detailed file splitting, package export, and `__init__.py` mechanics are governed by `06-module-structure.md`.
@@ -73,12 +78,13 @@ Forbidden:
 ## Naming conventions (layer-aware)
 - `.../ports/` for interfaces/protocols.
 - `.../adapters/input/` and `.../adapters/output/` for adapter implementations.
-- DTOs named for their intent: `CreateOrderCommand`, `UserProfileDTO`, `PaymentResultDTO`.
+- DTOs named for their intent and kept under `application/dtos/`: `CreateOrderCommand`, `UserProfileDTO`, `PaymentResultDTO`.
 
 ## No-go examples (explicitly banned)
 - Importing an HTTP client in `domain/` or `application/`.
 - ORM models inside domain entities.
 - Adapters calling each other directly instead of via application ports.
+- Input adapters importing domain services and running business workflows directly.
 - "Helper" utilities in `domain/` that perform I/O.
 
 ## Adapter directory structure

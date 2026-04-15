@@ -15,6 +15,8 @@
 - Use `pytest-asyncio` for async tests when async code is present.
 - Use Google-style docstrings.
 - Use `pyproject.toml` and `uv.lock` as the canonical tooling and dependency configuration surface.
+- Prefer dependency groups for development-only tooling and test dependencies.
+- Use `application/dtos/` as the default home for command, query, and result DTOs in the application layer.
 - Follow hexagonal architecture with inward-pointing dependencies and explicit ports/adapters boundaries.
 
 ## Rule precedence and conflict resolution
@@ -52,30 +54,30 @@
 
 ### Topic ownership map
 - `01-cline-operating-guidance.md`: lightweight Cline operating behavior, scope control, and validation discipline
-- `02-core-standards.md`: universal coding behavior, typing defaults, error handling, and baseline logging policy
-- `03-architecture-guardrails.md`: architecture boundaries and dependency direction
-- `04-testing-standards.md`: automated testing expectations
+- `02-core-standards.md`: universal coding behavior, typing defaults, DTO boundary guidance, error handling, and baseline logging policy
+- `03-architecture-guardrails.md`: architecture boundaries, dependency direction, and ports/adapters responsibilities
+- `04-testing-standards.md`: automated testing expectations and test-double guidance
 - `05-docs-and-adr.md`: required project documentation outside source code
 - `06-module-structure.md`: file, package, and export mechanics
 - `07-performance-and-observability.md`: performance expectations and runtime visibility
-- `08-repo-navigation.md`: project discovery and navigation guidance
+- `08-repo-navigation.md`: project discovery, canonical layout, and navigation guidance
 - `09-pr-and-commit-hygiene.md`: review and change-management discipline
-- `10-tooling-and-ci.md`: local quality gate and CI workflow expectations
+- `10-tooling-and-ci.md`: dependency-group, local quality gate, and CI workflow expectations
 - `11-documentation-standards.md`: in-code documentation style only
 - `12-logging-conventions.md`: logging implementation mechanics and privacy-safe logging details
 - `13-command-execution-safety.md`: command execution and process safety
 
 ## Active modules
 - `01-cline-operating-guidance.md` - Read before editing, make minimal changes, validate proportionally, and avoid unrelated churn
-- `02-core-standards.md` - Naming, formatting, typing defaults, error handling, baseline logging policy
-- `03-architecture-guardrails.md` - Hexagonal architecture doctrine, adapter directory structure
-- `04-testing-standards.md` - Testing pyramid, pytest conventions
+- `02-core-standards.md` - Naming, formatting, typing defaults, DTO guidance, error handling, baseline logging policy
+- `03-architecture-guardrails.md` - Hexagonal architecture doctrine, ports/adapters boundaries, adapter directory structure
+- `04-testing-standards.md` - Testing pyramid, pytest conventions, and test-double guidance
 - `05-docs-and-adr.md` - README updates, ADR format, changelog notes
 - `06-module-structure.md` - File organization, splitting rules, `__init__.py` conventions
 - `07-performance-and-observability.md` - Profiling, tracing, metrics
-- `08-repo-navigation.md` - Generic navigation guidelines for hexagonal architecture
+- `08-repo-navigation.md` - Generic navigation guidelines for hexagonal architecture, including canonical application and test layout
 - `09-pr-and-commit-hygiene.md` - PR size, commit messages, reviews
-- `10-tooling-and-ci.md` - `uv`/`ruff`/`mypy`/`pytest` local quality gate and CI expectations
+- `10-tooling-and-ci.md` - `uv` dependency-group, local quality gate, and CI expectations
 - `11-documentation-standards.md` - Clear, concise docstrings and comments
 - `12-logging-conventions.md` - Module-level logger standard, structured context, and safe redaction practices
 - `13-command-execution-safety.md` - Hard ban on inline interpreter heredocs; require temp scripts and non-interactive git usage
