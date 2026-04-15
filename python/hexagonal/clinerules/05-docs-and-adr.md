@@ -1,6 +1,8 @@
 # Documentation rules: README updates, ADRs, changelog notes, API docs
 
 Use these rules to keep documentation consistent and architectural decisions traceable.
+Use the `update-project-docs` skill when you need a practical checklist for
+README, changelog-style notes, or related project-facing documentation updates.
 
 ## README updates
 - **Must** update `README.md` when behavior, configuration, or usage changes.

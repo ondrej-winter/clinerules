@@ -48,6 +48,10 @@ Drop-in SKILL.md files that guide Cline through common development tasks:
 | Add hexagonal feature | `python/hexagonal/agents/skills/add-hexagonal-feature/SKILL.md`  | Domain model → application boundaries → application service → unit tests                         |
 | Add port              | `python/hexagonal/agents/skills/python-add-port/SKILL.md`        | Define a focused input or output port contract in the application layer                          |
 | Add adapter           | `python/hexagonal/agents/skills/python-add-adapter/SKILL.md`     | Add an input (HTTP, CLI, event) or output (DB, API client) adapter with layered testing guidance |
+| Update project docs   | `python/hexagonal/agents/skills/update-project-docs/SKILL.md`    | Update README, changelog-style notes, and related project-facing docs after a change             |
+| Split Python module   | `python/hexagonal/agents/skills/split-python-module/SKILL.md`    | Split a growing module or package while preserving boundaries and intentional imports             |
+| Add observability     | `python/hexagonal/agents/skills/add-observability/SKILL.md`      | Add profiling, metrics, tracing, and operational notes to meaningful workflows                    |
+| Write docstrings      | `python/hexagonal/agents/skills/write-python-docstrings/SKILL.md`| Write concise Google-style docstrings and inline comments where they add value                    |
 | Write ADR             | `python/hexagonal/agents/skills/write-adr/SKILL.md`              | Scaffold a numbered Architecture Decision Record under `docs/adr/`                               |
 | Format Python code    | `python/hexagonal/agents/skills/format-python-code/SKILL.md`     | Run `ruff` formatting and safe auto-fixes                                                        |
 | Lint Python code      | `python/hexagonal/agents/skills/lint-python-code/SKILL.md`       | Run `ruff` linting and `mypy` type checking                                                      |

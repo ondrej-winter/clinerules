@@ -1,6 +1,8 @@
 # Module structure and file organization
 
 Use these rules to keep files focused, navigable, and easy to maintain.
+Use the `split-python-module` skill when a file or package needs a safe,
+step-by-step split or reorganization.
 
 ## File size heuristics
 
@@ -45,10 +47,10 @@ Use these rules to keep files focused, navigable, and easy to maintain.
 
 ## Splitting strategies
 
-- **Orchestration vs. implementation**: keep the main class in one file and helpers in others.
-- **By responsibility**: separate validators, formatters, renderers, and serializers.
-- **By domain concept**: keep each domain model in its own file.
-- **By layer concern**: separate types, logic, and utilities.
+- When a split is warranted, separate modules by responsibility, domain concept,
+  or layer concern rather than by arbitrary file-count targets.
+- Use the `split-python-module` skill for concrete split sequencing, import
+  preservation, and compatibility follow-up.
 
 ## Import management after splits
 

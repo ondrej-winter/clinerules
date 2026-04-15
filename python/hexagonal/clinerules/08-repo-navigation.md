@@ -50,58 +50,13 @@ Test directories should mirror the source structure where practical. `e2e/` may 
 - `pyproject.toml`: Primary package, build, dependency, and tool configuration
 - `uv.lock`: Locked dependency state for the project
 
-## Common search patterns
+## Search workflow
 
-Prefer cross-platform tools such as IDE search, `rg`, and `rg --files` when sharing reusable navigation examples. If you also use shell-specific commands locally, treat them as environment-specific equivalents rather than part of the required workflow.
+Prefer cross-platform tools such as IDE search, `rg`, and `rg --files` for
+local exploration.
 
-### Finding definitions
-```bash
-# Find all class or function definitions in a specific area
-rg "^\s*(class|def)\s+" src/<package_name>/<area>/
-
-# Find all ports (interfaces)
-rg "Protocol|ABC|abstractmethod" src/<package_name>/application/ports/
-
-# Find application DTOs such as commands, queries, and results
-rg --files src/<package_name>/application/dtos/
-
-# Find all adapters
-rg --files src/<package_name>/adapters/ | rg "(^|/)(adapter\.py|.*_adapter\.py)$"
-```
-
-### Finding usage
-```bash
-# Find where a specific class is imported
-rg "from .* import ClassName|import .*ClassName" src/ tests/
-
-# Find adapter instantiation or composition wiring
-rg "\b[A-Z][A-Za-z0-9_]*Adapter\(" src/
-```
-
-### Exploring structure
-```bash
-# Find package roots or service roots in a monorepo
-rg --files -g "pyproject.toml"
-
-# View the package file tree
-rg --files src/<package_name>/
-
-# View directories and package boundaries through files such as __init__.py
-rg --files src/<package_name>/ | rg "(^|/)__init__\.py$"
-
-# List all Python files in a layer
-rg --files src/<package_name>/domain/ -g "*.py"
-
-# Find entry points (CLI, main modules)
-rg --files src/ | rg "(^|/)(__main__|cli)\.py$"
-```
-
-## Project-specific navigation
-
-To generate a project-specific navigation map:
-1. See `workflows/update-repo-navigation.md` for instructions.
-2. Run the workflow when the project structure changes significantly.
-3. Store the generated map in `docs/repo-navigation.md` or another discoverable project-specific location outside `.clinerules/`.
+For reusable command recipes and the step-by-step process for generating a
+project-specific navigation guide, use `workflows/update-repo-navigation.md`.
 
 ## Navigation principles
 - **Layer isolation**: Code in `domain/` should not import from `adapters/` or `application/`

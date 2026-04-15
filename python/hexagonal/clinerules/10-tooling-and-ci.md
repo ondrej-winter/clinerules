@@ -7,25 +7,17 @@ This ruleset uses an opinionated toolchain:
 - `pytest` for tests
 
 Run project tooling through `uv run ...`. Keep tool configuration in `pyproject.toml`.
+Use the dedicated quality-gate skills for command order and operator workflow:
+`format-python-code`, `lint-python-code`, `run-python-tests`, and
+`run-local-quality-gate`.
 
 ## Dependency groups
 - Keep runtime dependencies in the main `dependencies` list under `[project]` and development-only tooling in dependency groups such as `[dependency-groups].dev`.
-- For local development, prefer `uv sync --group dev` when you only need the standard development toolchain.
-- Use `uv sync --all-groups` when a project defines multiple dependency groups that should be installed together.
+- Sync the dependency groups required by the project before running validation commands.
 
 ## Local quality gate
 Use the `run-local-quality-gate` skill to run the full local quality gate.
-
-When validating changes, use this order:
-
-1. **Run local quality gate**
-   - Use the `run-local-quality-gate` skill.
-
-2. **Run optional project gates**
-   - Coverage thresholds
-   - Security/static-analysis checks
-   - Dependency/license audits
-   - Docs build or examples smoke tests
+Use specialized skills when you need only one part of that workflow during iteration.
 
 ## Expectations
 - Generated code **must** pass `uv run ruff check .`, `uv run mypy .`, and `uv run pytest` with no unapproved failures.
@@ -36,12 +28,10 @@ When validating changes, use this order:
 
 ## Usage clarifications
 - Run the full quality gate before handoff, even if only a single file changed.
-- Sync the required dependency groups before running the quality gate so `ruff`, `mypy`, `pytest`, and related tools come from the project's managed environment.
-- If a change affects only a subset of tests, run that subset first, but still complete `uv run pytest` before handoff.
-- In monorepos, run the same `uv run ...` gates from the affected package/service root plus any impacted shared gates.
+- If a change affects only a subset of tests, run focused checks first, then complete the full configured gate before handoff.
+- In monorepos, run the same configured gates from the affected package or service root plus any impacted shared gates.
 - Pre-commit hooks provide fast feedback, but they do **not** replace the full local quality gate.
 - For flaky or slow tests, document the reason and mitigation in the handoff notes.
-- If any step fails, address the underlying issue rather than proceeding to the next step.
 - Do not bypass `pyproject.toml`-backed tool configuration with ad hoc flags in the final validation run.
 
 ## Reproducibility and dependency hygiene

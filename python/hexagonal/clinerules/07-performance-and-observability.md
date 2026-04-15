@@ -1,6 +1,8 @@
 # Performance and observability
 
 Use these rules to keep performance expectations explicit, regressions visible, and runtime behavior traceable.
+Use the `add-observability` skill when you need a practical workflow for
+profiling, measurement, metrics, tracing, or operational documentation.
 
 ## Performance budgets and baselines
 - **Should** define latency/throughput/error-budget expectations for user-facing or operationally critical workflows.

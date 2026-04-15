@@ -56,14 +56,14 @@
 - `01-cline-operating-guidance.md`: lightweight Cline operating behavior, scope control, and validation discipline
 - `02-core-standards.md`: universal coding behavior, typing defaults, DTO boundary guidance, error handling, and baseline logging policy
 - `03-architecture-guardrails.md`: architecture boundaries, dependency direction, and ports/adapters responsibilities
-- `04-testing-standards.md`: automated testing expectations and test-double guidance
-- `05-docs-and-adr.md`: required project documentation outside source code
-- `06-module-structure.md`: file, package, and export mechanics
-- `07-performance-and-observability.md`: performance expectations and runtime visibility
-- `08-repo-navigation.md`: project discovery, canonical layout, and navigation guidance
+- `04-testing-standards.md`: automated testing expectations; detailed pytest mechanics belong in `write-pytest-tests`
+- `05-docs-and-adr.md`: required project documentation outside source code; concrete update workflow belongs in `update-project-docs`
+- `06-module-structure.md`: file, package, and export mechanics; restructuring workflow belongs in `split-python-module`
+- `07-performance-and-observability.md`: performance expectations and runtime visibility; concrete instrumentation workflow belongs in `add-observability`
+- `08-repo-navigation.md`: project discovery, canonical layout, and navigation principles; command recipes belong in `workflows/update-repo-navigation.md`
 - `09-pr-and-commit-hygiene.md`: review and change-management discipline
-- `10-tooling-and-ci.md`: dependency-group, local quality gate, and CI workflow expectations
-- `11-documentation-standards.md`: in-code documentation style only
+- `10-tooling-and-ci.md`: dependency-group, local quality gate, and CI policy; command sequencing belongs in quality-gate skills
+- `11-documentation-standards.md`: in-code documentation policy; drafting mechanics belong in `write-python-docstrings`
 - `12-logging-conventions.md`: logging implementation mechanics and privacy-safe logging details
 - `13-command-execution-safety.md`: command execution and process safety
 
@@ -71,14 +71,14 @@
 - `01-cline-operating-guidance.md` - Read before editing, make minimal changes, validate proportionally, and avoid unrelated churn
 - `02-core-standards.md` - Naming, formatting, typing defaults, DTO guidance, error handling, baseline logging policy
 - `03-architecture-guardrails.md` - Hexagonal architecture doctrine, ports/adapters boundaries, adapter directory structure
-- `04-testing-standards.md` - Testing pyramid, pytest conventions, and test-double guidance
-- `05-docs-and-adr.md` - README updates, ADR format, changelog notes
-- `06-module-structure.md` - File organization, splitting rules, `__init__.py` conventions
-- `07-performance-and-observability.md` - Profiling, tracing, metrics
+- `04-testing-standards.md` - Testing pyramid, isolation requirements, and review-blocking testing policy
+- `05-docs-and-adr.md` - Documentation obligations, ADR triggers, and changelog policy
+- `06-module-structure.md` - File organization, splitting rules, and `__init__.py` conventions
+- `07-performance-and-observability.md` - Performance, tracing, metrics, and observability policy
 - `08-repo-navigation.md` - Generic navigation guidelines for hexagonal architecture, including canonical application and test layout
 - `09-pr-and-commit-hygiene.md` - PR size, commit messages, reviews
-- `10-tooling-and-ci.md` - `uv` dependency-group, local quality gate, and CI expectations
-- `11-documentation-standards.md` - Clear, concise docstrings and comments
+- `10-tooling-and-ci.md` - `uv` dependency-group, validation policy, and CI expectations
+- `11-documentation-standards.md` - Clear, concise docstrings and comments policy
 - `12-logging-conventions.md` - Module-level logger standard, structured context, and safe redaction practices
 - `13-command-execution-safety.md` - Hard ban on inline interpreter heredocs; require temp scripts and non-interactive git usage
 
@@ -97,6 +97,10 @@ Prefer short inline references inside the relevant step. Add a dedicated `Relate
 - `add-hexagonal-feature` - Add an end-to-end use case across domain, application, and tests
 - `python-add-port` - Define a focused input or output port contract in the application layer
 - `python-add-adapter` - Implement an input or output adapter against an existing port
+- `update-project-docs` - Update README, changelog-style notes, and related project-facing docs after a change
+- `split-python-module` - Safely split a large Python module or package while preserving boundaries and intentional imports
+- `add-observability` - Add profiling, metrics, tracing, and operational notes for meaningful workflows
+- `write-python-docstrings` - Write concise Google-style docstrings and inline comments where they add value
 - `write-adr` - Record significant architectural decisions and consequences
 - `format-python-code` - Formats Python code using ruff and applies safe auto-fixes
 - `lint-python-code` - Lints Python code using ruff and mypy for type checking
@@ -109,11 +113,15 @@ Prefer short inline references inside the relevant step. Add a dedicated `Relate
   - use `add-hexagonal-feature` when the project is ready for the first use case
   - use `python-add-port` when defining a new boundary before feature implementation
   - use `python-add-adapter` when connecting infrastructure or transports
+  - use `update-project-docs` when setup changes require README or developer-doc updates
   - use `write-adr` when setup choices need durable documentation
 - From `add-hexagonal-feature`
   - use `write-pytest-tests` when the feature needs new or revised pytest coverage
   - use `python-add-port` when the feature needs a new application boundary
   - use `python-add-adapter` when the feature needs an input or output adapter
+  - use `update-project-docs` when the feature changes README-visible behavior or configuration
+  - use `add-observability` when the feature adds a critical path that needs metrics, tracing, or troubleshooting notes
+  - use `write-python-docstrings` when new public APIs or non-obvious contracts need in-code documentation
   - use `write-adr` when the feature introduces a meaningful architectural decision
 - From `python-add-port`
   - use `add-hexagonal-feature` when the work is broader than defining the port
@@ -123,7 +131,16 @@ Prefer short inline references inside the relevant step. Add a dedicated `Relate
   - use `python-add-port` when the required boundary does not exist yet
   - use `add-hexagonal-feature` when adapter work is part of a full use case change
   - use `write-pytest-tests` when the adapter needs focused pytest coverage
+  - use `add-observability` when the adapter adds important I/O, retries, or operator-visible failure modes
+  - use `update-project-docs` when the adapter changes external configuration or usage
   - use `write-adr` when integration choices should be documented
+- From `split-python-module`
+  - use `write-python-docstrings` when the split creates new public modules or package surfaces
+  - use `update-project-docs` when the split changes public import paths or developer-facing structure docs
+- From `update-project-docs`
+  - use `write-adr` when the documentation update reflects an architectural decision rather than only usage or operations guidance
+- From `add-observability`
+  - use `update-project-docs` when new alerts, dashboards, or troubleshooting notes need durable operator-facing documentation
 - From `write-pytest-tests`
   - use `run-python-tests` to execute focused tests during iteration and the full suite before handoff
 - From `write-adr`

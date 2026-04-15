@@ -3,6 +3,8 @@
 Use these rules for all automated tests to keep signal high and feedback fast.
 
 For test directory structure and organization, see `08-repo-navigation.md`.
+Use the `write-pytest-tests` skill when you need concrete pytest-native
+mechanics, test-double patterns, or example test structures.
 
 ## Test pyramid expectations
 - **Must** keep the majority of tests as unit tests (fast, isolated, no I/O).
@@ -21,20 +23,17 @@ For test directory structure and organization, see `08-repo-navigation.md`.
 - **Must** use `pytest` as the default test framework.
 - **Must not** introduce new `unittest.TestCase`-based tests.
 - **Must** name tests `test_<behavior>()` with clear behavior-oriented names.
-- **Must** use `pytest` fixtures for shared setup; avoid module-level globals.
-- **Should** prefer pytest-native assertions, fixtures, and parametrization over `unittest` assertions and `setUp`/`tearDown` hooks.
-- **Should** use `@pytest.mark.parametrize` for behavior matrices instead of repetitive copy-pasted tests.
-- **Should** use markers (`@pytest.mark.slow`, `@pytest.mark.integration`) for long-running suites.
 - **Must** keep assertions focused on observable outcomes, not implementation details.
-- Use the `write-pytest-tests` skill when adding or refactoring tests and detailed pytest-native mechanics are needed.
+- **Should** prefer pytest-native assertions and helpers over `unittest`-style setup and assertions.
+- Use the `write-pytest-tests` skill when adding or refactoring tests and
+  detailed pytest-native mechanics are needed.
 - Legacy `unittest` tests may be migrated opportunistically, but **should not** be expanded in new work.
 
 ## Mocks, stubs, and fakes
 - **Must** isolate output ports in application tests with mocks, fakes, or stubs so orchestration stays deterministic.
 - **Must** avoid mocking domain entities or value objects.
-- **Should** use fakes for external dependencies when deterministic behavior is needed.
-- **Should** prefer hand-written fakes or thin test doubles over broad `MagicMock` usage and deep mock chains that mirror implementation details.
-- **Should** use interaction mocks only when verifying orchestration is clearer than asserting on fake state.
+- **Should** prefer hand-written fakes or thin test doubles over broad `MagicMock`
+  usage and deep mock chains that mirror implementation details.
 - **Should** use shared contract tests when multiple adapters implement the same important port.
 
 ## Async and boundary testing
@@ -49,7 +48,5 @@ For test directory structure and organization, see `08-repo-navigation.md`.
 - **Should** keep coverage stable or improving; document intentional gaps in PR notes.
 
 ## Running tests
-- Use the `run-python-tests` skill to execute all automated tests.
-- During development, use focused `run-python-tests` options to run a subset of tests.
-- Before handoff or a PR, use the `run-python-tests` skill to run the full test suite.
-- For the full local quality gate, follow the order in `10-tooling-and-ci.md`.
+- Use the `run-python-tests` skill for focused and full-suite execution.
+- Use the `run-local-quality-gate` skill before handoff or a PR.
