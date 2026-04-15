@@ -26,6 +26,7 @@ For test directory structure and organization, see `08-repo-navigation.md`.
 - **Should** use `@pytest.mark.parametrize` for behavior matrices instead of repetitive copy-pasted tests.
 - **Should** use markers (`@pytest.mark.slow`, `@pytest.mark.integration`) for long-running suites.
 - **Must** keep assertions focused on observable outcomes, not implementation details.
+- Use the `write-pytest-tests` skill when adding or refactoring tests and detailed pytest-native mechanics are needed.
 - Legacy `unittest` tests may be migrated opportunistically, but **should not** be expanded in new work.
 
 ## Mocks, stubs, and fakes

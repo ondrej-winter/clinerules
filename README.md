@@ -42,17 +42,18 @@ This section is repo-specific. Paths below describe where assets live in this re
 
 Drop-in SKILL.md files that guide Cline through common development tasks:
 
-| Skill                 | Path                                                            | Purpose                                                                                          |
-| --------------------- | --------------------------------------------------------------- | ------------------------------------------------------------------------------------------------ |
-| Bootstrap app         | `python/hexagonal/agents/skills/bootstrap-python-app/SKILL.md`  | Initialise a Python app repo with `uv`, `ruff`, `mypy`, `pytest`, and a hexagonal `src/` layout  |
-| Add hexagonal feature | `python/hexagonal/agents/skills/add-hexagonal-feature/SKILL.md` | Domain model → application boundaries → application service → unit tests                         |
-| Add port              | `python/hexagonal/agents/skills/python-add-port/SKILL.md`       | Define a focused input or output port contract in the application layer                          |
-| Add adapter           | `python/hexagonal/agents/skills/python-add-adapter/SKILL.md`    | Add an input (HTTP, CLI, event) or output (DB, API client) adapter with layered testing guidance |
-| Write ADR             | `python/hexagonal/agents/skills/write-adr/SKILL.md`             | Scaffold a numbered Architecture Decision Record under `docs/adr/`                               |
-| Format Python code    | `python/hexagonal/agents/skills/format-python-code/SKILL.md`    | Run `ruff` formatting and safe auto-fixes                                                        |
-| Lint Python code      | `python/hexagonal/agents/skills/lint-python-code/SKILL.md`      | Run `ruff` linting and `mypy` type checking                                                      |
-| Run Python tests      | `python/hexagonal/agents/skills/run-python-tests/SKILL.md`      | Run the Python test suite with `pytest`                                                          |
-| Local quality gate    | `python/hexagonal/agents/skills/run-local-quality-gate/SKILL.md`| Orchestrate formatting, linting, type checking, and tests                                        |
+| Skill                 | Path                                                             | Purpose                                                                                          |
+| --------------------- | ---------------------------------------------------------------- | ------------------------------------------------------------------------------------------------ |
+| Bootstrap app         | `python/hexagonal/agents/skills/bootstrap-python-app/SKILL.md`   | Initialise a Python app repo with `uv`, `ruff`, `mypy`, `pytest`, and a hexagonal `src/` layout  |
+| Add hexagonal feature | `python/hexagonal/agents/skills/add-hexagonal-feature/SKILL.md`  | Domain model → application boundaries → application service → unit tests                         |
+| Add port              | `python/hexagonal/agents/skills/python-add-port/SKILL.md`        | Define a focused input or output port contract in the application layer                          |
+| Add adapter           | `python/hexagonal/agents/skills/python-add-adapter/SKILL.md`     | Add an input (HTTP, CLI, event) or output (DB, API client) adapter with layered testing guidance |
+| Write ADR             | `python/hexagonal/agents/skills/write-adr/SKILL.md`              | Scaffold a numbered Architecture Decision Record under `docs/adr/`                               |
+| Format Python code    | `python/hexagonal/agents/skills/format-python-code/SKILL.md`     | Run `ruff` formatting and safe auto-fixes                                                        |
+| Lint Python code      | `python/hexagonal/agents/skills/lint-python-code/SKILL.md`       | Run `ruff` linting and `mypy` type checking                                                      |
+| Write pytest tests    | `python/hexagonal/agents/skills/write-pytest-tests/SKILL.md`     | Write or refactor Python tests in clear, pytest-native style                                     |
+| Run Python tests      | `python/hexagonal/agents/skills/run-python-tests/SKILL.md`       | Run the Python test suite with `pytest`                                                          |
+| Local quality gate    | `python/hexagonal/agents/skills/run-local-quality-gate/SKILL.md` | Orchestrate formatting, linting, type checking, and tests                                        |
 
 #### Ruleset topics covered
 

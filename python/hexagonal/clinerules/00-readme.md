@@ -100,6 +100,7 @@ Prefer short inline references inside the relevant step. Add a dedicated `Relate
 - `write-adr` - Record significant architectural decisions and consequences
 - `format-python-code` - Formats Python code using ruff and applies safe auto-fixes
 - `lint-python-code` - Lints Python code using ruff and mypy for type checking
+- `write-pytest-tests` - Writes or refactors Python tests in clear, pytest-native style
 - `run-python-tests` - Runs automated tests for a Python project using pytest
 - `run-local-quality-gate` - Orchestrates the execution of Python code formatting, linting, type checking, and testing
 
@@ -110,6 +111,7 @@ Prefer short inline references inside the relevant step. Add a dedicated `Relate
   - use `python-add-adapter` when connecting infrastructure or transports
   - use `write-adr` when setup choices need durable documentation
 - From `add-hexagonal-feature`
+  - use `write-pytest-tests` when the feature needs new or revised pytest coverage
   - use `python-add-port` when the feature needs a new application boundary
   - use `python-add-adapter` when the feature needs an input or output adapter
   - use `write-adr` when the feature introduces a meaningful architectural decision
@@ -120,7 +122,10 @@ Prefer short inline references inside the relevant step. Add a dedicated `Relate
 - From `python-add-adapter`
   - use `python-add-port` when the required boundary does not exist yet
   - use `add-hexagonal-feature` when adapter work is part of a full use case change
+  - use `write-pytest-tests` when the adapter needs focused pytest coverage
   - use `write-adr` when integration choices should be documented
+- From `write-pytest-tests`
+  - use `run-python-tests` to execute focused tests during iteration and the full suite before handoff
 - From `write-adr`
   - use it as a documentation companion to feature, port, adapter, or bootstrap work when decisions have lasting architectural impact
 - From `run-local-quality-gate`
