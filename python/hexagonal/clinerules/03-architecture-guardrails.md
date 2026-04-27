@@ -11,7 +11,7 @@ Use this doctrine as the default architecture standard for the codebase. Any dev
 ## Vocabulary
 - **Domain**: Entities, value objects, domain services, and domain errors. No I/O concerns.
 - **Application**: Orchestrates use cases. Defines **ports** (input/output) and coordinates domain behavior.
-- **Ports**: Contracts that isolate the core from infrastructure. Input ports (commands/queries) and output ports (persistence, messaging, external APIs).
+- **Ports**: Application-owned contracts that isolate the core from infrastructure. Input ports describe use case entry points; output ports describe dependencies such as persistence, messaging, and external APIs.
 - **Adapters**: Implementation of ports at the system edge (CLI, HTTP, DB, external APIs, message queues, etc.).
 - **Infrastructure**: Frameworks, SDKs, DB drivers, HTTP clients, serializers, etc. Lives only in adapters.
 
@@ -41,15 +41,15 @@ Forbidden:
 - Handles cross-cutting concerns such as transactions or unit-of-work abstractions.
 
 ### Ports
-- **Input ports**: Methods used by driving adapters (CLI/HTTP/Jobs).
-- **Output ports**: Interfaces for persistence, external services, or notifications.
+- **Input ports**: Contracts that driving adapters call and application services satisfy.
+- **Output ports**: Contracts that application services call and output adapters implement.
 - Ports are defined in the application layer only.
 - Prefer small, explicit port contracts expressed via `Protocol` or ABCs.
 - Port signatures must use domain/application types rather than transport schemas, ORM models, or framework request/response objects.
 - Keep command, query, and result DTOs under `application/dtos/` when the application boundary needs dedicated request/response objects.
 
 ### Adapters
-- Implement ports for external systems.
+- Connect external systems to application-owned ports.
 - Driving adapters call input ports and usually translate external data into application DTOs or other domain/application types explicitly accepted by the port.
 - Driven adapters implement output ports and may construct the domain/application types required by those port signatures.
 - Translate external data structures ↔ DTOs/domain objects.

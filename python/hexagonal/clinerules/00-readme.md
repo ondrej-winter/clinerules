@@ -92,7 +92,7 @@ Skills should own focused procedures. When one skill needs a neighboring task, r
 
 Prefer short inline references inside the relevant step. Add a dedicated `Related skills` section only when a skill has several common handoffs that would otherwise be hard to discover.
 
-### Skill relationship index
+### Skill index
 - `bootstrap-python-app` - Initialize a new Python hexagonal project with base tooling and structure
 - `add-hexagonal-feature` - Add an end-to-end use case across domain, application, and tests
 - `python-add-port` - Define a focused input or output port contract in the application layer
@@ -109,56 +109,18 @@ Prefer short inline references inside the relevant step. Add a dedicated `Relate
 - `run-python-tests` - Runs automated tests for a Python project using pytest
 - `run-local-quality-gate` - Orchestrates the execution of Python code formatting, linting, type checking, and testing
 
-### Typical delegation patterns
-- From `bootstrap-python-app`
-  - use `add-hexagonal-feature` when the project is ready for the first use case
-  - use `python-add-port` when defining a new boundary before feature implementation
-  - use `python-add-adapter` when connecting infrastructure or transports
-  - use `update-project-docs` when setup changes require README or developer-doc updates
-  - use `write-adr` when setup choices need durable documentation
-- From `add-hexagonal-feature`
-  - use `write-pytest-tests` when the feature needs new or revised pytest coverage
-  - use `python-add-port` when the feature needs a new application boundary
-  - use `python-add-adapter` when the feature needs an input or output adapter
-  - use `python-add-env-settings-adapter` when the feature introduces environment-backed runtime configuration
-  - use `update-project-docs` when the feature changes README-visible behavior or configuration
-  - use `add-observability` when the feature adds a critical path that needs metrics, tracing, or troubleshooting notes
-  - use `write-python-docstrings` when new public APIs or non-obvious contracts need in-code documentation
-  - use `write-adr` when the feature introduces a meaningful architectural decision
-- From `python-add-port`
-  - use `add-hexagonal-feature` when the work is broader than defining the port
-  - use `python-add-adapter` when an adapter must implement the new contract
-  - use `write-adr` when boundary design needs explicit rationale
-- From `python-add-adapter`
-  - use `python-add-port` when the required boundary does not exist yet
-  - use `add-hexagonal-feature` when adapter work is part of a full use case change
-  - use `python-add-env-settings-adapter` when the adapter is responsible for loading and validating runtime settings from environment variables or a `.env` file
-  - use `write-pytest-tests` when the adapter needs focused pytest coverage
-  - use `add-observability` when the adapter adds important I/O, retries, or operator-visible failure modes
-  - use `update-project-docs` when the adapter changes external configuration or usage
-  - use `write-adr` when integration choices should be documented
-
-- From `python-add-env-settings-adapter`
-  - use `python-add-adapter` when the work only needs adapter implementation against an existing configuration boundary
-  - use `add-hexagonal-feature` when settings work is part of a broader use case change
-  - use `write-pytest-tests` when configuration parsing or validation needs deeper pytest coverage
-  - use `update-project-docs` when runtime configuration changes require README-visible documentation
-  - use `write-adr` when the configuration approach or boundary should be documented
-- From `split-python-module`
-  - use `write-python-docstrings` when the split creates new public modules or package surfaces
-  - use `update-project-docs` when the split changes public import paths or developer-facing structure docs
-- From `update-project-docs`
-  - use `write-adr` when the documentation update reflects an architectural decision rather than only usage or operations guidance
-- From `add-observability`
-  - use `update-project-docs` when new alerts, dashboards, or troubleshooting notes need durable operator-facing documentation
-- From `write-pytest-tests`
-  - use `run-python-tests` to execute focused tests during iteration and the full suite before handoff
-- From `write-adr`
-  - use it as a documentation companion to feature, port, adapter, or bootstrap work when decisions have lasting architectural impact
-- From `run-local-quality-gate`
-  - use `format-python-code` to apply auto-fixes and format the codebase
-  - use `lint-python-code` to perform linting and type checking
-  - use `run-python-tests` to execute all automated tests
+### Delegation principles
+- Use the most specific skill that owns the current procedure.
+- Use `add-hexagonal-feature` for end-to-end use case work; hand off to
+  `python-add-port`, `python-add-adapter`, or `python-add-env-settings-adapter`
+  for focused boundary and adapter procedures.
+- Use `write-pytest-tests`, `run-python-tests`, and `run-local-quality-gate` for
+  test creation and validation workflows.
+- Use `update-project-docs`, `write-python-docstrings`, and `write-adr` when a
+  change affects user-facing docs, public code contracts, or durable
+  architectural decisions.
+- Keep detailed handoff rules inside the owning skill instead of duplicating
+  full workflows in this README.
 
 ## Enforcement and automation matrix
 Use this map to keep "Must" rules enforceable rather than merely advisory.
