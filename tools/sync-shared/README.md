@@ -47,6 +47,7 @@ From the repository root, you can also use:
 make sync
 make sync-delete
 make sync-reset
+make validate
 ```
 
 Recommended workflow:
@@ -61,6 +62,9 @@ Run `make sync` after shared-source edits so the derived targets under
 
 Run `uv run tools/sync-shared/sync_shared.py check` when you want a non-mutating
 verification pass, such as in pre-commit or before handoff.
+
+Run `make validate` before handoff to combine the sync drift check with the
+repository convention checks and Python compile check.
 
 If you change shared content and repository inventory docs in the same update,
 run `make sync` before final review so generated targets reflect the current

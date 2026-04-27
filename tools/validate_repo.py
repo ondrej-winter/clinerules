@@ -12,6 +12,21 @@ SKILL_PATHS = (
     REPO_ROOT / 'python' / 'hexagonal' / 'agents' / 'skills',
 )
 README_PATH = REPO_ROOT / 'README.md'
+SKILL_NAME_PATTERN = re.compile(r'^[a-z0-9]+(?:-[a-z0-9]+)*$')
+SKIP_MARKDOWN_DIRS = {
+    '.git',
+    '.cline-logs',
+    '.mypy_cache',
+    '.pytest_cache',
+    '.ruff_cache',
+    '.venv',
+    '__pycache__',
+    'node_modules',
+}
+
+
+def repo_relative(path: Path) -> str:
+    return path.relative_to(REPO_ROOT).as_posix()
 
 
 def iter_skill_files() -> list[Path]:
@@ -23,30 +38,107 @@ def iter_skill_files() -> list[Path]:
     return files
 
 
+def iter_markdown_files() -> list[Path]:
+    files: list[Path] = []
+    for path in REPO_ROOT.rglob('*.md'):
+        if any(part in SKIP_MARKDOWN_DIRS for part in path.relative_to(REPO_ROOT).parts):
+            continue
+        files.append(path)
+    return sorted(files)
+
+
+def extract_frontmatter(text: str, path: Path) -> tuple[str, str, list[str]]:
+    if not text.startswith('---\n'):
+        return '', text, [f"{repo_relative(path)}: missing YAML frontmatter start"]
+
+    parts = text.split('---\n', 2)
+    if len(parts) < 3:
+        return '', text, [f"{repo_relative(path)}: malformed YAML frontmatter"]
+
+    return parts[1], parts[2].lstrip('\n'), []
+
+
+def extract_frontmatter_field(frontmatter: str, field_name: str) -> str | None:
+    match = re.search(rf'^{field_name}:\s+(.+)$', frontmatter, flags=re.MULTILINE)
+    if match is None:
+        return None
+    return match.group(1).strip()
+
+
+def validate_skill_name(path: Path, frontmatter: str) -> list[str]:
+    errors: list[str] = []
+    skill_name = extract_frontmatter_field(frontmatter, 'name')
+    if skill_name is None:
+        return errors
+
+    if not SKILL_NAME_PATTERN.fullmatch(skill_name):
+        errors.append(f"{repo_relative(path)}: frontmatter name is not kebab-case: {skill_name}")
+
+    expected_name = path.parent.name
+    if skill_name != expected_name:
+        errors.append(
+            f"{repo_relative(path)}: frontmatter name does not match directory "
+            f"name: {skill_name} != {expected_name}"
+        )
+
+    return errors
+
+
 def validate_skill_file(path: Path) -> list[str]:
     errors: list[str] = []
     text = path.read_text(encoding='utf-8')
 
-    if not text.startswith('---\n'):
-        return [f"{path.relative_to(REPO_ROOT)}: missing YAML frontmatter start"]
-
-    parts = text.split('---\n', 2)
-    if len(parts) < 3:
-        return [f"{path.relative_to(REPO_ROOT)}: malformed YAML frontmatter"]
-
-    frontmatter = parts[1]
-    body = parts[2].lstrip('\n')
+    frontmatter, body, frontmatter_errors = extract_frontmatter(text, path)
+    if frontmatter_errors:
+        return frontmatter_errors
 
     if not re.search(r'^name:\s+.+$', frontmatter, flags=re.MULTILINE):
-        errors.append(f"{path.relative_to(REPO_ROOT)}: missing frontmatter name field")
+        errors.append(f"{repo_relative(path)}: missing frontmatter name field")
     if not re.search(r'^description:\s+.+$', frontmatter, flags=re.MULTILINE):
         errors.append(
-            f"{path.relative_to(REPO_ROOT)}: missing frontmatter description field"
+            f"{repo_relative(path)}: missing frontmatter description field"
         )
     if not body.startswith('# '):
         errors.append(
-            f"{path.relative_to(REPO_ROOT)}: missing top-level heading after frontmatter"
+            f"{repo_relative(path)}: missing top-level heading after frontmatter"
         )
+    errors.extend(validate_skill_name(path, frontmatter))
+
+    return errors
+
+
+def validate_markdown_plain_formatting(path: Path) -> list[str]:
+    errors: list[str] = []
+    lines = path.read_text(encoding='utf-8').splitlines()
+    in_fence = False
+    fence_marker = ''
+    frontmatter_end_line: int | None = None
+
+    if lines and lines[0] == '---':
+        for line_number, line in enumerate(lines[1:], start=2):
+            if line == '---':
+                frontmatter_end_line = line_number
+                break
+
+    for line_number, line in enumerate(lines, start=1):
+        stripped = line.strip()
+        if stripped.startswith(('```', '~~~')):
+            marker = stripped[:3]
+            if not in_fence:
+                in_fence = True
+                fence_marker = marker
+            elif marker == fence_marker:
+                in_fence = False
+                fence_marker = ''
+            continue
+
+        if in_fence or stripped != '---':
+            continue
+
+        if line_number == 1 or line_number == frontmatter_end_line:
+            continue
+
+        errors.append(f"{repo_relative(path)}:{line_number}: decorative horizontal rule")
 
     return errors
 
@@ -86,6 +178,9 @@ def main() -> int:
 
     for skill_file in iter_skill_files():
         errors.extend(validate_skill_file(skill_file))
+
+    for markdown_file in iter_markdown_files():
+        errors.extend(validate_markdown_plain_formatting(markdown_file))
 
     errors.extend(validate_readme_paths())
 

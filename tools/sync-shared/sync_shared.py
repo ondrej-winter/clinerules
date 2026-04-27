@@ -13,12 +13,16 @@ REPO_ROOT = Path(__file__).resolve().parent.parent.parent
 
 @dataclass(frozen=True)
 class SyncEntry:
+    """Repo-relative shared source and the targets derived from it."""
+
     source: str
     targets: tuple[str, ...]
 
 
 @dataclass(frozen=True)
 class SyncCheckIssue:
+    """A missing, mismatched, or drifted sync target."""
+
     source: Path
     target: Path
     issue: str
@@ -55,6 +59,8 @@ SYNC_MAP: tuple[SyncEntry, ...] = (
 
 
 def parse_args() -> argparse.Namespace:
+    """Parse the sync command to run."""
+
     parser = argparse.ArgumentParser(
         description='Sync shared repository assets to configured targets.'
     )
@@ -69,6 +75,8 @@ def parse_args() -> argparse.Namespace:
 
 
 def resolve_repo_path(relative_path: str) -> Path:
+    """Resolve a repo-relative path and reject paths outside the repository."""
+
     path = (REPO_ROOT / relative_path).resolve()
     repo_root = REPO_ROOT.resolve()
 
@@ -80,7 +88,15 @@ def resolve_repo_path(relative_path: str) -> Path:
     return path
 
 
+def repo_relative(path: Path) -> Path:
+    """Return a path relative to the repository root for display."""
+
+    return path.relative_to(REPO_ROOT)
+
+
 def resolve_file_target(source: Path, target_relative: str) -> Path:
+    """Resolve a file target, treating trailing slashes as target directories."""
+
     if target_relative.endswith(('/', '\\')):
         return resolve_repo_path(str(Path(target_relative) / source.name))
 
@@ -88,6 +104,8 @@ def resolve_file_target(source: Path, target_relative: str) -> Path:
 
 
 def compare_paths(source: Path, target: Path) -> list[SyncCheckIssue]:
+    """Return differences between a source file or directory and its target."""
+
     if not target.exists():
         return [SyncCheckIssue(source=source, target=target, issue='missing_target')]
 
@@ -145,6 +163,8 @@ def compare_paths(source: Path, target: Path) -> list[SyncCheckIssue]:
 
 
 def collect_sync_issues(entry: SyncEntry) -> list[SyncCheckIssue]:
+    """Collect sync drift issues for one configured mapping."""
+
     source = resolve_repo_path(entry.source)
     issues: list[SyncCheckIssue] = []
 
@@ -162,6 +182,8 @@ def collect_sync_issues(entry: SyncEntry) -> list[SyncCheckIssue]:
 
 
 def sync_file(source_relative: str, target_relative: str) -> None:
+    """Copy one shared file to one configured target."""
+
     source = resolve_repo_path(source_relative)
     target = resolve_file_target(source, target_relative)
 
@@ -170,10 +192,12 @@ def sync_file(source_relative: str, target_relative: str) -> None:
 
     target.parent.mkdir(parents=True, exist_ok=True)
     shutil.copy2(source, target)
-    print(f"Synced {source_relative} -> {target.relative_to(REPO_ROOT)}")
+    print(f"Synced {source_relative} -> {repo_relative(target)}")
 
 
 def sync_directory(source_relative: str, target_relative: str) -> None:
+    """Replace one target directory with a copy of one shared directory."""
+
     source = resolve_repo_path(source_relative)
     target = resolve_repo_path(target_relative)
 
@@ -192,6 +216,8 @@ def sync_directory(source_relative: str, target_relative: str) -> None:
 
 
 def sync_entry(entry: SyncEntry) -> None:
+    """Sync all targets for one configured source."""
+
     source = resolve_repo_path(entry.source)
 
     if source.is_file():
@@ -208,6 +234,8 @@ def sync_entry(entry: SyncEntry) -> None:
 
 
 def delete_target(target_relative: str) -> None:
+    """Delete one configured target file or directory if it exists."""
+
     target = resolve_repo_path(target_relative)
 
     if not target.exists():
@@ -224,22 +252,28 @@ def delete_target(target_relative: str) -> None:
 
 
 def delete_entry_targets(entry: SyncEntry) -> None:
+    """Delete every target derived from one configured source."""
+
     source = resolve_repo_path(entry.source)
 
     for target_relative in entry.targets:
         if source.is_file():
-            delete_target(str(resolve_file_target(source, target_relative).relative_to(REPO_ROOT)))
+            delete_target(str(repo_relative(resolve_file_target(source, target_relative))))
             continue
 
         delete_target(target_relative)
 
 
 def delete_all_targets() -> None:
+    """Delete all configured sync targets."""
+
     for entry in SYNC_MAP:
         delete_entry_targets(entry)
 
 
 def check_all_targets() -> int:
+    """Check every configured target and return a process exit code."""
+
     issues: list[SyncCheckIssue] = []
     for entry in SYNC_MAP:
         issues.extend(collect_sync_issues(entry))
@@ -250,8 +284,8 @@ def check_all_targets() -> int:
 
     for issue in sorted(issues, key=lambda item: (str(item.target), item.issue, str(item.source))):
         summary = (
-            f"{issue.issue}: {issue.source.relative_to(REPO_ROOT)} -> "
-            f"{issue.target.relative_to(REPO_ROOT)}"
+            f"{issue.issue}: {repo_relative(issue.source)} -> "
+            f"{repo_relative(issue.target)}"
         )
         if issue.details:
             summary = f'{summary} ({issue.details})'
@@ -261,6 +295,8 @@ def check_all_targets() -> int:
 
 
 def main() -> int:
+    """Run the requested sync command."""
+
     args = parse_args()
 
     if args.command == 'check':

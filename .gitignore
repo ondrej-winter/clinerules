@@ -1,2 +1,8 @@
 .cline-logs/
+.DS_Store
+.mypy_cache/
+.pytest_cache/
+.ruff_cache/
+.venv/
 __pycache__/
+*.py[cod]

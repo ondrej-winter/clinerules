@@ -1,4 +1,4 @@
-.PHONY: help sync sync-delete sync-reset tokens update
+.PHONY: help sync sync-delete sync-reset tokens compile validate update
 
 help:
 	@echo "Available targets:"
@@ -6,6 +6,8 @@ help:
 	@echo "  sync-delete  Delete all configured sync targets"
 	@echo "  sync-reset   Delete and recreate all configured sync targets"
 	@echo "  tokens       Update the repository token map"
+	@echo "  compile      Compile repository Python scripts"
+	@echo "  validate     Run repository validation checks"
 	@echo "  update       Reset synced assets and update the token map"
 
 sync:
@@ -19,5 +21,13 @@ sync-reset:
 
 tokens:
 	uv run tools/tokens/repo_token_map.py
+
+compile:
+	python3 -m compileall tools shared/clinerules/hooks python/hexagonal/clinerules/hooks
+	find tools shared/clinerules/hooks python/hexagonal/clinerules/hooks -type d -name __pycache__ -prune -exec rm -rf {} +
+
+validate: compile
+	python3 tools/sync-shared/sync_shared.py check
+	python3 tools/validate_repo.py
 
 update: sync-reset tokens

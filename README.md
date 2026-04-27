@@ -8,7 +8,7 @@ Currently includes a Python hexagonal-architecture ruleset for Cline, focused on
 
 - `tools/tokens/repo_token_map.py`: Scans `shared/` and `python/` recursively and writes one tree-style Markdown token map at `tools/tokens/repo-token-map.md`.
 - `tools/sync-shared/sync_shared.py`: Copies shared repository assets into their configured target locations and can verify whether derived targets have drifted from their shared sources. It supports file and directory sources, multiple targets per source, cleanup of all configured targets, and a non-mutating drift check.
-- `tools/validate_repo.py`: Validates repository-specific conventions for skill frontmatter and repository inventory path references.
+- `tools/validate_repo.py`: Validates repository-specific conventions for skill frontmatter, skill names, plain Markdown formatting, and repository inventory path references.
 
 Current sync behavior is configured in the script manifest. One source can fan out to multiple repo-relative targets, and directory sources are copied recursively.
 
@@ -28,9 +28,15 @@ make sync
 make sync-delete
 make sync-reset
 make tokens
+make compile
+make validate
 make update
 python3 tools/validate_repo.py
 ```
+
+Run `make validate` before handoff to check synced assets, repository
+conventions, and Python script syntax. Run `make tokens` after changes under
+`shared/` or `python/` that should be reflected in the token map.
 
 ## Repository-specific inventory
 

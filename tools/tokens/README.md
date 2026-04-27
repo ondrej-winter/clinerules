@@ -16,11 +16,16 @@ From the repository root, you can also use:
 
 ```bash
 make tokens
+make update
 ```
 
 Generated output:
 
 - `tools/tokens/repo-token-map.md`
+
+Refresh the token map after content changes under `shared/` or `python/` so the
+generated report stays aligned with reusable assets. Use `make update` when you
+also need to reset synced shared assets.
 
 ## Optional usage
 

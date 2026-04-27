@@ -21,6 +21,7 @@ DEFAULT_OUTPUT = 'tools/tokens/repo-token-map.md'
 DEFAULT_ENCODING = 'cl100k_base'
 SKIP_DIRS = {
     '.git',
+    '.cline-logs',
     '.mypy_cache',
     '.pytest_cache',
     '.ruff_cache',
@@ -29,6 +30,7 @@ SKIP_DIRS = {
     'node_modules',
 }
 SKIP_SUFFIXES = {
+    '.DS_Store',
     '.png',
     '.jpg',
     '.jpeg',
@@ -59,12 +61,16 @@ SKIP_SUFFIXES = {
 
 @dataclass(slots=True)
 class FileStat:
+    """Token count for one repo-relative text file."""
+
     path: Path
     tokens: int
 
 
 @dataclass(slots=True)
 class TreeNode:
+    """Directory tree node with aggregate token counts."""
+
     name: str
     path: Path
     is_dir: bool
@@ -73,6 +79,8 @@ class TreeNode:
 
 
 def parse_args() -> argparse.Namespace:
+    """Parse token map generation options."""
+
     parser = argparse.ArgumentParser(
         description='Generate a tree-style Markdown token map for repository folders.'
     )
@@ -96,6 +104,8 @@ def parse_args() -> argparse.Namespace:
 
 
 def is_probably_binary(data: bytes) -> bool:
+    """Heuristically detect binary content before UTF-8 decoding."""
+
     if not data:
         return False
     if b'\x00' in data:
@@ -109,12 +119,16 @@ def is_probably_binary(data: bytes) -> bool:
 
 
 def should_skip(path: Path) -> bool:
+    """Return whether a path should be excluded from token counting."""
+
     if any(part in SKIP_DIRS for part in path.parts):
         return True
     return path.suffix.lower() in SKIP_SUFFIXES
 
 
 def iter_files(root: Path) -> list[Path]:
+    """Return all countable files under a scan root."""
+
     files: list[Path] = []
     for path in root.rglob('*'):
         if not path.is_file() or should_skip(path):
@@ -124,6 +138,8 @@ def iter_files(root: Path) -> list[Path]:
 
 
 def read_text_file(path: Path) -> str | None:
+    """Read a text file, returning None for unreadable or binary files."""
+
     try:
         raw = path.read_bytes()
     except OSError:
@@ -137,6 +153,8 @@ def read_text_file(path: Path) -> str | None:
 
 
 def collect_stats(repo_root: Path, scan_roots: list[str], encoding_name: str) -> list[FileStat]:
+    """Collect token counts for all text files in the requested roots."""
+
     encoding = tiktoken.get_encoding(encoding_name)
     stats: list[FileStat] = []
     for root_name in scan_roots:
@@ -158,6 +176,8 @@ def collect_stats(repo_root: Path, scan_roots: list[str], encoding_name: str) ->
 
 
 def build_tree(stats: list[FileStat]) -> TreeNode:
+    """Build an aggregate token tree from file statistics."""
+
     root = TreeNode(name='.', path=Path('.'), is_dir=True)
     for stat in stats:
         current = root
@@ -174,6 +194,8 @@ def build_tree(stats: list[FileStat]) -> TreeNode:
 
 
 def render_node(node: TreeNode, prefix: str = '', is_last: bool = True) -> list[str]:
+    """Render one tree node and its children as text tree lines."""
+
     label = f"{node.name}/" if node.is_dir and node.name != '.' else node.name
     if node.name == '.':
         lines: list[str] = []
@@ -198,6 +220,8 @@ def render_node(node: TreeNode, prefix: str = '', is_last: bool = True) -> list[
 
 
 def build_report(stats: list[FileStat], scan_roots: list[str], encoding_name: str) -> str:
+    """Build the complete Markdown token map report."""
+
     tree = build_tree(stats)
     body_lines: list[str] = []
     root_nodes = [tree.children[root] for root in scan_roots if root in tree.children]
@@ -223,11 +247,15 @@ def build_report(stats: list[FileStat], scan_roots: list[str], encoding_name: st
 
 
 def write_text(path: Path, content: str) -> None:
+    """Write text content, creating parent directories when needed."""
+
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(content, encoding='utf-8')
 
 
 def main() -> int:
+    """Generate the token map and return a process exit code."""
+
     args = parse_args()
     repo_root = Path(__file__).resolve().parent.parent.parent
     stats = collect_stats(repo_root, args.roots, args.encoding)

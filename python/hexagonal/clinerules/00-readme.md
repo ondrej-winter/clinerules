@@ -84,7 +84,7 @@
 
 ## Workflows
 - `workflows/update-repo-navigation.md` - Generate project-specific navigation maps when adapting this reusable ruleset to a concrete project
-- `workflows/improve.md` - Focused improvement workflow; mirrors `shared/clinerules/workflows/improve.md` and is included here for drop-in portability
+- `workflows/improve.md` - Focused improvement workflow included here for drop-in portability
 
 ## Related skills
 
