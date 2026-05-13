@@ -13,6 +13,28 @@ SKILL_PATHS = (
 )
 README_PATH = REPO_ROOT / 'README.md'
 SKILL_NAME_PATTERN = re.compile(r'^[a-z0-9]+(?:-[a-z0-9]+)*$')
+EMOJI_PATTERN = re.compile(
+    '['
+    '\U0001F300-\U0001FAFF'
+    '\U00002700-\U000027BF'
+    '\U00002600-\U000026FF'
+    ']'
+)
+DECORATIVE_SEPARATOR_PATTERN = re.compile(r'^([=*_])\1{3,}$|^-{4,}$')
+REUSABLE_ASSET_PATHS = (
+    REPO_ROOT / 'shared',
+    REPO_ROOT / 'python' / 'hexagonal',
+)
+REPO_SPECIFIC_REFERENCE_PATTERNS = (
+    re.compile(r'/Users/'),
+    re.compile(r'ondrej', flags=re.IGNORECASE),
+    re.compile(r'nosync', flags=re.IGNORECASE),
+    re.compile(r'clinerules repository', flags=re.IGNORECASE),
+    re.compile(r'repo-token-map'),
+    re.compile(r'tools/'),
+    re.compile(r'shared/'),
+    re.compile(r'python/hexagonal/'),
+)
 SKIP_MARKDOWN_DIRS = {
     '.git',
     '.cline-logs',
@@ -45,6 +67,18 @@ def iter_markdown_files() -> list[Path]:
             continue
         files.append(path)
     return sorted(files)
+
+
+def is_relative_to(path: Path, root: Path) -> bool:
+    try:
+        path.relative_to(root)
+    except ValueError:
+        return False
+    return True
+
+
+def is_reusable_asset(path: Path) -> bool:
+    return any(is_relative_to(path, root) for root in REUSABLE_ASSET_PATHS)
 
 
 def extract_frontmatter(text: str, path: Path) -> tuple[str, str, list[str]]:
@@ -133,6 +167,12 @@ def validate_markdown_plain_formatting(path: Path) -> list[str]:
             continue
 
         if in_fence or stripped != '---':
+            if in_fence:
+                continue
+            if EMOJI_PATTERN.search(line):
+                errors.append(f"{repo_relative(path)}:{line_number}: emoji character")
+            if DECORATIVE_SEPARATOR_PATTERN.fullmatch(stripped):
+                errors.append(f"{repo_relative(path)}:{line_number}: decorative separator")
             continue
 
         if line_number == 1 or line_number == frontmatter_end_line:
@@ -140,6 +180,22 @@ def validate_markdown_plain_formatting(path: Path) -> list[str]:
 
         errors.append(f"{repo_relative(path)}:{line_number}: decorative horizontal rule")
 
+    return errors
+
+
+def validate_reusable_asset_portability(path: Path) -> list[str]:
+    if not is_reusable_asset(path):
+        return []
+
+    errors: list[str] = []
+    lines = path.read_text(encoding='utf-8').splitlines()
+    for line_number, line in enumerate(lines, start=1):
+        for pattern in REPO_SPECIFIC_REFERENCE_PATTERNS:
+            if pattern.search(line):
+                errors.append(
+                    f"{repo_relative(path)}:{line_number}: "
+                    f"repo-specific reference in reusable asset: {pattern.pattern}"
+                )
     return errors
 
 
@@ -181,6 +237,7 @@ def main() -> int:
 
     for markdown_file in iter_markdown_files():
         errors.extend(validate_markdown_plain_formatting(markdown_file))
+        errors.extend(validate_reusable_asset_portability(markdown_file))
 
     errors.extend(validate_readme_paths())
 

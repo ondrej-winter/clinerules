@@ -1,14 +1,32 @@
 # clinerules
 
-Collection of curated clinerules.
+Collection of reusable Cline rules, skills, workflows, and supporting
+maintenance tools.
 
-Currently includes a Python hexagonal-architecture ruleset for Cline, focused on practical repository standards and development workflow guidance.
+The repository currently includes a Python hexagonal-architecture ruleset focused
+on practical repository standards, development workflow guidance, and drop-in
+portable assets that can be copied into other projects.
+
+## Maintenance workflow
+
+Reusable content should remain self-contained and free of local repository
+assumptions unless a section is clearly marked as repo-specific. Keep generated
+outputs and synced assets aligned before handoff.
+
+Typical maintenance flow:
+
+1. Edit reusable assets under the relevant source directory.
+2. Run `make sync` or `make sync-reset` when shared sources should be copied to
+   derived targets.
+3. Run `make tokens` after changes under reusable content roots that should be
+   reflected in the token map.
+4. Run `make validate` before handoff.
 
 ## Repository tools
 
 - `tools/tokens/repo_token_map.py`: Scans `shared/` and `python/` recursively and writes one tree-style Markdown token map at `tools/tokens/repo-token-map.md`.
 - `tools/sync-shared/sync_shared.py`: Copies shared repository assets into their configured target locations and can verify whether derived targets have drifted from their shared sources. It supports file and directory sources, multiple targets per source, cleanup of all configured targets, and a non-mutating drift check.
-- `tools/validate_repo.py`: Validates repository-specific conventions for skill frontmatter, skill names, plain Markdown formatting, and repository inventory path references.
+- `tools/validate_repo.py`: Validates repository-specific conventions for skill frontmatter, skill names, plain Markdown formatting, reusable-asset portability, and repository inventory path references.
 
 Current sync behavior is configured in the script manifest. One source can fan out to multiple repo-relative targets, and directory sources are copied recursively.
 
@@ -35,8 +53,9 @@ python3 tools/validate_repo.py
 ```
 
 Run `make validate` before handoff to check synced assets, repository
-conventions, and Python script syntax. Run `make tokens` after changes under
-`shared/` or `python/` that should be reflected in the token map.
+conventions, reusable-asset portability, and Python script syntax. Run
+`make tokens` after changes under `shared/` or `python/` that should be reflected
+in the token map.
 
 ## Repository-specific inventory
 
