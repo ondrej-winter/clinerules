@@ -121,6 +121,7 @@ If the ADR directory already contains an index file such as `README.md` or
 ```
 
 ## Good ADR practices
+
 - Focus on why and what was decided, not step-by-step implementation details.
 - Keep the context factual and specific.
 - Record one decision per ADR.

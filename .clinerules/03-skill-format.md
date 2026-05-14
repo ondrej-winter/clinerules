@@ -39,6 +39,7 @@ description: Brief description of what this skill does and when to use it.
 Detailed instructions for Cline to follow when this skill is activated.
 
 ## Steps
+
 1. First, do this
 2. Then do that
 3. For advanced usage, see [advanced.md](docs/advanced.md)

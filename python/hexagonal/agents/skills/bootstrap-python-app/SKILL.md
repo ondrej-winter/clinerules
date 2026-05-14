@@ -180,12 +180,12 @@ Write a `README.md` that includes:
 
 ## Hexagonal architecture conventions
 
-| Layer             | Directory                         | Rule                                                                                 |
-| ----------------- | --------------------------------- | ------------------------------------------------------------------------------------ |
-| Domain            | `src/<app_name>/domain/`          | No imports from `application` or `adapters`. Pure Python only.                       |
+| Layer             | Directory                         | Rule                                                                                                        |
+| ----------------- | --------------------------------- | ----------------------------------------------------------------------------------------------------------- |
+| Domain            | `src/<app_name>/domain/`          | No imports from `application` or `adapters`. Pure Python only.                                              |
 | Application       | `src/<app_name>/application/`     | Depends only on `domain`. Keeps use cases in `use_cases/`, ports in `ports/`, and boundary DTOs in `dtos/`. |
-| Adapters (input)  | `src/<app_name>/adapters/input/`  | Calls input ports and maps external data to application boundary types.               |
-| Adapters (output) | `src/<app_name>/adapters/output/` | Implements output ports and keeps infrastructure types inside adapters.               |
+| Adapters (input)  | `src/<app_name>/adapters/input/`  | Calls input ports and maps external data to application boundary types.                                     |
+| Adapters (output) | `src/<app_name>/adapters/output/` | Implements output ports and keeps infrastructure types inside adapters.                                     |
 
 If appropriate for the project, enforce these rules with an import linter such
 as `import-linter`, or document them in a root-level `ARCHITECTURE.md`.

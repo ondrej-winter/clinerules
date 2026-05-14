@@ -5,6 +5,7 @@ Use these guidelines to organize and navigate code in hexagonal Python projects.
 ## Standard directory structure
 
 ### Source layout pattern
+
 Prefer a `src/<package_name>/` layout for libraries and reusable services. Smaller applications may use `<package_name>/` at the project root if packaging and test imports stay clear.
 
 In monorepos, apply this mental model to each package or service, and keep entry points, tests, and docs discoverable near each package root.
@@ -26,6 +27,7 @@ src/<package_name>/
 ```
 
 ### Test layout pattern
+
 ```
 tests/
 ├── unit/                   # Fast, isolated unit tests
@@ -44,6 +46,7 @@ tests/
 Test directories should mirror the source structure where practical. `e2e/` may be organized by user flow instead of strict source mirroring.
 
 ## Documentation and configuration
+
 - `README.md`: project onboarding, setup, and usage
 - `docs/`: architecture decision records (ADRs) and design docs
 - `examples/`: runnable code examples and integration snippets when useful
@@ -59,6 +62,7 @@ For reusable command recipes and the step-by-step process for generating a
 project-specific navigation guide, use `workflows/update-repo-navigation.md`.
 
 ## Navigation principles
+
 - **Layer isolation**: code in `domain/` should not import from `adapters/` or `application/`
 - **Port discovery**: look in `application/ports/` to understand system boundaries
 - **DTO discovery**: look in `application/dtos/` for command, query, and result types that define the application boundary
