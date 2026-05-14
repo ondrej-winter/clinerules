@@ -71,6 +71,7 @@ Forbidden:
 - **Must** keep dependency wiring, service construction, and framework bootstrapping in entry points or dedicated bootstrap/composition-root modules.
 - **Must** keep framework request/response objects, ORM models, serializer models, and transport schemas inside adapters.
 - **Must** keep environment/config lookups, secret loading, and framework settings access in adapters or bootstrap modules rather than scattering them through the core.
+- Detailed settings DTO, environment-backed adapter, config validation, and secret-safety rules live in `008-configuration-and-secrets.md`.
 - **Should** keep transport and event-loop concerns at I/O boundaries; use async in the core only when business semantics truly require asynchronous contracts.
 - **Must not** let dependency-injection containers or service locators leak into domain entities or application use cases.
 
@@ -86,7 +87,7 @@ Forbidden:
 - `application/`: use cases + ports + DTOs under `application/dtos/`.
 - `adapters/`: input (CLI/HTTP/GraphQL) and output (persistence, external APIs, messaging, etc.).
 - `infrastructure/` (optional): shared infra utilities used by adapters only.
-- Detailed file splitting, package export, and `__init__.py` mechanics are governed by `06-module-structure.md`.
+- Detailed file splitting, package export, and `__init__.py` mechanics are governed by `006-module-structure.md`.
 
 ## Naming conventions (layer-aware)
 
@@ -108,5 +109,5 @@ Adapters at the same conceptual level **must** be organized uniformly to keep na
 
 - **Must** keep adapter structure consistent within the same conceptual category.
 - **Must** avoid mixing one-off standalone adapters with subdirectory-based adapters without a documented reason.
-- **Must** keep adapter naming and packaging aligned with the package-structure rules in `06-module-structure.md`.
-- For directory, file naming, and export conventions, follow `06-module-structure.md`.
+- **Must** keep adapter naming and packaging aligned with the package-structure rules in `006-module-structure.md`.
+- For directory, file naming, and export conventions, follow `006-module-structure.md`.

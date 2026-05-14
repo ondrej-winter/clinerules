@@ -2,7 +2,7 @@
 
 Use these rules to keep documentation useful without being verbose.
 
-This file governs documentation written inside source code. Requirements for README updates, ADRs, and changelog notes live in `05-docs-and-adr.md`.
+This file governs documentation written inside source code. Requirements for README updates, ADRs, and changelog notes live in `005-docs-and-adr.md`.
 Use the `write-python-docstrings` skill when you need templates or a drafting
 workflow for module, class, function, or inline documentation.
 

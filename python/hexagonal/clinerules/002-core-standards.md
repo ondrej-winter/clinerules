@@ -41,7 +41,8 @@ Use these rules for all Python code in the project to keep behavior predictable 
 
 - Validate and normalize external inputs at **adapter boundaries** before calling application ports.
 - Keep **mapping** between external schemas and application DTOs or other port-approved domain types inside adapters.
-- For broader hexagonal boundary doctrine, see `03-architecture-guardrails.md`.
+- For broader hexagonal boundary doctrine, see `003-architecture-guardrails.md`.
+- For environment lookups, settings DTOs, config validation, and secret-handling mechanics, see `008-configuration-and-secrets.md`.
 
 ## Error handling
 
@@ -60,4 +61,5 @@ Use these rules for all Python code in the project to keep behavior predictable 
 - Use the configured logger instead of `print()` in production code.
 - Never log secrets, tokens, API keys, or other sensitive data.
 - Keep logging setup centralized.
-- For logger naming, structured context, log levels, and implementation mechanics, see `12-logging-conventions.md`.
+- Keep configuration and secret-source handling centralized according to `008-configuration-and-secrets.md`.
+- For logger naming, structured context, log levels, and implementation mechanics, see `013-logging-conventions.md`.

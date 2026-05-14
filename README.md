@@ -121,6 +121,7 @@ Drop-in SKILL.md files that guide Cline through common development tasks:
 - Docs and ADR guidance
 - Module structure conventions
 - Performance and observability guidance
+- Configuration and secrets management
 - Repo navigation workflow
 - PR and commit hygiene
 - Tooling and CI expectations

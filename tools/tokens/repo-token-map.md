@@ -1,8 +1,8 @@
 # Repo token map
 
 Scanned roots: shared, python
-Files counted: 39
-Total tokens: 30640
+Files counted: 40
+Total tokens: 31448
 Tokenizer encoding: cl100k_base
 
 ## Tree
@@ -26,8 +26,8 @@ Tokenizer encoding: cl100k_base
 │       │   └── improve.md (436)
 │       ├── 001-cline-operating-guidance.md (405)
 │       └── 999-command-execution-safety.md (1005)
-└── python/ (24986)
-    └── hexagonal/ (24986)
+└── python/ (25794)
+    └── hexagonal/ (25794)
         ├── agents/ (12494)
         │   └── skills/ (12494)
         │       ├── add-hexagonal-feature/ (1044)
@@ -60,22 +60,23 @@ Tokenizer encoding: cl100k_base
         │       │   └── SKILL.md (1176)
         │       └── write-python-docstrings/ (551)
         │           └── SKILL.md (551)
-        └── clinerules/ (12492)
+        └── clinerules/ (13300)
             ├── workflows/ (1065)
             │   ├── improve.md (436)
             │   └── update-repo-navigation.md (629)
-            ├── 00-readme.md (2516)
+            ├── 000-readme.md (2590)
             ├── 001-cline-operating-guidance.md (405)
-            ├── 02-core-standards.md (870)
-            ├── 03-architecture-guardrails.md (1242)
-            ├── 04-testing-standards.md (708)
-            ├── 05-docs-and-adr.md (365)
-            ├── 06-module-structure.md (932)
-            ├── 07-performance-and-observability.md (544)
-            ├── 08-repo-navigation.md (737)
-            ├── 09-pr-and-commit-hygiene.md (340)
-            ├── 10-tooling-and-ci.md (566)
-            ├── 11-documentation-standards.md (574)
-            ├── 12-logging-conventions.md (623)
+            ├── 002-core-standards.md (918)
+            ├── 003-architecture-guardrails.md (1270)
+            ├── 004-testing-standards.md (708)
+            ├── 005-docs-and-adr.md (365)
+            ├── 006-module-structure.md (932)
+            ├── 007-performance-and-observability.md (544)
+            ├── 008-configuration-and-secrets.md (641)
+            ├── 009-repo-navigation.md (737)
+            ├── 010-pr-and-commit-hygiene.md (340)
+            ├── 011-tooling-and-ci.md (566)
+            ├── 012-documentation-standards.md (574)
+            ├── 013-logging-conventions.md (640)
             └── 999-command-execution-safety.md (1005)
 ```

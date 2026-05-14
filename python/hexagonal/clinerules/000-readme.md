@@ -4,7 +4,7 @@
 
 - Files in `.clinerules/` are **active** rules.
 - This ruleset is an **opinionated reusable profile** for Python projects using hexagonal architecture with Cline.
-- Rule files use sortable prefixes (for example `00-`, `001-`, `02-`, `03-`) to keep the reading order stable.
+- Rule files use sortable three-digit prefixes (for example `000-`, `001-`, `002-`) to keep the reading order stable.
 - Each file should focus on a single theme (core standards, architecture, testing, etc.).
 
 ## Opinionated defaults
@@ -62,33 +62,35 @@
 ### Topic ownership map
 
 - `001-cline-operating-guidance.md`: lightweight Cline operating behavior, scope control, and validation discipline shared across rulesets
-- `02-core-standards.md`: universal coding behavior, typing defaults, DTO boundary guidance, error handling, and baseline logging policy
-- `03-architecture-guardrails.md`: architecture boundaries, dependency direction, and ports/adapters responsibilities
-- `04-testing-standards.md`: automated testing expectations; detailed pytest mechanics belong in `write-pytest-tests`
-- `05-docs-and-adr.md`: required project documentation outside source code; concrete update workflow belongs in `update-project-docs`
-- `06-module-structure.md`: file, package, and export mechanics; restructuring workflow belongs in `split-python-module`
-- `07-performance-and-observability.md`: performance expectations and runtime visibility; concrete instrumentation workflow belongs in `add-observability`
-- `08-repo-navigation.md`: project discovery, canonical layout, and navigation principles; command recipes belong in `workflows/update-repo-navigation.md`
-- `09-pr-and-commit-hygiene.md`: review and change-management discipline
-- `10-tooling-and-ci.md`: dependency-group, local quality gate, and CI policy; command sequencing belongs in quality-gate skills
-- `11-documentation-standards.md`: in-code documentation policy; drafting mechanics belong in `write-python-docstrings`
-- `12-logging-conventions.md`: logging implementation mechanics and privacy-safe logging details
+- `002-core-standards.md`: universal coding behavior, typing defaults, DTO boundary guidance, error handling, and baseline logging policy
+- `003-architecture-guardrails.md`: architecture boundaries, dependency direction, and ports/adapters responsibilities
+- `004-testing-standards.md`: automated testing expectations; detailed pytest mechanics belong in `write-pytest-tests`
+- `005-docs-and-adr.md`: required project documentation outside source code; concrete update workflow belongs in `update-project-docs`
+- `006-module-structure.md`: file, package, and export mechanics; restructuring workflow belongs in `split-python-module`
+- `007-performance-and-observability.md`: performance expectations and runtime visibility; concrete instrumentation workflow belongs in `add-observability`
+- `008-configuration-and-secrets.md`: runtime configuration sources, settings DTO boundaries, and secret safety
+- `009-repo-navigation.md`: project discovery, canonical layout, and navigation principles; command recipes belong in `workflows/update-repo-navigation.md`
+- `010-pr-and-commit-hygiene.md`: review and change-management discipline
+- `011-tooling-and-ci.md`: dependency-group, local quality gate, and CI policy; command sequencing belongs in quality-gate skills
+- `012-documentation-standards.md`: in-code documentation policy; drafting mechanics belong in `write-python-docstrings`
+- `013-logging-conventions.md`: logging implementation mechanics and privacy-safe logging details
 - `999-command-execution-safety.md`: atomic command execution and process safety rule shared across rulesets
 
 ## Active modules
 
 - `001-cline-operating-guidance.md` - Read before editing, make minimal changes, validate proportionally, and avoid unrelated churn
-- `02-core-standards.md` - Naming, formatting, typing defaults, DTO guidance, error handling, baseline logging policy
-- `03-architecture-guardrails.md` - Hexagonal architecture doctrine, ports/adapters boundaries, adapter directory structure
-- `04-testing-standards.md` - Testing pyramid, isolation requirements, and review-blocking testing policy
-- `05-docs-and-adr.md` - Documentation obligations, ADR triggers, and changelog policy
-- `06-module-structure.md` - File organization, splitting rules, and `__init__.py` conventions
-- `07-performance-and-observability.md` - Performance, tracing, metrics, and observability policy
-- `08-repo-navigation.md` - Generic navigation guidelines for hexagonal architecture, including canonical application and test layout
-- `09-pr-and-commit-hygiene.md` - PR size, commit messages, reviews
-- `10-tooling-and-ci.md` - `uv` dependency-group, validation policy, and CI expectations
-- `11-documentation-standards.md` - Clear, concise docstrings and comments policy
-- `12-logging-conventions.md` - Module-level logger standard, structured context, and safe redaction practices
+- `002-core-standards.md` - Naming, formatting, typing defaults, DTO guidance, error handling, baseline logging policy
+- `003-architecture-guardrails.md` - Hexagonal architecture doctrine, ports/adapters boundaries, adapter directory structure
+- `004-testing-standards.md` - Testing pyramid, isolation requirements, and review-blocking testing policy
+- `005-docs-and-adr.md` - Documentation obligations, ADR triggers, and changelog policy
+- `006-module-structure.md` - File organization, splitting rules, and `__init__.py` conventions
+- `007-performance-and-observability.md` - Performance, tracing, metrics, and observability policy
+- `008-configuration-and-secrets.md` - Configuration source ownership, settings DTOs, validation, and secret safety
+- `009-repo-navigation.md` - Generic navigation guidelines for hexagonal architecture, including canonical application and test layout
+- `010-pr-and-commit-hygiene.md` - PR size, commit messages, reviews
+- `011-tooling-and-ci.md` - `uv` dependency-group, validation policy, and CI expectations
+- `012-documentation-standards.md` - Clear, concise docstrings and comments policy
+- `013-logging-conventions.md` - Module-level logger standard, structured context, and safe redaction practices
 - `999-command-execution-safety.md` - Hard ban on inline interpreter heredocs; require file-based helper scripts and non-interactive version-control usage
 
 ## Workflows
@@ -154,10 +156,11 @@ Interpret enforcement labels as follows:
 | Naming, formatting, imports         | `uv run ruff check . --fix`, `uv run ruff format .`, `uv run ruff check .`         | PR review                                    |
 | Type contracts and API drift        | `uv run mypy .`                                                                    | PR review                                    |
 | Behavior changes and regressions    | `uv run pytest`                                                                    | Targeted regression and contract tests       |
-| Architecture boundaries (hexagonal) | Review-enforced against `03-architecture-guardrails.md`                            | Optional import-lint/custom boundary scripts |
-| Module/file structure conventions   | Review-enforced against `06-module-structure.md`                                   | Optional project audit script                |
+| Architecture boundaries (hexagonal) | Review-enforced against `003-architecture-guardrails.md`                           | Optional import-lint/custom boundary scripts |
+| Module/file structure conventions   | Review-enforced against `006-module-structure.md`                                  | Optional project audit script                |
+| Configuration and secrets           | Review-enforced against `008-configuration-and-secrets.md`                         | Startup validation and focused config tests  |
 | Docs/ADR/changelog updates          | Review-enforced via PR checklist                                                   | Release checklist                            |
-| Logging conventions                 | Review-enforced against `12-logging-conventions.md`                                | Runtime log sampling                         |
+| Logging conventions                 | Review-enforced against `013-logging-conventions.md`                               | Runtime log sampling                         |
 | Command execution safety            | Process-enforced (no `python - <<'PY'` patterns; git `--no-pager`/non-interactive) | PR review                                    |
 
 ## Rules-to-enforcement alignment

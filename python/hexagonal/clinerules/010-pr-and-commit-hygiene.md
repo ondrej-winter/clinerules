@@ -27,5 +27,5 @@ Use these rules to keep reviews fast, changesets focused, and CI reliable.
 
 ## CI expectations
 
-- **Must** run the local quality gate before handoff (see `10-tooling-and-ci.md`).
+- **Must** run the local quality gate before handoff (see `011-tooling-and-ci.md`).
 - **Must** fix CI failures at the root cause instead of bypassing checks.

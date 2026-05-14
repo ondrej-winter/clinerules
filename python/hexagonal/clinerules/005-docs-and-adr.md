@@ -10,7 +10,7 @@ README, changelog-style notes, or related project-facing documentation updates.
 - **Should** add short usage examples when new CLI flags or commands are introduced.
 - **Must** document new environment variables and defaults.
 - **Should** document supported Python version(s), the `uv` workflow (`uv sync`, `uv run ...`), and the local quality gate commands when they are project-relevant.
-- In-code docstring and comment standards are covered in `11-documentation-standards.md`.
+- In-code docstring and comment standards are covered in `012-documentation-standards.md`.
 
 ## ADRs (Architecture Decision Records)
 

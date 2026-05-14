@@ -29,7 +29,7 @@ profiling, measurement, metrics, tracing, or operational documentation.
 - **Should** propagate request, correlation, or job IDs across adapter boundaries when available.
 - **Should** sample or rate-limit especially noisy diagnostic logs/events in tight loops, retries, or high-volume code paths.
 - **Must** apply the same sensitive-data rules to metrics and traces that apply to logs.
-- **Should** align logging field names and metric dimensions with `12-logging-conventions.md`.
+- **Should** align logging field names and metric dimensions with `013-logging-conventions.md`.
 
 ## Operational notes
 

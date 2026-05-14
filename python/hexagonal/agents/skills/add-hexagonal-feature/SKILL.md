@@ -125,7 +125,7 @@ implementation is fine and often preferable.
 
 ## Dependency direction reminder
 
-The canonical dependency rules are in `03-architecture-guardrails.md`. This
+The canonical dependency rules are in `003-architecture-guardrails.md`. This
 diagram is a quick reference only.
 
 ```

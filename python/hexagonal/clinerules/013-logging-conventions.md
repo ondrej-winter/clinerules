@@ -2,7 +2,7 @@
 
 Use these rules to keep logging consistent, searchable, and easy to filter across modules.
 
-This file covers logging implementation details. Broader code quality expectations live in `02-core-standards.md`.
+This file covers logging implementation details. Broader code quality expectations live in `002-core-standards.md`. Secret source handling and configuration boundaries live in `008-configuration-and-secrets.md`.
 
 ## Default logger pattern
 

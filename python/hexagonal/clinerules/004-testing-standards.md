@@ -2,7 +2,7 @@
 
 Use these rules for all automated tests to keep signal high and feedback fast.
 
-For test directory structure and organization, see `08-repo-navigation.md`.
+For test directory structure and organization, see `009-repo-navigation.md`.
 Use the `write-pytest-tests` skill when you need concrete pytest-native
 mechanics, test-double patterns, or example test structures.
 
