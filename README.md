@@ -79,6 +79,16 @@ are synced into the Python hexagonal skill catalog. The other shared skills are
 intentionally shared-only in this pass so Python-specific skills can keep their
 specialized guidance.
 
+### `shared/clinerules/`
+
+Portable, language-agnostic Cline rules and workflows that can be synced into
+rulesets or repository-level `.clinerules/` directories:
+
+| Asset                    | Path                                                | Purpose                                                                       |
+| ------------------------ | --------------------------------------------------- | ----------------------------------------------------------------------------- |
+| Command execution safety | `shared/clinerules/999-command-execution-safety.md` | Atomic command and process execution safety rule for any workspace            |
+| Improve workflow         | `shared/clinerules/workflows/improve.md`            | Focused workflow for improving existing rules, skills, workflows, and tooling |
+
 ### `python/hexagonal/`
 
 #### Cline skills

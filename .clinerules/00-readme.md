@@ -14,12 +14,14 @@ Rules use numeric prefixes so they are easy to read in dependency order:
 - `03-skill-format.md`: Required structure for repository `SKILL.md` files.
 - `04-sync-source-of-truth.md`: Source-of-truth rules for synced workflows.
 - `05-validation-workflow.md`: Validation expectations by change type.
+- `999-command-execution-safety.md`: Atomic command execution and process safety rule synced from shared sources.
 
 ## Synced targets
 
 Some root `.clinerules/` files are generated from shared sources and should not be edited directly:
 
 - `.clinerules/workflows/improve.md` is synced from `shared/clinerules/workflows/improve.md`.
+- `.clinerules/999-command-execution-safety.md` is synced from `shared/clinerules/999-command-execution-safety.md`.
 
 When a synced target needs a change, edit the shared source first, run the sync workflow, then validate the repository.
 

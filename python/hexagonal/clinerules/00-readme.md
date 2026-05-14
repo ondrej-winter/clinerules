@@ -73,7 +73,7 @@
 - `10-tooling-and-ci.md`: dependency-group, local quality gate, and CI policy; command sequencing belongs in quality-gate skills
 - `11-documentation-standards.md`: in-code documentation policy; drafting mechanics belong in `write-python-docstrings`
 - `12-logging-conventions.md`: logging implementation mechanics and privacy-safe logging details
-- `13-command-execution-safety.md`: command execution and process safety
+- `999-command-execution-safety.md`: atomic command execution and process safety rule shared across rulesets
 
 ## Active modules
 
@@ -89,7 +89,7 @@
 - `10-tooling-and-ci.md` - `uv` dependency-group, validation policy, and CI expectations
 - `11-documentation-standards.md` - Clear, concise docstrings and comments policy
 - `12-logging-conventions.md` - Module-level logger standard, structured context, and safe redaction practices
-- `13-command-execution-safety.md` - Hard ban on inline interpreter heredocs; require temp scripts and non-interactive git usage
+- `999-command-execution-safety.md` - Hard ban on inline interpreter heredocs; require file-based helper scripts and non-interactive version-control usage
 
 ## Workflows
 

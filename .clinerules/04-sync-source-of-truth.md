@@ -13,6 +13,7 @@ This is a repo-specific maintenance rule for files copied from shared sources in
 The root `.clinerules/` directory includes these synced targets:
 
 - `.clinerules/workflows/improve.md` comes from `shared/clinerules/workflows/improve.md`.
+- `.clinerules/999-command-execution-safety.md` comes from `shared/clinerules/999-command-execution-safety.md`.
 
 Other reusable rule sets may also receive synced copies from the same shared sources. Check the sync configuration before editing a workflow target.
 

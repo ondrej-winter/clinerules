@@ -1,14 +1,14 @@
 # Repo token map
 
 Scanned roots: shared, python
-Files counted: 37
-Total tokens: 29128
+Files counted: 38
+Total tokens: 30201
 Tokenizer encoding: cl100k_base
 
 ## Tree
 
 ```text
-├── shared/ (4244)
+├── shared/ (5249)
 │   ├── agents/ (3808)
 │   │   └── skills/ (3808)
 │   │       ├── add-observability/ (702)
@@ -21,11 +21,12 @@ Tokenizer encoding: cl100k_base
 │   │       │   └── SKILL.md (701)
 │   │       └── write-adr/ (996)
 │   │           └── SKILL.md (996)
-│   └── clinerules/ (436)
-│       └── workflows/ (436)
-│           └── improve.md (436)
-└── python/ (24884)
-    └── hexagonal/ (24884)
+│   └── clinerules/ (1441)
+│       ├── workflows/ (436)
+│       │   └── improve.md (436)
+│       └── 999-command-execution-safety.md (1005)
+└── python/ (24952)
+    └── hexagonal/ (24952)
         ├── agents/ (12494)
         │   └── skills/ (12494)
         │       ├── add-hexagonal-feature/ (1044)
@@ -58,11 +59,11 @@ Tokenizer encoding: cl100k_base
         │       │   └── SKILL.md (1176)
         │       └── write-python-docstrings/ (551)
         │           └── SKILL.md (551)
-        └── clinerules/ (12390)
+        └── clinerules/ (12458)
             ├── workflows/ (1065)
             │   ├── improve.md (436)
             │   └── update-repo-navigation.md (629)
-            ├── 00-readme.md (2503)
+            ├── 00-readme.md (2512)
             ├── 01-cline-operating-guidance.md (375)
             ├── 02-core-standards.md (870)
             ├── 03-architecture-guardrails.md (1242)
@@ -75,5 +76,5 @@ Tokenizer encoding: cl100k_base
             ├── 10-tooling-and-ci.md (566)
             ├── 11-documentation-standards.md (574)
             ├── 12-logging-conventions.md (623)
-            └── 13-command-execution-safety.md (946)
+            └── 999-command-execution-safety.md (1005)
 ```
