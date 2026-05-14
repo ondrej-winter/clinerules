@@ -1,14 +1,14 @@
 # Repo token map
 
 Scanned roots: shared, python
-Files counted: 41
-Total tokens: 32014
+Files counted: 37
+Total tokens: 29128
 Tokenizer encoding: cl100k_base
 
 ## Tree
 
 ```text
-├── shared/ (5701)
+├── shared/ (4244)
 │   ├── agents/ (3808)
 │   │   └── skills/ (3808)
 │   │       ├── add-observability/ (702)
@@ -21,22 +21,19 @@ Tokenizer encoding: cl100k_base
 │   │       │   └── SKILL.md (701)
 │   │       └── write-adr/ (996)
 │   │           └── SKILL.md (996)
-│   └── clinerules/ (1893)
-│       ├── hooks/ (1457)
-│       │   ├── PreToolUse (28)
-│       │   └── pretooluse.py (1429)
+│   └── clinerules/ (436)
 │       └── workflows/ (436)
 │           └── improve.md (436)
-└── python/ (26313)
-    └── hexagonal/ (26313)
-        ├── agents/ (12493)
-        │   └── skills/ (12493)
+└── python/ (24884)
+    └── hexagonal/ (24884)
+        ├── agents/ (12494)
+        │   └── skills/ (12494)
         │       ├── add-hexagonal-feature/ (1044)
         │       │   └── SKILL.md (1044)
         │       ├── add-observability/ (702)
         │       │   └── SKILL.md (702)
-        │       ├── bootstrap-python-app/ (1386)
-        │       │   └── SKILL.md (1386)
+        │       ├── bootstrap-python-app/ (1387)
+        │       │   └── SKILL.md (1387)
         │       ├── format-python-code/ (204)
         │       │   └── SKILL.md (204)
         │       ├── lint-python-code/ (331)
@@ -61,14 +58,11 @@ Tokenizer encoding: cl100k_base
         │       │   └── SKILL.md (1176)
         │       └── write-python-docstrings/ (551)
         │           └── SKILL.md (551)
-        └── clinerules/ (13820)
-            ├── hooks/ (1457)
-            │   ├── PreToolUse (28)
-            │   └── pretooluse.py (1429)
+        └── clinerules/ (12390)
             ├── workflows/ (1065)
             │   ├── improve.md (436)
             │   └── update-repo-navigation.md (629)
-            ├── 00-readme.md (2476)
+            ├── 00-readme.md (2503)
             ├── 01-cline-operating-guidance.md (375)
             ├── 02-core-standards.md (870)
             ├── 03-architecture-guardrails.md (1242)

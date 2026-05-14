@@ -23,8 +23,8 @@ tokens:
 	uv run tools/tokens/repo_token_map.py
 
 compile:
-	python3 -m compileall tools shared/clinerules/hooks python/hexagonal/clinerules/hooks
-	find tools shared/clinerules/hooks python/hexagonal/clinerules/hooks -type d -name __pycache__ -prune -exec rm -rf {} +
+	python3 -m compileall tools
+	find tools -type d -name __pycache__ -prune -exec rm -rf {} +
 
 validate: compile
 	python3 tools/sync-shared/sync_shared.py check

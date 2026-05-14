@@ -49,20 +49,6 @@ SYNC_MAP: tuple[SyncEntry, ...] = (
         source='shared/agents/skills/update-project-docs',
         targets=('python/hexagonal/agents/skills/update-project-docs',),
     ),
-    SyncEntry(
-        source='shared/clinerules/hooks/PreToolUse',
-        targets=(
-            'python/hexagonal/clinerules/hooks/',
-            '.clinerules/hooks/',
-        ),
-    ),
-    SyncEntry(
-        source='shared/clinerules/hooks/pretooluse.py',
-        targets=(
-            'python/hexagonal/clinerules/hooks/',
-            '.clinerules/hooks/',
-        ),
-    ),
 )
 
 

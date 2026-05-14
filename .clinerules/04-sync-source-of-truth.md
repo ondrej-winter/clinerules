@@ -4,7 +4,7 @@ This is a repo-specific maintenance rule for files copied from shared sources in
 
 ## Core rule
 
-- Treat synced workflow and hook files as derived targets, not primary editing locations.
+- Treat synced workflow files as derived targets, not primary editing locations.
 - Edit the configured shared source before changing a synced target.
 - Keep every synced target aligned with its source unless an intentional local exception is documented.
 
@@ -13,10 +13,8 @@ This is a repo-specific maintenance rule for files copied from shared sources in
 The root `.clinerules/` directory includes these synced targets:
 
 - `.clinerules/workflows/improve.md` comes from `shared/clinerules/workflows/improve.md`.
-- `.clinerules/hooks/PreToolUse` comes from `shared/clinerules/hooks/PreToolUse`.
-- `.clinerules/hooks/pretooluse.py` comes from `shared/clinerules/hooks/pretooluse.py`.
 
-Other reusable rule sets may also receive synced copies from the same shared sources. Check the sync configuration before editing a workflow or hook target.
+Other reusable rule sets may also receive synced copies from the same shared sources. Check the sync configuration before editing a workflow target.
 
 ## Required workflow
 
