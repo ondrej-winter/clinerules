@@ -21,6 +21,8 @@ Keep content plain, functional, and low-noise. Treat decorative formatting with 
 
 - Use formatting when it is structurally required by markdown, another plain-text syntax, or an external file format.
 - Use formatting when it adds real meaning, such as headings for navigation, code fences for examples, or emphasis that clarifies a distinction.
+- Use YAML frontmatter delimiters when a file format requires them.
+- Use tables, command blocks, code fences, and lists when they make content easier to scan or reduce ambiguity.
 - Do not treat a decorative pattern as acceptable just because Markdown technically allows it.
 
 ## Allowed structure
@@ -28,6 +30,7 @@ Keep content plain, functional, and low-noise. Treat decorative formatting with 
 - Use headings only when they improve navigation.
 - Use bullets only when listing distinct items.
 - Use emphasis, code formatting, and examples only when they clarify meaning.
+- Keep examples minimal and focused on the rule or workflow being documented.
 - Prefer one simple structural device over stacking multiple forms of emphasis in the same place.
 
 ## What to avoid
@@ -36,6 +39,7 @@ Keep content plain, functional, and low-noise. Treat decorative formatting with 
 - Avoid decorative callouts, excessive punctuation, and other attention-grabbing formatting.
 - Avoid stylistic markup added only to make a file look more elaborate.
 - Avoid copying formatting habits from chat tools, marketing copy, or presentation slides into repository documentation.
+- Avoid using blockquotes, tables, or admonition-like labels as decoration when a plain paragraph or list would be clearer.
 
 ## Review guidance
 
@@ -43,3 +47,4 @@ Keep content plain, functional, and low-noise. Treat decorative formatting with 
 - Prefer the simplest formatting that preserves readability and intent.
 - During review, treat unnecessary decorative markup as content noise rather than personal style.
 - If a formatting choice is questionable, prefer the plainer option unless the richer formatting clearly improves meaning.
+- Confirm horizontal-rule-like markers appear only where they are structurally required, such as YAML frontmatter boundaries or fenced examples.
