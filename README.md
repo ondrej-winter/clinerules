@@ -86,6 +86,7 @@ rulesets or repository-level `.clinerules/` directories:
 
 | Asset                    | Path                                                | Purpose                                                                       |
 | ------------------------ | --------------------------------------------------- | ----------------------------------------------------------------------------- |
+| Cline operating guidance | `shared/clinerules/001-cline-operating-guidance.md` | Atomic Cline working style, scope control, editing discipline, and validation |
 | Command execution safety | `shared/clinerules/999-command-execution-safety.md` | Atomic command and process execution safety rule for any workspace            |
 | Improve workflow         | `shared/clinerules/workflows/improve.md`            | Focused workflow for improving existing rules, skills, workflows, and tooling |
 

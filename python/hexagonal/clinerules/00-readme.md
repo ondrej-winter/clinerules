@@ -4,7 +4,7 @@
 
 - Files in `.clinerules/` are **active** rules.
 - This ruleset is an **opinionated reusable profile** for Python projects using hexagonal architecture with Cline.
-- Rule files use sortable prefixes (for example `00-`, `01-`, `02-`, `03-`) to keep the reading order stable.
+- Rule files use sortable prefixes (for example `00-`, `001-`, `02-`, `03-`) to keep the reading order stable.
 - Each file should focus on a single theme (core standards, architecture, testing, etc.).
 
 ## Opinionated defaults
@@ -61,7 +61,7 @@
 
 ### Topic ownership map
 
-- `01-cline-operating-guidance.md`: lightweight Cline operating behavior, scope control, and validation discipline
+- `001-cline-operating-guidance.md`: lightweight Cline operating behavior, scope control, and validation discipline shared across rulesets
 - `02-core-standards.md`: universal coding behavior, typing defaults, DTO boundary guidance, error handling, and baseline logging policy
 - `03-architecture-guardrails.md`: architecture boundaries, dependency direction, and ports/adapters responsibilities
 - `04-testing-standards.md`: automated testing expectations; detailed pytest mechanics belong in `write-pytest-tests`
@@ -77,7 +77,7 @@
 
 ## Active modules
 
-- `01-cline-operating-guidance.md` - Read before editing, make minimal changes, validate proportionally, and avoid unrelated churn
+- `001-cline-operating-guidance.md` - Read before editing, make minimal changes, validate proportionally, and avoid unrelated churn
 - `02-core-standards.md` - Naming, formatting, typing defaults, DTO guidance, error handling, baseline logging policy
 - `03-architecture-guardrails.md` - Hexagonal architecture doctrine, ports/adapters boundaries, adapter directory structure
 - `04-testing-standards.md` - Testing pyramid, isolation requirements, and review-blocking testing policy

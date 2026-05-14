@@ -8,12 +8,13 @@ Root `.clinerules/` files may reference repository-local paths because they are 
 
 Rules use numeric prefixes so they are easy to read in dependency order:
 
-- `00-readme.md`: Repo-specific index, ownership notes, and validation commands.
-- `01-dropin-portability.md`: Portability requirements for reusable assets.
-- `02-plain-formatting.md`: Plain formatting requirements for markdown and text content.
-- `03-skill-format.md`: Required structure for repository `SKILL.md` files.
-- `04-sync-source-of-truth.md`: Source-of-truth rules for synced workflows.
-- `05-validation-workflow.md`: Validation expectations by change type.
+- `000-readme.md`: Repo-specific index, ownership notes, and validation commands.
+- `001-cline-operating-guidance.md`: Atomic Cline operating behavior rule synced from shared sources.
+- `002-dropin-portability.md`: Portability requirements for reusable assets.
+- `003-plain-formatting.md`: Plain formatting requirements for markdown and text content.
+- `004-skill-format.md`: Required structure for repository `SKILL.md` files.
+- `005-sync-source-of-truth.md`: Source-of-truth rules for synced workflows.
+- `006-validation-workflow.md`: Validation expectations by change type.
 - `999-command-execution-safety.md`: Atomic command execution and process safety rule synced from shared sources.
 
 ## Synced targets
@@ -21,6 +22,7 @@ Rules use numeric prefixes so they are easy to read in dependency order:
 Some root `.clinerules/` files are generated from shared sources and should not be edited directly:
 
 - `.clinerules/workflows/improve.md` is synced from `shared/clinerules/workflows/improve.md`.
+- `.clinerules/001-cline-operating-guidance.md` is synced from `shared/clinerules/001-cline-operating-guidance.md`.
 - `.clinerules/999-command-execution-safety.md` is synced from `shared/clinerules/999-command-execution-safety.md`.
 
 When a synced target needs a change, edit the shared source first, run the sync workflow, then validate the repository.

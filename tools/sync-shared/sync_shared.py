@@ -31,6 +31,13 @@ class SyncCheckIssue:
 
 SYNC_MAP: tuple[SyncEntry, ...] = (
     SyncEntry(
+        source='shared/clinerules/001-cline-operating-guidance.md',
+        targets=(
+            'python/hexagonal/clinerules/',
+            '.clinerules/',
+        ),
+    ),
+    SyncEntry(
         source='shared/clinerules/999-command-execution-safety.md',
         targets=(
             'python/hexagonal/clinerules/',

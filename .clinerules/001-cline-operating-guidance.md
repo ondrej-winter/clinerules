@@ -1,6 +1,8 @@
 # Cline operating guidance: read first, edit narrowly, validate proportionally
 
-Use these rules to keep Cline-driven changes accurate, minimal, and easy to review.
+Use these rules to keep Cline-driven changes accurate, minimal, and easy to review in any workspace.
+
+This rule is intentionally reusable. It defines operating behavior for Cline rather than project architecture, language conventions, or repository-specific maintenance workflow.
 
 ## Working style
 
