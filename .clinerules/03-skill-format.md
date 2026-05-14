@@ -1,6 +1,6 @@
 # Required format for skill files
 
-Reusable skill files in this repository must use a consistent markdown format.
+Skill files maintained in this repository must use a consistent markdown format. This rule is repo-specific; the skill files themselves should remain reusable unless explicitly marked otherwise.
 
 ## Core rule
 
@@ -19,7 +19,7 @@ description: Brief description of what this skill does and when to use it.
 - After the frontmatter, the file must include a top-level heading that names the skill.
 - The body must include clear instructions for when and how the skill should be used.
 - Use section headings only when they improve navigation.
-- Use `## Steps` when the skill contains a procedural sequence.
+- Use `## Steps` for procedural sequences.
 
 Example structure:
 

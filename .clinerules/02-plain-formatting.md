@@ -1,8 +1,8 @@
 # Plain formatting for repository text
 
-- Repository-level writing rule for markdown and other text-based files.
-- Keep content plain, functional, and low-noise.
-- Treat decorative formatting with no structural or semantic value as a defect.
+This is a repo-specific writing rule for markdown and other text-based files maintained here.
+
+Keep content plain, functional, and low-noise. Treat decorative formatting with no structural or semantic value as a defect.
 
 ## Formatting style
 
@@ -14,7 +14,7 @@
 
 ## Scope
 
-- Applies to markdown files, Cline rule files, documentation, templates, and similar text-based repository content.
+- Applies to markdown files, Cline rule files, documentation, templates, and similar text-based content in this repository.
 - Applies unless a specific syntax or external format requires a particular marker.
 
 ## Allowed exceptions
@@ -34,7 +34,7 @@
 
 - Avoid visual-only flourishes with no informational value.
 - Avoid decorative callouts, excessive punctuation, and other attention-grabbing formatting.
-- Avoid adding stylistic markup just to make a file look more elaborate.
+- Avoid stylistic markup added only to make a file look more elaborate.
 - Avoid copying formatting habits from chat tools, marketing copy, or presentation slides into repository documentation.
 
 ## Review guidance
