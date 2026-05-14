@@ -42,6 +42,14 @@ SYNC_MAP: tuple[SyncEntry, ...] = (
         targets=('python/hexagonal/agents/skills/write-adr',),
     ),
     SyncEntry(
+        source='shared/agents/skills/add-observability',
+        targets=('python/hexagonal/agents/skills/add-observability',),
+    ),
+    SyncEntry(
+        source='shared/agents/skills/update-project-docs',
+        targets=('python/hexagonal/agents/skills/update-project-docs',),
+    ),
+    SyncEntry(
         source='shared/clinerules/hooks/PreToolUse',
         targets=(
             'python/hexagonal/clinerules/hooks/',
