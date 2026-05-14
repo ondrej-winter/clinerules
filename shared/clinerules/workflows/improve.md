@@ -20,7 +20,7 @@ Make the target:
 - more correct
 - easier to maintain
 - better structured
-- proofread for grammar, style, and wording
+- grammatically correct and well worded
 
 ## Approach
 
@@ -33,7 +33,7 @@ Work in a lightweight, practical review mode:
 - avoid introducing abstractions unless they remove obvious complexity
 - simplify rather than expand
 - remove noise, redundancy, and awkward phrasing
-- preserve required syntax, frontmatter, examples, links, placeholders, and
+- preserve required syntax, front matter, examples, links, placeholders, and
   machine-readable content
 
 ## Process
@@ -46,8 +46,7 @@ Work in a lightweight, practical review mode:
    - unnecessary complexity
    - structural issues
    - naming issues
-   - grammar, spelling, or punctuation problems
-   - awkward phrasing
+   - grammar, spelling, punctuation, or phrasing problems
    - obvious maintainability problems
 3. Improve the target directly when editing is appropriate; otherwise list the
    recommended changes.
@@ -60,7 +59,7 @@ Work in a lightweight, practical review mode:
 Provide both of the following after editing or reviewing:
 
 1. A short audit summary.
-2. A concise list of the key improvements made.
+2. A concise list of the key improvements made or recommended.
 
 ## Constraints
 

@@ -88,9 +88,14 @@
 
 ## Related skills
 
-Skills should own focused procedures. When one skill needs a neighboring task, reference the related skill by name and decision context instead of repeating the full procedure. Keep those references portable and optional unless a dependency is truly mandatory.
+Skills should own focused procedures.
 
-Prefer short inline references inside the relevant step. Add a dedicated `Related skills` section only when a skill has several common handoffs that would otherwise be hard to discover.
+- When one skill needs a neighboring task, reference the related skill by name
+  and decision context instead of repeating the full procedure.
+- Keep references portable and optional unless a dependency is truly mandatory.
+- Prefer short inline references inside the relevant step.
+- Add a dedicated `Related skills` section only when a skill has several common
+  handoffs that would otherwise be hard to discover.
 
 ### Skill index
 - `bootstrap-python-app` - Initialize a new Python hexagonal project with base tooling and structure
