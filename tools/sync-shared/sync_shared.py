@@ -63,6 +63,13 @@ SYNC_MAP: tuple[SyncEntry, ...] = (
         source='shared/agents/skills/update-project-docs',
         targets=('python/hexagonal/agents/skills/update-project-docs',),
     ),
+    SyncEntry(
+        source='shared/agents/skills/author-agent-skill',
+        targets=(
+            'python/hexagonal/agents/skills/author-agent-skill',
+            '.agent/skills/author-agent-skill',
+        ),
+    ),
 )
 
 

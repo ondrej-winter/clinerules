@@ -10,6 +10,7 @@ REPO_ROOT = Path(__file__).resolve().parent.parent
 SKILL_PATHS = (
     REPO_ROOT / 'shared' / 'agents' / 'skills',
     REPO_ROOT / 'python' / 'hexagonal' / 'agents' / 'skills',
+    REPO_ROOT / '.agent' / 'skills',
 )
 README_PATH = REPO_ROOT / 'README.md'
 SKILL_NAME_PATTERN = re.compile(r'^[a-z0-9]+(?:-[a-z0-9]+)*$')
@@ -201,7 +202,7 @@ def validate_reusable_asset_portability(path: Path) -> list[str]:
 
 def extract_repo_inventory_paths(readme_text: str) -> list[str]:
     paths: list[str] = []
-    allowed_prefixes = ('python/', 'shared/', 'tools/', 'docs/', '.clinerules/')
+    allowed_prefixes = ('python/', 'shared/', 'tools/', 'docs/', '.clinerules/', '.agent/')
     allowed_exact = {'README.md', 'Makefile', '.pre-commit-config.yaml'}
     in_inventory = False
     for line in readme_text.splitlines():
