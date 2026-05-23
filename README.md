@@ -70,6 +70,7 @@ workflows:
 | -------------------------- | ---------------------------------------------------------- | -------------------------------------------------------------------------------------------------- |
 | Add observability          | `shared/agents/skills/add-observability/SKILL.md`          | Add logs, metrics, traces, profiling, and operational notes without unsupported performance claims |
 | Author Agent Skill         | `shared/agents/skills/author-agent-skill/SKILL.md`         | Create, update, or review Agent Skill directories and SKILL.md files                               |
+| Interview Me               | `shared/agents/skills/interview-me/SKILL.md`               | Interview users one question at a time to confirm intent before planning or implementation         |
 | Review implementation plan | `shared/agents/skills/review-implementation-plan/SKILL.md` | Review plans for scope, ambiguity, sequencing, dependencies, risks, validation, and handoff        |
 | Run local quality gate     | `shared/agents/skills/run-local-quality-gate/SKILL.md`     | Discover and run project-defined formatting, linting, static analysis, tests, and build checks     |
 | Update project docs        | `shared/agents/skills/update-project-docs/SKILL.md`        | Update project-facing documentation after behavior, configuration, operation, or workflow changes  |
