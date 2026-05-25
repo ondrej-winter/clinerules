@@ -70,6 +70,14 @@ SYNC_MAP: tuple[SyncEntry, ...] = (
             '.agent/skills/author-agent-skill',
         ),
     ),
+    SyncEntry(
+        source='shared/agents/skills/interview-me',
+        targets=('python/hexagonal/agents/skills/interview-me',),
+    ),
+    SyncEntry(
+        source='shared/agents/skills/review-implementation-plan',
+        targets=('python/hexagonal/agents/skills/review-implementation-plan',),
+    ),
 )
 
 

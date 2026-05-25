@@ -76,12 +76,13 @@ workflows:
 | Update project docs        | `shared/agents/skills/update-project-docs/SKILL.md`        | Update project-facing documentation after behavior, configuration, operation, or workflow changes  |
 | Write ADR                  | `shared/agents/skills/write-adr/SKILL.md`                  | Create a numbered Architecture Decision Record with context, decision, and consequences            |
 
-The shared `write-adr`, `add-observability`, and `update-project-docs` skills
-are synced into the Python hexagonal skill catalog. The shared
-`author-agent-skill` skill is synced into both the Python hexagonal skill catalog
-and the repository-level `.agent/skills/` catalog. The other shared skills are
-intentionally shared-only in this pass so Python-specific skills can keep their
-specialized guidance.
+The shared `write-adr`, `add-observability`, `update-project-docs`,
+`interview-me`, and `review-implementation-plan` skills are synced into the
+Python hexagonal skill catalog. The shared `author-agent-skill` skill is synced
+into both the Python hexagonal skill catalog and the repository-level
+`.agent/skills/` catalog. The shared `run-local-quality-gate` skill remains
+shared-only because the Python hexagonal catalog keeps specialized Python quality
+gate guidance.
 
 ### `.agent/skills/`
 
@@ -108,23 +109,25 @@ rulesets or repository-level `.clinerules/` directories:
 
 Drop-in SKILL.md files that guide Cline through common development tasks:
 
-| Skill                 | Path                                                              | Purpose                                                                                          |
-| --------------------- | ----------------------------------------------------------------- | ------------------------------------------------------------------------------------------------ |
-| Bootstrap app         | `python/hexagonal/agents/skills/bootstrap-python-app/SKILL.md`    | Initialise a Python app repo with `uv`, `ruff`, `mypy`, `pytest`, and a hexagonal `src/` layout  |
-| Add hexagonal feature | `python/hexagonal/agents/skills/add-hexagonal-feature/SKILL.md`   | Domain model → application boundaries → application service → unit tests                         |
-| Author Agent Skill    | `python/hexagonal/agents/skills/author-agent-skill/SKILL.md`      | Synced shared skill for creating, updating, or reviewing Agent Skill directories                 |
-| Add port              | `python/hexagonal/agents/skills/python-add-port/SKILL.md`         | Define a focused input or output port contract in the application layer                          |
-| Add adapter           | `python/hexagonal/agents/skills/python-add-adapter/SKILL.md`      | Add an input (HTTP, CLI, event) or output (DB, API client) adapter with layered testing guidance |
-| Update project docs   | `python/hexagonal/agents/skills/update-project-docs/SKILL.md`     | Synced shared skill for updating project-facing docs after visible changes                       |
-| Split Python module   | `python/hexagonal/agents/skills/split-python-module/SKILL.md`     | Split a growing module or package while preserving boundaries and intentional imports            |
-| Add observability     | `python/hexagonal/agents/skills/add-observability/SKILL.md`       | Synced shared skill for logs, metrics, traces, profiling, and operational notes                  |
-| Write docstrings      | `python/hexagonal/agents/skills/write-python-docstrings/SKILL.md` | Write concise Google-style docstrings and inline comments where they add value                   |
-| Write ADR             | `python/hexagonal/agents/skills/write-adr/SKILL.md`               | Scaffold a numbered Architecture Decision Record under `docs/adr/`                               |
-| Format Python code    | `python/hexagonal/agents/skills/format-python-code/SKILL.md`      | Run `ruff` formatting and safe auto-fixes                                                        |
-| Lint Python code      | `python/hexagonal/agents/skills/lint-python-code/SKILL.md`        | Run `ruff` linting and `mypy` type checking                                                      |
-| Write pytest tests    | `python/hexagonal/agents/skills/write-pytest-tests/SKILL.md`      | Write or refactor Python tests in clear, pytest-native style                                     |
-| Run Python tests      | `python/hexagonal/agents/skills/run-python-tests/SKILL.md`        | Run the Python test suite with `pytest`                                                          |
-| Local quality gate    | `python/hexagonal/agents/skills/run-local-quality-gate/SKILL.md`  | Orchestrate formatting, linting, type checking, and tests                                        |
+| Skill                 | Path                                                                 | Purpose                                                                                          |
+| --------------------- | -------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------ |
+| Bootstrap app         | `python/hexagonal/agents/skills/bootstrap-python-app/SKILL.md`       | Initialise a Python app repo with `uv`, `ruff`, `mypy`, `pytest`, and a hexagonal `src/` layout  |
+| Add hexagonal feature | `python/hexagonal/agents/skills/add-hexagonal-feature/SKILL.md`      | Domain model → application boundaries → application service → unit tests                         |
+| Author Agent Skill    | `python/hexagonal/agents/skills/author-agent-skill/SKILL.md`         | Synced shared skill for creating, updating, or reviewing Agent Skill directories                 |
+| Interview Me          | `python/hexagonal/agents/skills/interview-me/SKILL.md`               | Synced shared skill for clarifying underspecified user intent before planning or implementation  |
+| Review plan           | `python/hexagonal/agents/skills/review-implementation-plan/SKILL.md` | Synced shared skill for reviewing implementation plans before coding                             |
+| Add port              | `python/hexagonal/agents/skills/python-add-port/SKILL.md`            | Define a focused input or output port contract in the application layer                          |
+| Add adapter           | `python/hexagonal/agents/skills/python-add-adapter/SKILL.md`         | Add an input (HTTP, CLI, event) or output (DB, API client) adapter with layered testing guidance |
+| Update project docs   | `python/hexagonal/agents/skills/update-project-docs/SKILL.md`        | Synced shared skill for updating project-facing docs after visible changes                       |
+| Split Python module   | `python/hexagonal/agents/skills/split-python-module/SKILL.md`        | Split a growing module or package while preserving boundaries and intentional imports            |
+| Add observability     | `python/hexagonal/agents/skills/add-observability/SKILL.md`          | Synced shared skill for logs, metrics, traces, profiling, and operational notes                  |
+| Write docstrings      | `python/hexagonal/agents/skills/write-python-docstrings/SKILL.md`    | Write concise Google-style docstrings and inline comments where they add value                   |
+| Write ADR             | `python/hexagonal/agents/skills/write-adr/SKILL.md`                  | Scaffold a numbered Architecture Decision Record under `docs/adr/`                               |
+| Format Python code    | `python/hexagonal/agents/skills/format-python-code/SKILL.md`         | Run `ruff` formatting and safe auto-fixes                                                        |
+| Lint Python code      | `python/hexagonal/agents/skills/lint-python-code/SKILL.md`           | Run `ruff` linting and `mypy` type checking                                                      |
+| Write pytest tests    | `python/hexagonal/agents/skills/write-pytest-tests/SKILL.md`         | Write or refactor Python tests in clear, pytest-native style                                     |
+| Run Python tests      | `python/hexagonal/agents/skills/run-python-tests/SKILL.md`           | Run the Python test suite with `pytest`                                                          |
+| Local quality gate    | `python/hexagonal/agents/skills/run-local-quality-gate/SKILL.md`     | Orchestrate formatting, linting, type checking, and tests                                        |
 
 #### Ruleset topics covered
 
