@@ -92,7 +92,7 @@ uv sync --group dev
 If the project later adds multiple dependency groups, use `uv sync --all-groups`
 to install them together.
 
-### 5. Set up pre-commit (optional but recommended)
+### 5. Set up pre-commit
 
 ```bash
 uv add --group dev pre-commit
