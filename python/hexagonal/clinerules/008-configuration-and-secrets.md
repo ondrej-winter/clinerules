@@ -24,6 +24,15 @@ Use these rules to keep runtime configuration explicit, testable, and separated 
 - **Should** produce clear validation errors that identify the missing or invalid setting without printing secret values.
 - **Should** centralize source-specific mechanics such as environment variable names, config file keys, and secret-manager paths in one adapter-owned module per integration.
 
+## Configuration documentation
+
+- **Must** maintain a canonical settings reference under `docs/` when a project has an explicit runtime settings model.
+- **Must** document every settings model option in that reference, including environment variable name, field name, type or format, required/default behavior, safe example value, secret/redaction status, and runtime usage.
+- **Must** keep the main project documentation, usually root `README.md`, linked to the canonical settings reference.
+- **Must** maintain a root `.env.example` that lists all supported environment variables with safe example values.
+- **Must** keep the settings reference, `.env.example`, settings model, and settings tests synchronized when configuration changes.
+- **Must not** include real secrets, tokens, private keys, production credentials, or private endpoints in `.env.example` or documentation examples.
+
 ## Secret safety
 
 - **Must not** commit real secrets, tokens, passwords, private keys, or production credentials.

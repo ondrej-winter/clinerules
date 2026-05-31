@@ -1,6 +1,6 @@
 ---
 name: python-add-env-settings-adapter
-description: Add an environment-backed runtime settings adapter for a Python hexagonal app or library, including application DTOs, validation, and tests.
+description: Add an environment-backed runtime settings adapter for a Python hexagonal app or library, using application-owned settings DTOs, pydantic-settings adapter validation, and focused tests.
 ---
 
 # Add an Environment Settings Adapter
@@ -8,35 +8,28 @@ description: Add an environment-backed runtime settings adapter for a Python hex
 Use this skill when a Python hexagonal application or library needs runtime
 configuration loaded from environment variables or a `.env` file.
 
-This skill captures a strong default pattern for an `env_settings_adapter`:
+This skill follows a concrete env settings adapter pattern:
 
-- the **application layer** owns the runtime settings DTO and any
-  application-level configuration exception,
-- the **input adapter** owns environment parsing, normalization, and
+- the application layer owns the runtime settings DTO and configuration
+  exception,
+- the input adapter owns `pydantic-settings`, environment aliases, parsing, and
   validation,
-- the adapter entry point is intentionally **thin** and only converts the
-  validated adapter model into the application DTO,
-- tests cover DTO defaults and adapter validation and normalization behavior.
+- the adapter entry point stays thin and maps validated adapter settings to the
+  application DTO,
+- tests isolate the process environment and `.env` lookup.
 
-Use this skill when the work spans both the application DTO and the input
-adapter. If you only need to add an adapter to an existing configuration
-boundary, `python-add-adapter` may be enough. If the configuration change
-introduces a meaningful architectural decision, also use `write-adr`.
+Use `assets/` templates as starting points, then adapt fields, aliases,
+defaults, validation rules, and package paths to the target project.
 
 ## Prerequisites
 
 - The project follows a Python hexagonal layout with `src/<app_name>/`.
-- The runtime configuration requirements are known well enough to identify:
-  - required settings,
-  - optional settings and defaults,
-  - grouped or feature-flagged settings,
-  - validation and normalization rules.
+- Runtime configuration requirements are known well enough to identify required
+  values, defaults, and validation rules.
 - The project either already uses `pydantic-settings` or the user has approved
   adding it as a dependency.
 
 ## Target structure
-
-A typical result looks like this:
 
 ```text
 src/<app_name>/
@@ -52,309 +45,202 @@ src/<app_name>/
             ├── adapter.py
             └── settings.py
 
-tests/unit/<app_name>/
+tests/unit/
 ├── application/dtos/test_app_settings.py
 └── adapters/input/env_settings_adapter/test_env_settings.py
+
+docs/
+└── configuration.md
+
+README.md
+.env.example
 ```
 
-Adjust names if the project already has a better local convention, but keep the
-same responsibilities and dependency direction.
-
-Related skills:
-
-- Use `python-add-adapter` when the configuration boundary already exists and
-  you only need to implement or extend the adapter.
-- Use `update-project-docs` when runtime configuration changes require README or
-  operator-facing documentation updates.
-- Use `write-adr` when the configuration approach or boundary is a durable
-  architectural decision.
+Adjust paths to match the repository's existing test layout. Keep the same
+responsibilities and dependency direction.
 
 ## Steps
 
-### 1. Define the application-facing settings DTO
+### 1. Define application-owned settings
 
-Create or update `src/<app_name>/application/dtos/app_settings.py`.
+Create or update `src/<app_name>/application/dtos/app_settings.py` from
+`assets/app_settings.template.py`.
 
 The DTO should:
 
-- represent the runtime settings consumed by application services,
-- use application/domain-friendly types such as `Path`, `Literal`, `Enum`,
-  `int`, `float`, and `bool`,
-- define defaults in the application layer so callers can rely on one canonical
-  source of defaults,
-- stay independent of `pydantic`, framework types, and environment libraries.
+- represent runtime settings consumed by application services,
+- use application-friendly types such as `Path`, `str`, `int`, `float`, `bool`,
+  `Enum`, or `Literal`,
+- keep application defaults in one canonical place,
+- stay independent of `pydantic`, environment variables, and framework types.
 
-A good default pattern is an immutable dataclass:
+If the project exposes DTOs from `application/dtos/__init__.py`, export
+`AppSettings` there following the local pattern.
 
-```python
-from __future__ import annotations
+### 2. Add or reuse a configuration exception
 
-from dataclasses import dataclass, field
-from pathlib import Path
+If the project does not already have an application-level configuration error,
+add one to `src/<app_name>/application/exceptions.py` using
+`assets/exceptions.template.py` as a guide.
 
-DEFAULT_OUTPUT_DIR = Path("out")
-
-
-@dataclass(frozen=True, slots=True)
-class AppSettings:
-    api_key: str
-    log_level: str = "INFO"
-    output_dir: Path = field(default_factory=lambda: DEFAULT_OUTPUT_DIR)
-    debug_enabled: bool = False
-```
-
-Rules:
-
-- Put defaults here, not in the adapter-facing environment model, unless the
-  project has a strong reason to centralize them elsewhere.
-- Use `field(default_factory=...)` for `Path` or other non-scalar defaults.
-- Keep the DTO focused on runtime configuration, not transport-specific
-  concerns.
-
-### 2. Define an application-level configuration exception
-
-If the project does not already have one, add a configuration-focused
-application exception such as `ConfigurationError` in
-`src/<app_name>/application/exceptions.py`.
-
-The adapter should translate `pydantic` or environment-loading failures into
-this application-level exception so the rest of the system does not depend on
-adapter library exception types.
-
-Example:
-
-```python
-class ApplicationError(Exception):
-    """Base application-layer error."""
-
-
-class ConfigurationError(ApplicationError):
-    """Raised when runtime configuration is missing or invalid."""
-```
+The adapter should translate `pydantic` validation failures into this exception
+so callers do not depend on adapter library exception types.
 
 ### 3. Create the input adapter package
 
-Create:
+Create `src/<app_name>/adapters/input/env_settings_adapter/` with:
 
-```text
-src/<app_name>/adapters/input/env_settings_adapter/
-    __init__.py
-    adapter.py
-    settings.py
-```
+- `__init__.py` from `assets/env_settings_adapter_init.template.py`,
+- `adapter.py` from `assets/env_settings_adapter_adapter.template.py`,
+- `settings.py` from `assets/env_settings_adapter_settings.template.py`.
 
-Keep `__init__.py` lightweight:
+Replace the example `example_app` package, `example app` display name,
+`EXAMPLE_APP` environment prefix, aliases, defaults, and field names with
+project-specific values.
 
-```python
-from .adapter import EnvSettingsAdapter
+### 4. Keep environment parsing in `settings.py`
 
-__all__ = ["EnvSettingsAdapter"]
-```
+`settings.py` is the external configuration boundary. It should own:
 
-Use a different exported adapter name only if the project already has a more
-specific naming convention.
+- environment variable alias constants,
+- stable error-message constants,
+- `.env` loading settings,
+- string trimming and blank rejection,
+- path normalization,
+- feature-group validation when optional features require bundled settings,
+- translation of `ValidationError` to the application `ConfigurationError`.
 
-### 4. Implement the adapter-facing environment model in `settings.py`
-
-Use `pydantic-settings` to define the external configuration surface.
-
-Responsibilities of this module:
-
-- declare environment variable names and descriptions,
-- parse raw environment values,
-- normalize strings, paths, enums, and similar inputs,
-- validate allowed values and numeric constraints,
-- validate grouped settings for optional features,
-- convert `ValidationError` into a caller-friendly application exception.
-
-A representative shape:
+Use `SettingsConfigDict` with these defaults unless the project needs stricter
+behavior:
 
 ```python
-from __future__ import annotations
-
-from pathlib import Path
-
-from pydantic import Field, ValidationError, field_validator, model_validator
-from pydantic_settings import BaseSettings, SettingsConfigDict
-
-from <app_name>.application.exceptions import ConfigurationError
-
-
-class EnvSettings(BaseSettings):
-    model_config = SettingsConfigDict(
-        env_file=".env",
-        env_file_encoding="utf-8",
-        case_sensitive=False,
-        populate_by_name=True,
-        extra="ignore",
-    )
-
-    api_key: str = Field(alias="API_KEY")
-    log_level: str | None = Field(default=None, alias="LOG_LEVEL")
-    output_dir: Path | None = Field(default=None, alias="OUTPUT_DIR")
-    debug_enabled: bool | None = Field(default=None, alias="DEBUG_ENABLED")
-
-    @field_validator("api_key", "log_level", mode="before")
-    @classmethod
-    def validate_non_empty_text(cls, value: object) -> object:
-        ...
-
-    @model_validator(mode="after")
-    def validate_feature_requirements(self) -> EnvSettings:
-        ...
-        return self
-
-
-def load_settings_from_env() -> EnvSettings:
-    try:
-        return EnvSettings()
-    except ValidationError as exc:
-        raise ConfigurationError("Invalid configuration: ...") from exc
+SettingsConfigDict(
+    env_file=".env",
+    env_file_encoding="utf-8",
+    case_sensitive=False,
+    populate_by_name=True,
+    extra="ignore",
+)
 ```
 
-Rules:
+Keep `pydantic` and `pydantic-settings` imports inside the adapter package.
 
-- Keep `pydantic` and `pydantic-settings` imports in the adapter package.
-- Use field aliases to expose the environment variable contract explicitly.
-- Normalize blank strings before later validation so callers get clear errors.
-- Prefer small helper functions for repeated normalization and grouped validation.
-- Aggregate validation errors into a stable, readable message.
-- Validate feature-flag bundles after parsing. Example: if
-  `PUBLISH_ENABLED=true`, require `PUBLISH_BASE_URL` and `PUBLISH_TOKEN`.
-- Ignore unrelated extra environment variables unless the project requires
-  strict rejection.
-- Keep environment-specific parsing and validation out of the application layer.
+### 5. Keep `adapter.py` thin
 
-### 5. Keep `adapter.py` intentionally thin
+`adapter.py` should only convert validated `EnvSettings` into `AppSettings`.
 
-`adapter.py` should convert the validated adapter-facing settings model into the
-application DTO and nothing more.
+Use `settings.model_dump()` when the adapter model contains all defaults that
+should be passed through. Use `settings.model_dump(exclude_none=True)` when
+optional adapter fields are `None` so application DTO defaults should apply.
 
-Example:
-
-```python
-from <app_name>.application.dtos import AppSettings
-
-from .settings import EnvSettings, load_settings_from_env
-
-
-def _to_app_settings(settings: EnvSettings) -> AppSettings:
-    return AppSettings(**settings.model_dump(exclude_none=True))
-
-
-class EnvSettingsAdapter:
-    """Load AppSettings from environment-backed settings."""
-
-    def load(self) -> AppSettings:
-        return _to_app_settings(load_settings_from_env())
-```
-
-Rules:
-
-- Do not duplicate validation here.
-- Do not put business logic here.
-- Prefer `model_dump(exclude_none=True)` so the application DTO still applies
-  its own defaults.
-- Keep this adapter easy to test and easy to reuse from the composition root.
+Do not duplicate validation or add business logic in `adapter.py`.
 
 ### 6. Wire the adapter at the composition root
 
-Update the application entry point, CLI bootstrap, or framework startup code to
-load `AppSettings` through the new adapter.
-
-Typical flow:
+Update the CLI bootstrap, HTTP startup, worker startup, or other composition root
+to:
 
 1. instantiate `EnvSettingsAdapter`,
 2. call `load()` once at startup,
-3. pass the resulting `AppSettings` DTO into logging setup, service factories,
-   and adapters that need runtime config.
+3. pass the resulting `AppSettings` into logging setup, service factories, and
+   adapters that need runtime configuration.
 
 Keep environment access centralized. Do not scatter `os.getenv()` calls across
 the codebase once this adapter exists.
 
-### 7. Test both DTO defaults and adapter behavior
+### 7. Test DTO defaults and adapter behavior
 
-Add or update unit tests.
+Create or update tests from:
 
-#### DTO tests
+- `assets/test_app_settings.template.py`,
+- `assets/test_env_settings.template.py`.
 
-Test the application DTO directly in
-`tests/unit/<app_name>/application/dtos/test_app_settings.py`.
+Adapter tests should use `monkeypatch` for environment variables and an autouse
+fixture that changes into `tmp_path` so developer-local `.env` files cannot
+affect test results.
 
 Cover at least:
 
-- required fields,
-- project defaults,
-- preservation of explicit overrides,
-- default `Path` or feature-flag behavior.
+- missing required settings raise `ConfigurationError`,
+- blank text and blank path settings raise `ConfigurationError`,
+- explicit values are trimmed and passed through,
+- unset optional values use intended defaults,
+- path-like values become `Path`,
+- unrelated environment variables are ignored.
 
-#### Adapter tests
+### 8. Document every settings option
 
-Test `EnvSettingsAdapter` in
-`tests/unit/<app_name>/adapters/input/env_settings_adapter/test_env_settings.py`.
+When adding or changing the settings model, create or update a canonical settings
+reference under `docs/`, such as `docs/configuration.md`, using
+`assets/configuration.template.md` as a starting point.
 
-Cover behaviors such as:
+The settings reference should list every option exposed by `EnvSettings` and
+include:
 
-- missing required settings raises `ConfigurationError`,
-- explicit env values override DTO defaults,
-- blank strings are rejected or trimmed as intended,
-- choice fields are normalized correctly,
-- optional feature groups require complete configuration only when enabled,
-- unset optional values allow DTO defaults to apply,
-- path-like values are converted to `Path`.
+- environment variable name,
+- application DTO field name when different,
+- expected type or format,
+- required/default behavior,
+- safe example value,
+- whether the value is secret and must be redacted,
+- where the setting is used at runtime.
 
-Use `monkeypatch` to control environment variables. Keep tests deterministic and
-isolated from the developer's real environment.
+Keep this file synchronized with `settings.py`, `AppSettings`, and tests.
 
-### 8. Update package exports and docs
+### 9. Maintain `.env.example`
 
-If the project intentionally exposes the adapter or DTO at package level, update
-the relevant `__init__.py` exports.
+Create or update the root `.env.example` from `assets/env.example.template`.
 
-Update `README.md` when the runtime configuration surface changes. Document:
+The example file should list all supported environment variables, including
+optional variables with defaults. Use safe placeholders for secret values and do
+not include real credentials, tokens, private keys, or production URLs.
 
-- required environment variables,
-- important defaults,
-- feature-flagged settings,
-- `.env` support if present,
-- any new dependency such as `pydantic-settings`.
+### 10. Reference configuration docs from the main README
 
-If the change introduces a durable architectural decision, use `write-adr`.
+Add or update a short configuration section in the main project documentation,
+usually root `README.md`, using
+`assets/readme_configuration_section.template.md` as a guide.
 
-### 9. Validate locally
+The README section should point readers to the canonical settings reference and
+the `.env.example` file rather than duplicating the full settings table.
 
-Run the narrowest relevant tests first, then the full project quality gate.
+If runtime configuration changes the user-facing surface, also update any
+operator documentation with required environment variables, defaults, `.env`
+support, and the `pydantic-settings` dependency.
+
+Use `write-adr` if the configuration approach is a durable architectural
+decision.
+
+### 11. Validate locally
+
+Run focused tests first, then the repository quality gate.
 
 Preferred order:
 
-1. focused DTO and adapter tests,
-2. `run-local-quality-gate` for full validation.
+1. settings DTO and env adapter tests,
+2. `uv run ruff check .`,
+3. `uv run mypy .`,
+4. `uv run pytest`.
 
-At minimum, final validation should satisfy the repository’s configured:
-
-- `uv run ruff check .`
-- `uv run mypy .`
-- `uv run pytest`
+When available, use `run-local-quality-gate` for the full validation pass.
 
 ## Design checklist
 
-Before finishing, verify these architectural properties:
-
-- Application code depends on `AppSettings`, not on `BaseSettings`.
-- The adapter owns `pydantic-settings`, environment aliases, and parsing rules.
-- DTO defaults live in the application layer and remain the canonical defaults.
+- Application code depends on `AppSettings`, not `BaseSettings`.
+- The adapter owns environment aliases, parsing, validation, and `.env` support.
+- Runtime defaults are intentional and defined in either the DTO or adapter model
+  consistently.
 - Validation errors are translated into an application exception.
-- Feature-group requirements are enforced in one clear place.
 - The composition root loads configuration once and passes the DTO inward.
+- Tests isolate both environment variables and `.env` file lookup.
+- `docs/configuration.md`, `.env.example`, README links, and settings tests stay
+  synchronized with every `EnvSettings` field.
 
-## When to use a different approach
+## Related skills
 
-This pattern is a strong default, but adapt it when needed:
-
-- For very small scripts or one-off tools, a full adapter package may be too
-  heavy.
-- For libraries, keep runtime configuration optional and avoid forcing `.env`
-  loading unless the library truly owns process-level configuration.
-- If configuration comes from files, secrets managers, or remote config sources
-  instead of environment variables, keep the same application DTO boundary but
-  implement a different input adapter.
+- Use `python-add-adapter` when the configuration boundary already exists and
+  only an adapter implementation is needed.
+- Use `update-project-docs` when runtime configuration changes require README or
+  operator-facing documentation updates.
+- Use `write-adr` when the configuration approach or boundary is a durable
+  architectural decision.

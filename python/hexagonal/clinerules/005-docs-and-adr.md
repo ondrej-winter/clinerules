@@ -9,8 +9,17 @@ README, changelog-style notes, or related project-facing documentation updates.
 - **Must** update `README.md` when behavior, configuration, or usage changes.
 - **Should** add short usage examples when new CLI flags or commands are introduced.
 - **Must** document new environment variables and defaults.
+- **Must** link from the main README to the canonical settings reference under `docs/` when the project has an explicit runtime settings model.
+- **Must** maintain `.env.example` with every supported environment variable and safe example values when environment-backed configuration exists.
 - **Should** document supported Python version(s), the `uv` workflow (`uv sync`, `uv run ...`), and the local quality gate commands when they are project-relevant.
 - In-code docstring and comment standards are covered in `012-documentation-standards.md`.
+
+## Configuration references
+
+- **Must** maintain a dedicated settings reference under `docs/` when a runtime settings model exists.
+- **Must** list every settings model option with its environment variable name, field name, type or format, required/default behavior, safe example value, secret/redaction status, and runtime usage.
+- **Must** keep configuration docs, `.env.example`, settings model fields, and tests synchronized.
+- **Should** keep README configuration content brief and link to the dedicated reference instead of duplicating full settings tables.
 
 ## ADRs (Architecture Decision Records)
 
