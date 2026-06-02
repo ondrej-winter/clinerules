@@ -1,6 +1,8 @@
 ---
 name: review-implementation-plan
 description: Review an implementation plan for completeness, ambiguity, sequencing, risks, dependencies, validation, and handoff readiness before coding.
+metadata:
+  version: "1.0.0"
 ---
 
 # Review Implementation Plan

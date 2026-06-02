@@ -46,6 +46,15 @@ SKIP_MARKDOWN_DIRS = {
     '__pycache__',
     'node_modules',
 }
+LOCAL_SKILL_FILE_REFERENCE_PATTERN = re.compile(
+    r'`((?:references|scripts|assets)/[^`\s]+|skills/[a-z0-9-]+/SKILL\.md)`'
+)
+MARKDOWN_LINK_PATTERN = re.compile(r'\[[^\]]+\]\(([^)]+)\)')
+BACKTICKED_KEBAB_TOKEN_PATTERN = re.compile(r'`([a-z0-9]+(?:-[a-z0-9]+)+)`')
+SKILL_REFERENCE_CUE_PATTERN = re.compile(
+    r'\b(see|combine|related|downstream|hand off|skill|skills)\b',
+    flags=re.IGNORECASE,
+)
 
 
 def repo_relative(path: Path) -> str:
@@ -142,6 +151,92 @@ def validate_skill_file(path: Path) -> list[str]:
     return errors
 
 
+def iter_skill_roots() -> list[Path]:
+    return [root for root in SKILL_PATHS if root.exists()]
+
+
+def skill_names_by_root() -> dict[Path, set[str]]:
+    names_by_root: dict[Path, set[str]] = {}
+    for root in iter_skill_roots():
+        names_by_root[root] = {
+            skill_dir.name
+            for skill_dir in root.iterdir()
+            if skill_dir.is_dir() and (skill_dir / 'SKILL.md').exists()
+        }
+    return names_by_root
+
+
+def skill_root_for_file(path: Path) -> Path | None:
+    for root in iter_skill_roots():
+        if is_relative_to(path, root):
+            return root
+    return None
+
+
+def is_external_markdown_target(target: str) -> bool:
+    return target.startswith(('http://', 'https://', 'mailto:', '#'))
+
+
+def normalize_markdown_target(target: str) -> str:
+    return target.split('#', 1)[0].split('?', 1)[0]
+
+
+def validate_skill_references(
+    path: Path,
+    names_by_root: dict[Path, set[str]],
+) -> list[str]:
+    errors: list[str] = []
+    skill_root = skill_root_for_file(path)
+    if skill_root is None:
+        return errors
+
+    known_skill_names = set().union(*names_by_root.values()) if names_by_root else set()
+    text = path.read_text(encoding='utf-8')
+    lines = text.splitlines()
+
+    for line_number, line in enumerate(lines, start=1):
+        for match in MARKDOWN_LINK_PATTERN.finditer(line):
+            target = match.group(1).strip()
+            if is_external_markdown_target(target) or '<' in target or '>' in target:
+                continue
+            normalized_target = normalize_markdown_target(target)
+            if not normalized_target:
+                continue
+            if not (path.parent / normalized_target).exists():
+                errors.append(
+                    f"{repo_relative(path)}:{line_number}: referenced path does not "
+                    f"exist: {target}"
+                )
+
+        for match in LOCAL_SKILL_FILE_REFERENCE_PATTERN.finditer(line):
+            target = match.group(1)
+            if target.startswith('skills/'):
+                target_parts = target.split('/')
+                referenced_path = skill_root / target_parts[1] / 'SKILL.md'
+            else:
+                referenced_path = path.parent / target
+            if not referenced_path.exists():
+                errors.append(
+                    f"{repo_relative(path)}:{line_number}: referenced path does not "
+                    f"exist: {target}"
+                )
+
+        if not SKILL_REFERENCE_CUE_PATTERN.search(line):
+            continue
+
+        for match in BACKTICKED_KEBAB_TOKEN_PATTERN.finditer(line):
+            skill_name = match.group(1)
+            if skill_name.startswith(('references-', 'scripts-', 'assets-')):
+                continue
+            if skill_name not in known_skill_names:
+                errors.append(
+                    f"{repo_relative(path)}:{line_number}: referenced skill does not "
+                    f"exist: {skill_name}"
+                )
+
+    return errors
+
+
 def validate_markdown_plain_formatting(path: Path) -> list[str]:
     errors: list[str] = []
     lines = path.read_text(encoding='utf-8').splitlines()
@@ -232,9 +327,11 @@ def validate_readme_paths() -> list[str]:
 
 def main() -> int:
     errors: list[str] = []
+    names_by_root = skill_names_by_root()
 
     for skill_file in iter_skill_files():
         errors.extend(validate_skill_file(skill_file))
+        errors.extend(validate_skill_references(skill_file, names_by_root))
 
     for markdown_file in iter_markdown_files():
         errors.extend(validate_markdown_plain_formatting(markdown_file))

@@ -1,6 +1,8 @@
 ---
 name: add-observability
 description: Add logs, metrics, traces, profiling, or operational notes for meaningful workflows without unsupported performance claims.
+metadata:
+  version: "1.0.0"
 ---
 
 # Add Observability

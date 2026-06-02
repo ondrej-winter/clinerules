@@ -1,6 +1,8 @@
 ---
 name: write-adr
 description: Create an Architecture Decision Record with the next sequential number, a clear title, and documented consequences.
+metadata:
+  version: "1.0.0"
 ---
 
 # Write an Architecture Decision Record (ADR)

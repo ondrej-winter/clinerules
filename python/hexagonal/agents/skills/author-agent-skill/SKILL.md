@@ -1,6 +1,8 @@
 ---
 name: author-agent-skill
 description: Create, update, or review Agent Skill directories and SKILL.md files for valid frontmatter, structure, portability, progressive disclosure, and validation readiness.
+metadata:
+  version: "1.1.0"
 ---
 
 # Author Agent Skill
@@ -8,6 +10,10 @@ description: Create, update, or review Agent Skill directories and SKILL.md file
 Use this skill when creating, updating, or reviewing an Agent Skill. The goal is
 to keep each skill valid, easy for agents to discover, portable across projects,
 and concise enough to load only the guidance needed for the task.
+
+The expected outcome is a skill directory that can be copied into a compatible
+agent environment, discovered from its metadata, followed without hidden local
+context, and validated or reviewed with clear evidence before handoff.
 
 ## When to use this skill
 
@@ -51,8 +57,8 @@ Prefer action-oriented names such as `write-adr`, `run-local-quality-gate`, or
 
 ### 3. Add required frontmatter
 
-`SKILL.md` must start on the first line with YAML frontmatter. Include `name`
-and `description`.
+`SKILL.md` must start on the first line with YAML frontmatter. Include `name`,
+`description`, and `metadata.version`.
 
 Use this minimal shape:
 
@@ -60,6 +66,8 @@ Use this minimal shape:
 ---
 name: skill-name
 description: Brief description of what the skill does and when to use it.
+metadata:
+  version: "1.0.0"
 ---
 ```
 
@@ -70,9 +78,21 @@ The description should explain both:
 
 Keep the description non-empty, specific, and no longer than 1024 characters.
 
+Use `metadata.version` to track skill revisions. Increase the version whenever
+the skill behavior, instructions, metadata, assets, scripts, or references
+change. Prefer semantic versioning:
+
+- patch for clarifications, typo fixes, or validation-only updates
+- minor for new guidance, checklist items, optional supporting files, or
+  backward-compatible workflow improvements
+- major for breaking changes to when or how the skill should be used, required
+  structure, or expected outputs
+
 ### 4. Use only supported optional frontmatter fields
 
 Add optional fields only when they are useful and supported by the skill format.
+The `metadata` field is required when it contains the mandatory `version` key;
+additional metadata keys remain optional.
 
 Supported optional fields are:
 
@@ -80,6 +100,12 @@ Supported optional fields are:
 - `compatibility`
 - `metadata`
 - `allowed-tools`
+
+Keep optional fields concise and format them according to the target Agent Skills
+specification. Use `compatibility` only for meaningful environment requirements,
+additional `metadata` keys only for useful key-value metadata, and
+`allowed-tools` only when tool pre-approval is supported by the target
+environment.
 
 Do not add custom frontmatter fields unless the target skill system or repository
 tooling explicitly requires them.
@@ -95,6 +121,8 @@ A practical structure is:
 ---
 name: skill-name
 description: Brief description of what the skill does and when to use it.
+metadata:
+  version: "1.0.0"
 ---
 
 # Skill Name
@@ -119,6 +147,10 @@ material into optional directories when needed:
 - `scripts/` for executable helper code
 - `references/` for focused supporting documentation
 - `assets/` for templates, static files, schemas, or examples
+
+Only add these directories when they reduce main-file complexity or provide
+content an agent can load on demand. Do not create empty optional directories or
+split short guidance just to mirror the directory convention.
 
 When referencing supporting files, use relative paths from the skill root. Prefer
 simple one-level references where practical.
@@ -158,18 +190,24 @@ skill directory.
 
 When no validator is available, manually check the review checklist below.
 
+In the handoff, report what changed, which skill directory was validated, which
+commands passed, and any validation that was skipped with the reason.
+
 ## Review checklist
 
 - `SKILL.md` exists in the skill directory
 - frontmatter starts at the first line
-- frontmatter includes `name` and `description`
+- frontmatter includes `name`, `description`, and `metadata.version`
 - `name` matches the parent directory exactly
 - `name` is valid kebab-case
+- `description` explains both what the skill does and when to use it
+- `metadata.version` is present, quoted, and increased when the skill changed
 - unsupported frontmatter fields are absent
-- a single top-level heading follows the frontmatter
+- supported optional frontmatter fields are correctly shaped and necessary
+- exactly one top-level heading follows the frontmatter
 - instructions explain when and how to use the skill
 - examples are generic and portable unless clearly marked otherwise
-- optional `scripts/`, `references/`, and `assets/` content is necessary and
-  referenced clearly
+- optional `scripts/`, `references/`, and `assets/` content is necessary,
+  non-empty, and referenced clearly when relevant
 - formatting is plain and free of decorative noise
 - validation was run or any skipped validation is documented

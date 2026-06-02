@@ -1,6 +1,8 @@
 ---
 name: update-project-docs
 description: Update project-facing documentation after a user-visible behavior, configuration, operation, or workflow change.
+metadata:
+  version: "1.0.0"
 ---
 
 # Update Project Docs
