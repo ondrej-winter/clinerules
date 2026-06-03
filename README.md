@@ -77,21 +77,26 @@ workflows:
 | Update project docs        | `shared/agents/skills/update-project-docs/SKILL.md`        | Update project-facing documentation after behavior, configuration, operation, or workflow changes  |
 | Write ADR                  | `shared/agents/skills/write-adr/SKILL.md`                  | Create a numbered Architecture Decision Record with context, decision, and consequences            |
 
-The shared `write-adr`, `add-observability`, `update-project-docs`,
-`interview-me`, and `review-implementation-plan` skills are synced into the
-Python hexagonal skill catalog. The shared `author-agent-skill` skill is synced
-into both the Python hexagonal skill catalog and the repository-level
-`.agent/skills/` catalog. The shared `run-local-quality-gate` skill remains
-shared-only because the Python hexagonal catalog keeps specialized Python quality
-gate guidance.
+The shared `write-adr` and `add-observability` skills are synced into the Python
+hexagonal skill catalog. The shared `author-agent-skill`, `interview-me`,
+`review-implementation-plan`, and `update-project-docs` skills are synced into
+both the Python hexagonal skill catalog and the repository-level `.agent/skills/`
+catalog. The shared `using-agent-skills` and `run-local-quality-gate` skills are
+synced into the repository-level `.agent/skills/` catalog only. The Python
+hexagonal catalog keeps specialized Python quality gate guidance.
 
 ### `.agent/skills/`
 
 Repository-level Agent Skill files available at the workspace root:
 
-| Skill              | Path                                        | Purpose                                                              |
-| ------------------ | ------------------------------------------- | -------------------------------------------------------------------- |
-| Author Agent Skill | `.agent/skills/author-agent-skill/SKILL.md` | Create, update, or review Agent Skill directories and SKILL.md files |
+| Skill                      | Path                                                | Purpose                                                                                     |
+| -------------------------- | --------------------------------------------------- | ------------------------------------------------------------------------------------------- |
+| Using Agent Skills         | `.agent/skills/using-agent-skills/SKILL.md`         | Discover and invoke the right skill for the current task                                    |
+| Interview Me               | `.agent/skills/interview-me/SKILL.md`               | Clarify underspecified user intent before planning or implementation                        |
+| Author Agent Skill         | `.agent/skills/author-agent-skill/SKILL.md`         | Create, update, or review Agent Skill directories and SKILL.md files                        |
+| Review implementation plan | `.agent/skills/review-implementation-plan/SKILL.md` | Review plans for scope, ambiguity, sequencing, dependencies, risks, validation, and handoff |
+| Run local quality gate     | `.agent/skills/run-local-quality-gate/SKILL.md`     | Discover and run project-defined quality checks before handoff                              |
+| Update project docs        | `.agent/skills/update-project-docs/SKILL.md`        | Update project-facing documentation after visible changes                                   |
 
 ### `shared/clinerules/`
 

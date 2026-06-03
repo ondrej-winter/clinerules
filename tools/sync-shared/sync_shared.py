@@ -61,7 +61,18 @@ SYNC_MAP: tuple[SyncEntry, ...] = (
     ),
     SyncEntry(
         source='shared/agents/skills/update-project-docs',
-        targets=('python/hexagonal/agents/skills/update-project-docs',),
+        targets=(
+            'python/hexagonal/agents/skills/update-project-docs',
+            '.agent/skills/update-project-docs',
+        ),
+    ),
+    SyncEntry(
+        source='shared/agents/skills/using-agent-skills',
+        targets=('.agent/skills/using-agent-skills',),
+    ),
+    SyncEntry(
+        source='shared/agents/skills/run-local-quality-gate',
+        targets=('.agent/skills/run-local-quality-gate',),
     ),
     SyncEntry(
         source='shared/agents/skills/author-agent-skill',
@@ -72,11 +83,17 @@ SYNC_MAP: tuple[SyncEntry, ...] = (
     ),
     SyncEntry(
         source='shared/agents/skills/interview-me',
-        targets=('python/hexagonal/agents/skills/interview-me',),
+        targets=(
+            'python/hexagonal/agents/skills/interview-me',
+            '.agent/skills/interview-me',
+        ),
     ),
     SyncEntry(
         source='shared/agents/skills/review-implementation-plan',
-        targets=('python/hexagonal/agents/skills/review-implementation-plan',),
+        targets=(
+            'python/hexagonal/agents/skills/review-implementation-plan',
+            '.agent/skills/review-implementation-plan',
+        ),
     ),
 )
 
