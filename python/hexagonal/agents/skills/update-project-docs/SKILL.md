@@ -11,6 +11,10 @@ Use this skill when a change affects user-visible behavior, configuration,
 operations, or developer workflows and project-facing documentation must stay in
 sync.
 
+Use `documentation-and-adrs` first when it is unclear which durable documentation
+artifact is needed. Use `write-adr` as well when the change records a durable
+architectural, product, data, security, or workflow decision.
+
 ## When to use this skill
 
 Use this skill when you need to update:

@@ -11,6 +11,11 @@ Use this skill when the user asks to document an architectural decision, record
 a design choice, or create an ADR. ADRs are for durable decisions, not routine
 implementation notes.
 
+Use `documentation-and-adrs` first when it is unclear whether the change needs an
+ADR, project documentation, interface documentation, a runbook, or no durable
+documentation. Use `update-project-docs` as well when the decision changes
+reader-facing behavior, configuration, operations, or workflows.
+
 ## Goal
 
 Create a new ADR in the ADR directory with the next sequential number, a clear
