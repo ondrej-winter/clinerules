@@ -1,305 +1,185 @@
 ---
 name: git-workflow-and-versioning
-description: Structures git workflow practices. Use when making any code change. Use when committing, branching, resolving conflicts, or when you need to organize work across multiple parallel streams.
+description: Use version control intentionally with small changes, clear branches, atomic commits, safe history operations, useful summaries, and validation before merge or handoff.
 metadata:
-  version: "1.0.0"
+  version: "1.1.0"
 ---
 
 # Git Workflow and Versioning
 
-## Overview
+Use this skill when organizing changes in version control, preparing commits,
+working across branches, resolving conflicts, or summarizing work for review. The
+goal is to keep changes reviewable, reversible, and easy to understand later.
 
-Git is your safety net. Treat commits as save points, branches as sandboxes, and history as documentation. With AI agents generating code at high speed, disciplined version control is the mechanism that keeps changes manageable, reviewable, and reversible.
+This skill assumes Git concepts but does not require a specific hosting provider,
+branching model, commit convention, CI platform, or package manager.
 
-## When to Use
+## When to use this skill
 
-Always. Every code change flows through git.
+Use this skill when:
 
-## Core Principles
+- making a code, documentation, configuration, or asset change
+- deciding how to split work into commits or branches
+- preparing a review or handoff summary
+- checking whether a diff contains unrelated changes
+- resolving conflicts or coordinating parallel work
+- using history to debug or audit behavior
 
-### Trunk-Based Development (Recommended)
+## Principles
 
-Keep `main` always deployable. Work in short-lived feature branches that merge back within 1-3 days. Long-lived development branches are hidden costs — they diverge, create merge conflicts, and delay integration. DORA research consistently shows trunk-based development correlates with high-performing engineering teams.
+- Keep changes small and logical.
+- Separate behavior changes from mechanical formatting or generated output.
+- Commit only after relevant validation passes.
+- Treat commit messages as durable documentation.
+- Avoid destructive history operations unless explicitly requested and scoped.
+- Prefer clear recovery points over large uncommitted work.
 
-```
-main ──●──●──●──●──●──●──●──●──●──  (always deployable)
-        ╲      ╱  ╲    ╱
-         ●──●─╱    ●──╱    ← short-lived feature branches (1-3 days)
-```
+## Steps
 
-This is the recommended default. Teams using gitflow or long-lived branches can adapt the principles (atomic commits, small changes, descriptive messages) to their branching model — the commit discipline matters more than the specific branching strategy.
+### 1. Inspect repository state
 
-- **Dev branches are costs.** Every day a branch lives, it accumulates merge risk.
-- **Release branches are acceptable.** When you need to stabilize a release while main moves forward.
-- **Feature flags > long branches.** Prefer deploying incomplete work behind flags rather than keeping it on a branch for weeks.
+Before editing, committing, or handing off, check the working tree and understand
+what changed.
 
-### 1. Commit Early, Commit Often
+Useful commands include:
 
-Each successful increment gets its own commit. Don't accumulate large uncommitted changes.
-
-```
-Work pattern:
-  Implement slice → Test → Verify → Commit → Next slice
-
-Not this:
-  Implement everything → Hope it works → Giant commit
-```
-
-Commits are save points. If the next change breaks something, you can revert to the last known-good state instantly.
-
-### 2. Atomic Commits
-
-Each commit does one logical thing:
-
-```
-# Good: Each commit is self-contained
-git log --oneline
-a1b2c3d Add task creation endpoint with validation
-d4e5f6g Add task creation form component
-h7i8j9k Connect form to API and add loading state
-m1n2o3p Add task creation tests (unit + integration)
-
-# Bad: Everything mixed together
-git log --oneline
-x1y2z3a Add task feature, fix sidebar, update deps, refactor utils
+```sh
+git --no-pager status --short
+git --no-pager diff --stat
+git --no-pager diff
 ```
 
-### 3. Descriptive Messages
+Use non-interactive Git commands and disable pagers when possible.
 
-Commit messages explain the _why_, not just the _what_:
+### 2. Keep work scoped
 
-```
-# Good: Explains intent
-feat: add email validation to registration endpoint
+Each change should do one logical thing. Split work when it combines:
 
-Prevents invalid email formats from reaching the database.
-Uses Zod schema validation at the route handler level,
-consistent with existing validation patterns in auth.ts.
+- feature behavior and refactoring
+- formatting and behavior
+- generated output and hand-written changes
+- unrelated modules or domains
+- dependency updates and product behavior
 
-# Bad: Describes what's obvious from the diff
-update auth.ts
-```
+Small incidental cleanups can be acceptable when they are local, obvious, and do
+not obscure the requested change.
 
-**Format:**
+### 3. Use branches as isolation when needed
 
-```
-<type>: <short description>
+Use the project’s branching model. Short-lived branches are useful for isolating
+work, but the exact branch naming convention should match the repository.
 
-<optional body explaining why, not what>
-```
+Good branch names are short, descriptive, and scoped, such as:
 
-**Types:**
-
-- `feat` — New feature
-- `fix` — Bug fix
-- `refactor` — Code change that neither fixes a bug nor adds a feature
-- `test` — Adding or updating tests
-- `docs` — Documentation only
-- `chore` — Tooling, dependencies, config
-
-### 4. Keep Concerns Separate
-
-Don't combine formatting changes with behavior changes. Don't combine refactors with features. Each type of change should be a separate commit — and ideally a separate PR:
-
-```
-# Good: Separate concerns
-git commit -m "refactor: extract validation logic to shared utility"
-git commit -m "feat: add phone number validation to registration"
-
-# Bad: Mixed concerns
-git commit -m "refactor validation and add phone number field"
+```text
+feature/<short-description>
+fix/<short-description>
+docs/<short-description>
+refactor/<short-description>
 ```
 
-**Separate refactoring from feature work.** A refactoring change and a feature change are two different changes — submit them separately. This makes each change easier to review, revert, and understand in history. Small cleanups (renaming a variable) can be included in a feature commit at reviewer discretion.
+Prefer feature flags, staged rollout, or small mergeable slices over long-lived
+branches that diverge for weeks.
 
-### 5. Size Your Changes
+### 4. Commit atomic increments
 
-Target ~100 lines per commit/PR. Changes over ~1000 lines should be split. See the splitting strategies in `code-review-and-quality` for how to break down large changes.
+Create commits that are self-contained and meaningful. A reviewer should be able
+to understand and, if needed, revert one commit without unraveling unrelated work.
 
-```
-~100 lines  → Easy to review, easy to revert
-~300 lines  → Acceptable for a single logical change
-~1000 lines → Split into smaller changes
-```
+Before each commit:
 
-## Branching Strategy
-
-### Feature Branches
-
-```
-main (always deployable)
-  │
-  ├── feature/task-creation    ← One feature per branch
-  ├── feature/user-settings    ← Parallel work
-  └── fix/duplicate-tasks      ← Bug fixes
+```sh
+git --no-pager diff --staged
+<relevant_validation_command>
 ```
 
-- Branch from `main` (or the team's default branch)
-- Keep branches short-lived (merge within 1-3 days) — long-lived branches are hidden costs
-- Delete branches after merge
-- Prefer feature flags over long-lived branches for incomplete features
+Do not commit secrets, local environment files, build artifacts, or unrelated
+temporary files.
 
-### Branch Naming
+### 5. Write useful messages
 
-```
-feature/<short-description>   → feature/task-creation
-fix/<short-description>       → fix/duplicate-tasks
-chore/<short-description>     → chore/update-deps
-refactor/<short-description>  → refactor/auth-module
-```
+Follow the project’s commit-message convention when one exists. Otherwise use a
+short imperative summary and an optional body explaining why.
 
-## Working with Worktrees
+Portable shape:
 
-For parallel AI agent work, use git worktrees to run multiple branches simultaneously:
+```text
+<type-or-area>: <short summary>
 
-```bash
-# Create a worktree for a feature branch
-git worktree add ../project-feature-a feature/task-creation
-git worktree add ../project-feature-b feature/user-settings
-
-# Each worktree is a separate directory with its own branch
-# Agents can work in parallel without interfering
-ls ../
-  project/              ← main branch
-  project-feature-a/    ← task-creation branch
-  project-feature-b/    ← user-settings branch
-
-# When done, merge and clean up
-git worktree remove ../project-feature-a
+<why this changed, important context, validation, or trade-offs>
 ```
 
-Benefits:
+Avoid messages such as `fix`, `update`, `misc`, or `changes` because they do not
+help future maintainers understand history.
 
-- Multiple agents can work on different features simultaneously
-- No branch switching needed (each directory has its own branch)
-- If one experiment fails, delete the worktree — nothing is lost
-- Changes are isolated until explicitly merged
+### 6. Use history safely for debugging
 
-## The Save Point Pattern
+Git history can help locate regressions and understand context.
 
-```
-Agent starts work
-    │
-    ├── Makes a change
-    │   ├── Test passes? → Commit → Continue
-    │   └── Test fails? → Revert to last commit → Investigate
-    │
-    ├── Makes another change
-    │   ├── Test passes? → Commit → Continue
-    │   └── Test fails? → Revert to last commit → Investigate
-    │
-    └── Feature complete → All commits form a clean history
+Useful read-only commands include:
+
+```sh
+git --no-pager log --oneline -n 20
+git --no-pager diff <from_ref>..<to_ref>
+git --no-pager blame <path>
+git --no-pager log --grep=<keyword> --oneline
 ```
 
-This pattern means you never lose more than one increment of work. If an agent goes off the rails, `git reset --hard HEAD` takes you back to the last successful state.
+Use destructive commands such as reset, clean, rebase, or force-push only when the
+target is explicit and the user has approved the risk.
 
-## Change Summaries
+### 7. Summarize changes for review
 
-After any modification, provide a structured summary. This makes review easier, documents scope discipline, and surfaces unintended changes:
+Before handoff, provide:
 
-```
-CHANGES MADE:
-- src/routes/tasks.ts: Added validation middleware to POST endpoint
-- src/lib/validation.ts: Added TaskCreateSchema using Zod
+```text
+Changed:
+- <path>: <what changed and why>
 
-THINGS I DIDN'T TOUCH (intentionally):
-- src/routes/auth.ts: Has similar validation gap but out of scope
-- src/middleware/error.ts: Error format could be improved (separate task)
+Not changed:
+- <related scope intentionally left alone>
 
-POTENTIAL CONCERNS:
-- The Zod schema is strict — rejects extra fields. Confirm this is desired.
-- Added zod as a dependency (72KB gzipped) — already in package.json
-```
+Validation:
+- <command or manual check>: <result>
 
-This pattern catches wrong assumptions early and gives reviewers a clear map of the change. The "DIDN'T TOUCH" section is especially important — it shows you exercised scope discipline and didn't go on an unsolicited renovation.
-
-## Pre-Commit Hygiene
-
-Before every commit:
-
-```bash
-# 1. Check what you're about to commit
-git diff --staged
-
-# 2. Ensure no secrets
-git diff --staged | grep -i "password\|secret\|api_key\|token"
-
-# 3. Run tests
-npm test
-
-# 4. Run linting
-npm run lint
-
-# 5. Run type checking
-npx tsc --noEmit
+Risks or follow-ups:
+- <none or specific item>
 ```
 
-Automate this with git hooks:
+Call out assumptions, skipped validation, and potential follow-up work rather than
+silently expanding scope.
 
-```json
-// package.json (using lint-staged + husky)
-{
-  "lint-staged": {
-    "*.{ts,tsx}": ["eslint --fix", "prettier --write"],
-    "*.{json,md}": ["prettier --write"]
-  }
-}
+## Parallel work and worktrees
+
+When multiple streams of work need separate working directories, Git worktrees can
+be useful. Use them only when the project workflow supports them and the target
+paths are explicit.
+
+Example shape:
+
+```sh
+git worktree add <worktree_path> <branch_name>
 ```
 
-## Handling Generated Files
+Clean up worktrees after merge or abandonment using the project’s normal Git
+workflow.
 
-- **Commit generated files** only if the project expects them (e.g., `package-lock.json`, Prisma migrations)
-- **Don't commit** build output (`dist/`, `.next/`), environment files (`.env`), or IDE config (`.vscode/settings.json` unless shared)
-- **Have a `.gitignore`** that covers: `node_modules/`, `dist/`, `.env`, `.env.local`, `*.pem`
+## Red flags
 
-## Using Git for Debugging
+- large uncommitted work accumulates without checkpoints
+- commit mixes unrelated concerns
+- formatting-only churn hides behavior changes
+- generated files are committed without project convention requiring them
+- local secrets or environment files appear in the diff
+- branch diverges for a long time without integration
+- history is rewritten on shared branches without explicit approval
+- handoff omits validation evidence
 
-```bash
-# Find which commit introduced a bug
-git bisect start
-git bisect bad HEAD
-git bisect good <known-good-commit>
-# Git checkouts midpoints; run your test at each to narrow down
+## Output checklist
 
-# View what changed recently
-git log --oneline -20
-git diff HEAD~5..HEAD -- src/
-
-# Find who last changed a specific line
-git blame src/services/task.ts
-
-# Search commit messages for a keyword
-git log --grep="validation" --oneline
-```
-
-## Common Rationalizations
-
-| Rationalization                        | Reality                                                                                                                                 |
-| -------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
-| "I'll commit when the feature is done" | One giant commit is impossible to review, debug, or revert. Commit each slice.                                                          |
-| "The message doesn't matter"           | Messages are documentation. Future you (and future agents) will need to understand what changed and why.                                |
-| "I'll squash it all later"             | Squashing destroys the development narrative. Prefer clean incremental commits from the start.                                          |
-| "Branches add overhead"                | Short-lived branches are free and prevent conflicting work from colliding. Long-lived branches are the problem — merge within 1-3 days. |
-| "I'll split this change later"         | Large changes are harder to review, riskier to deploy, and harder to revert. Split before submitting, not after.                        |
-| "I don't need a .gitignore"            | Until `.env` with production secrets gets committed. Set it up immediately.                                                             |
-
-## Red Flags
-
-- Large uncommitted changes accumulating
-- Commit messages like "fix", "update", "misc"
-- Formatting changes mixed with behavior changes
-- No `.gitignore` in the project
-- Committing `node_modules/`, `.env`, or build artifacts
-- Long-lived branches that diverge significantly from main
-- Force-pushing to shared branches
-
-## Verification
-
-For every commit:
-
-- [ ] Commit does one logical thing
-- [ ] Message explains the why, follows type conventions
-- [ ] Tests pass before committing
-- [ ] No secrets in the diff
-- [ ] No formatting-only changes mixed with behavior changes
-- [ ] `.gitignore` covers standard exclusions
+- working tree state was inspected
+- change is scoped and reviewable
+- commit or handoff summary explains why, not only what
+- relevant validation passed or skipped validation is documented
+- secrets and local artifacts are absent from the diff
+- risky Git operations were avoided or explicitly approved

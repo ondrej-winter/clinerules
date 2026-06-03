@@ -46,6 +46,7 @@ make sync
 make sync-delete
 make sync-reset
 make tokens
+make format
 make compile
 make validate
 make update

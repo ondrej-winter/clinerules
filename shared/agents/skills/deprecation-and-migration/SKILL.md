@@ -1,209 +1,175 @@
 ---
 name: deprecation-and-migration
-description: Manages deprecation and migration. Use when removing old systems, APIs, or features. Use when migrating users from one implementation to another. Use when deciding whether to maintain or sunset existing code.
+description: Plan and execute safe deprecations, migrations, replacements, and removals by measuring usage, supporting consumers, preserving compatibility, and verifying that old paths are no longer active.
 metadata:
-  version: "1.0.0"
+  version: "1.1.0"
 ---
 
 # Deprecation and Migration
 
-## Overview
+Use this skill when replacing, retiring, consolidating, or removing a system,
+interface, feature, dependency, workflow, configuration surface, or documented
+behavior. The goal is to reduce long-term maintenance cost without surprising
+active consumers or breaking compatibility-sensitive paths.
 
-Code is a liability, not an asset. Every line of code has ongoing maintenance cost — bugs to fix, dependencies to update, security patches to apply, and new engineers to onboard. Deprecation is the discipline of removing code that no longer earns its keep, and migration is the process of moving users safely from the old to the new.
+Deprecation is the decision and communication process. Migration is the work of
+moving consumers safely from the old path to the new one. Removal happens only
+after usage and risk have been verified.
 
-Most engineering organizations are good at building things. Few are good at removing them. This skill addresses that gap.
+## When to use this skill
 
-## When to Use
+Use this skill when:
 
-- Replacing an old system, API, or library with a new one
-- Sunsetting a feature that's no longer needed
-- Consolidating duplicate implementations
-- Removing dead code that nobody owns but everybody depends on
-- Planning the lifecycle of a new system (deprecation planning starts at design time)
-- Deciding whether to maintain a legacy system or invest in migration
+- replacing an old implementation, API, library, adapter, workflow, or feature
+- consolidating duplicate behavior
+- removing dead or unowned code that may still have consumers
+- migrating users, services, modules, data, configuration, or documentation
+- deciding whether to maintain a legacy path or invest in removal
+- designing a new interface and planning how it could be retired later
 
-## Core Principles
+Do not use this skill to remove behavior just because it is inconvenient. First
+verify ownership, usage, replacement readiness, and migration risk.
 
-### Code Is a Liability
+## Principles
 
-Every line of code has ongoing cost: it needs tests, documentation, security patches, dependency updates, and mental overhead for anyone working nearby. The value of code is the functionality it provides, not the code itself. When the same functionality can be provided with less code, less complexity, or better abstractions — the old code should go.
+- Code and operational surfaces carry maintenance cost. Remove what no longer
+  earns its keep, but do it safely.
+- Observable behavior becomes a contract when consumers depend on it, even if it
+  was undocumented.
+- Deprecation without a usable replacement is usually abandonment, not migration.
+- Consumers need clear timelines, compatibility notes, tooling, and support.
+- Removal is complete only when code, tests, docs, configuration, monitoring, and
+  references are cleaned up.
 
-### Hyrum's Law Makes Removal Hard
+## Steps
 
-With enough users, every observable behavior becomes depended on — including bugs, timing quirks, and undocumented side effects. This is why deprecation requires active migration, not just announcement. Users can't "just switch" when they depend on behaviors the replacement doesn't replicate.
+### 1. Decide whether deprecation is justified
 
-### Deprecation Planning Starts at Design Time
+Answer:
 
-When building something new, ask: "How would we remove this in 3 years?" Systems designed with clean interfaces, feature flags, and minimal surface area are easier to deprecate than systems that leak implementation details everywhere.
+- What unique value does the old path still provide?
+- Who or what consumes it?
+- What observable behavior do consumers rely on?
+- What replacement exists, and is it ready?
+- What is the migration cost for each consumer group?
+- What is the cost or risk of keeping the old path?
+- What happens if migration is delayed?
 
-## The Deprecation Decision
+If active consumers remain and no replacement exists, build or identify the
+replacement before announcing removal.
 
-Before deprecating anything, answer these questions:
+### 2. Measure usage and ownership
 
-```
-1. Does this system still provide unique value?
-   → If yes, maintain it. If no, proceed.
+Do not rely on guesses. Gather evidence from available sources such as metrics,
+logs, dependency analysis, repository search, configuration, support tickets,
+runtime traces, docs, and owner interviews.
 
-2. How many users/consumers depend on it?
-   → Quantify the migration scope.
+Record:
 
-3. Does a replacement exist?
-   → If no, build the replacement first. Don't deprecate without an alternative.
+- active consumers and owners
+- known undocumented dependencies
+- usage volume and criticality
+- compatibility-sensitive behaviors
+- data, configuration, or integration points affected
+- unknowns that require follow-up
 
-4. What's the migration cost for each consumer?
-   → If trivially automated, do it. If manual and high-effort, weigh against maintenance cost.
+### 3. Choose advisory or compulsory deprecation
 
-5. What's the ongoing maintenance cost of NOT deprecating?
-   → Security risk, engineer time, opportunity cost of complexity.
-```
+Use advisory deprecation when migration is optional or the old path can remain
+stable for a while. Use compulsory deprecation only when risk, cost, security,
+compliance, or blocking complexity justifies a deadline.
 
-## Compulsory vs Advisory Deprecation
+For compulsory deprecation, provide:
 
-| Type           | When to Use                                                                           | Mechanism                                                                       |
-| -------------- | ------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------- |
-| **Advisory**   | Migration is optional, old system is stable                                           | Warnings, documentation, nudges. Users migrate on their own timeline.           |
-| **Compulsory** | Old system has security issues, blocks progress, or maintenance cost is unsustainable | Hard deadline. Old system will be removed by date X. Provide migration tooling. |
+- deadline and rationale
+- working replacement
+- migration guide
+- support path
+- verification method
+- exception process when needed
 
-**Default to advisory.** Use compulsory only when the maintenance cost or risk justifies forcing migration. Compulsory deprecation requires providing migration tooling, documentation, and support — you can't just announce a deadline.
+### 4. Prepare the replacement and migration path
 
-## The Migration Process
+Before broad announcement, confirm the replacement:
 
-### Step 1: Build the Replacement
+- covers critical use cases
+- has documented differences and compatibility limits
+- is validated in representative environments
+- has rollback or fallback guidance when applicable
+- exposes enough observability to compare old and new behavior
+- includes migration tooling or examples when migration is repetitive
 
-Don't deprecate without a working alternative. The replacement must:
+Use incremental migration patterns when risk is high, such as parallel run,
+adapter, compatibility shim, feature flag, canary, staged rollout, or consumer-by-
+consumer migration.
 
-- Cover all critical use cases of the old system
-- Have documentation and migration guides
-- Be proven in production (not just "theoretically better")
+### 5. Announce and document
 
-### Step 2: Announce and Document
+Write a concise notice:
 
-```markdown
-## Deprecation Notice: OldService
+```md
+## Deprecation notice: <old_surface>
 
-**Status:** Deprecated as of 2025-03-01
-**Replacement:** NewService (see migration guide below)
-**Removal date:** Advisory — no hard deadline yet
-**Reason:** OldService requires manual scaling and lacks observability.
-NewService handles both automatically.
+Status: <advisory or compulsory>
+Replacement: <new_surface>
+Reason: <why this is changing>
+Migration deadline: <date or none>
+Affected consumers: <known scope>
+Migration steps:
 
-### Migration Guide
-
-1. Replace `import { client } from 'old-service'` with `import { client } from 'new-service'`
-2. Update configuration (see examples below)
-3. Run the migration verification script: `npx migrate-check`
-```
-
-### Step 3: Migrate Incrementally
-
-Migrate consumers one at a time, not all at once. For each consumer:
-
-```
-1. Identify all touchpoints with the deprecated system
-2. Update to use the replacement
-3. Verify behavior matches (tests, integration checks)
-4. Remove references to the old system
-5. Confirm no regressions
-```
-
-**The Churn Rule:** If you own the infrastructure being deprecated, you are responsible for migrating your users — or providing backward-compatible updates that require no migration. Don't announce deprecation and leave users to figure it out.
-
-### Step 4: Remove the Old System
-
-Only after all consumers have migrated:
-
-```
-1. Verify zero active usage (metrics, logs, dependency analysis)
-2. Remove the code
-3. Remove associated tests, documentation, and configuration
-4. Remove the deprecation notices
-5. Celebrate — removing code is an achievement
-```
-
-## Migration Patterns
-
-### Strangler Pattern
-
-Run old and new systems in parallel. Route traffic incrementally from old to new. When the old system handles 0% of traffic, remove it.
-
-```
-Phase 1: New system handles 0%, old handles 100%
-Phase 2: New system handles 10% (canary)
-Phase 3: New system handles 50%
-Phase 4: New system handles 100%, old system idle
-Phase 5: Remove old system
+1. <step>
+2. <step>
+   Verification: <how to prove migration worked>
+   Support or escalation: <contact or process>
 ```
 
-### Adapter Pattern
+Keep the notice close to the old surface and in durable project documentation.
 
-Create an adapter that translates calls from the old interface to the new implementation. Consumers keep using the old interface while you migrate the backend.
+### 6. Migrate incrementally
 
-```typescript
-// Adapter: old interface, new implementation
-class LegacyTaskService implements OldTaskAPI {
-  constructor(private newService: NewTaskService) {}
+For each consumer:
 
-  // Old method signature, delegates to new implementation
-  getTask(id: number): OldTask {
-    const task = this.newService.findById(String(id));
-    return this.toOldFormat(task);
-  }
-}
-```
+1. Identify old-path touchpoints.
+2. Move to the replacement.
+3. Verify behavior and compatibility.
+4. Remove references to the old path.
+5. Record completion or remaining risk.
 
-### Feature Flag Migration
+If you own the deprecated surface, prefer helping or automating consumer migration
+over leaving consumers to infer the work.
 
-Use feature flags to switch consumers from old to new system one at a time:
+### 7. Remove only after zero active usage
 
-```typescript
-function getTaskService(userId: string): TaskService {
-  if (featureFlags.isEnabled("new-task-service", { userId })) {
-    return new NewTaskService();
-  }
-  return new LegacyTaskService();
-}
-```
+Before removal, verify:
 
-## Zombie Code
+- no active consumers remain
+- fallback or rollback expectations are clear
+- alerts, dashboards, docs, examples, generated files, and configuration no
+  longer reference the old path
+- tests cover the replacement and no longer depend on the old behavior
+- stakeholders accept the removal timing
 
-Zombie code is code that nobody owns but everybody depends on. It's not actively maintained, has no clear owner, and accumulates security vulnerabilities and compatibility issues. Signs:
+Then remove code, tests, docs, configuration, feature flags, compatibility shims,
+and notices that have served their purpose.
 
-- No commits in 6+ months but active consumers exist
-- No assigned maintainer or team
-- Failing tests that nobody fixes
-- Dependencies with known vulnerabilities that nobody updates
-- Documentation that references systems that no longer exist
+## Red flags
 
-**Response:** Either assign an owner and maintain it properly, or deprecate it with a concrete migration plan. Zombie code cannot stay in limbo — it either gets investment or removal.
+- removal announced without usage measurement
+- no working replacement or migration guide
+- active consumers with no owner or support path
+- deprecated path keeps receiving new features
+- advisory deprecation remains unresolved indefinitely
+- compatibility behavior changed without notice
+- old path removed before metrics, logs, or dependency checks show zero usage
+- documentation and configuration still reference removed behavior
 
-## Common Rationalizations
+## Output checklist
 
-| Rationalization                                     | Reality                                                                                                               |
-| --------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------- |
-| "It still works, why remove it?"                    | Working code that nobody maintains accumulates security debt and complexity. Maintenance cost grows silently.         |
-| "Someone might need it later"                       | If it's needed later, it can be rebuilt. Keeping unused code "just in case" costs more than rebuilding.               |
-| "The migration is too expensive"                    | Compare migration cost to ongoing maintenance cost over 2-3 years. Migration is usually cheaper long-term.            |
-| "We'll deprecate it after we finish the new system" | Deprecation planning starts at design time. By the time the new system is done, you'll have new priorities. Plan now. |
-| "Users will migrate on their own"                   | They won't. Provide tooling, documentation, and incentives — or do the migration yourself (the Churn Rule).           |
-| "We can maintain both systems indefinitely"         | Two systems doing the same thing is double the maintenance, testing, documentation, and onboarding cost.              |
-
-## Red Flags
-
-- Deprecated systems with no replacement available
-- Deprecation announcements with no migration tooling or documentation
-- "Soft" deprecation that's been advisory for years with no progress
-- Zombie code with no owner and active consumers
-- New features added to a deprecated system (invest in the replacement instead)
-- Deprecation without measuring current usage
-- Removing code without verifying zero active consumers
-
-## Verification
-
-After completing a deprecation:
-
-- [ ] Replacement is production-proven and covers all critical use cases
-- [ ] Migration guide exists with concrete steps and examples
-- [ ] All active consumers have been migrated (verified by metrics/logs)
-- [ ] Old code, tests, documentation, and configuration are fully removed
-- [ ] No references to the deprecated system remain in the codebase
-- [ ] Deprecation notices are removed (they served their purpose)
+- deprecation rationale and scope are explicit
+- active usage and ownership were measured
+- replacement readiness is verified
+- advisory or compulsory status is documented
+- migration guide and support path exist
+- consumers are migrated incrementally where needed
+- removal happens only after zero active usage is verified
+- old code, tests, docs, configuration, and notices are cleaned up

@@ -2,7 +2,7 @@
 name: planning-and-task-breakdown
 description: Breaks work into ordered tasks. Use when you have a spec or clear requirements and need to break work into implementable tasks. Use when a task feels too large to start, when you need to estimate scope, or when parallel work is possible.
 metadata:
-  version: "1.0.1"
+  version: "1.1.0"
 ---
 
 # Planning and Task Breakdown
@@ -39,37 +39,36 @@ Before writing any code, operate in read-only mode:
 Map what depends on what:
 
 ```
-Database schema
-  - API models/types
-    - API endpoints
-      - Frontend API client
-        - UI components
-    - Validation logic
-  - Seed data / migrations
+Foundational data or state model
+  - Shared contract or interface
+    - Producer or service behavior
+      - Consumer or user-facing workflow
+    - Validation or policy logic
+  - Supporting setup, migration, or seed data
 ```
 
 Implementation order follows the dependency graph bottom-up: build foundations first.
 
 ### Step 3: Slice Vertically
 
-Instead of building all the database, then all the API, then all the UI — build one complete feature path at a time:
+Instead of building every foundation layer, then every interface, then every user-facing surface, build one complete feature path at a time:
 
 **Bad (horizontal slicing):**
 
 ```
-Task 1: Build entire database schema
-Task 2: Build all API endpoints
-Task 3: Build all UI components
+Task 1: Build the entire data or state model
+Task 2: Build all external interfaces
+Task 3: Build all user-facing surfaces
 Task 4: Connect everything
 ```
 
 **Good (vertical slicing):**
 
 ```
-Task 1: User can create an account (schema + API + UI for registration)
-Task 2: User can log in (auth schema + API + UI for login)
-Task 3: User can create a task (task schema + API + UI for creation)
-Task 4: User can view task list (query + API + UI for list view)
+Task 1: User can create a record (state model + interface + creation surface)
+Task 2: User can authenticate or identify themselves (identity model + interface + entry surface)
+Task 3: User can add an item (item model + interface + creation workflow)
+Task 4: User can view item history (query path + interface + list or report surface)
 ```
 
 Each vertical slice delivers working, testable functionality.
@@ -90,16 +89,16 @@ Each task follows this structure:
 
 **Verification:**
 
-- [ ] Tests pass: `npm test -- --grep "feature-name"`
-- [ ] Build succeeds: `npm run build`
+- [ ] Tests pass: `<test_command>`
+- [ ] Build succeeds when applicable: `<build_command>`
 - [ ] Manual check: [description of what to verify]
 
 **Dependencies:** [Task numbers this depends on, or "None"]
 
 **Files likely touched:**
 
-- `src/path/to/file.ts`
-- `tests/path/to/test.ts`
+- `<module_path>`
+- `<test_path>`
 
 **Estimated scope:** [Small: 1-2 files | Medium: 3-5 files | Large: 5+ files]
 ```
@@ -126,13 +125,13 @@ Add explicit checkpoints:
 
 ## Task Sizing Guidelines
 
-| Size   | Files | Scope                                 | Example                              |
-| ------ | ----- | ------------------------------------- | ------------------------------------ |
-| **XS** | 1     | Single function or config change      | Add a validation rule                |
-| **S**  | 1-2   | One component or endpoint             | Add a new API endpoint               |
-| **M**  | 3-5   | One feature slice                     | User registration flow               |
-| **L**  | 5-8   | Multi-component feature               | Search with filtering and pagination |
-| **XL** | 8+    | **Too large — break it down further** | Break into smaller tasks             |
+| Size   | Files | Scope                                      | Example                                          |
+| ------ | ----- | ------------------------------------------ | ------------------------------------------------ |
+| **XS** | 1     | Single function or config change           | Add a validation rule                            |
+| **S**  | 1-2   | One component, interface, or workflow step | Add a new command handler or interface operation |
+| **M**  | 3-5   | One feature slice                          | User registration flow                           |
+| **L**  | 5-8   | Multi-component feature                    | Search with filtering and pagination             |
+| **XL** | 8+    | **Too large — break it down further**      | Break into smaller tasks                         |
 
 If a task is L or larger, it should be broken into smaller tasks. An agent performs best on S and M tasks.
 
@@ -140,7 +139,7 @@ If a task is L or larger, it should be broken into smaller tasks. An agent perfo
 
 - It would take more than one focused session (roughly 2+ hours of agent work)
 - You cannot describe the acceptance criteria in 3 or fewer bullet points
-- It touches two or more independent subsystems (e.g., auth and billing)
+- It touches two or more independent subsystems, such as identity and payment processing
 - You find yourself writing "and" in the task title (a sign it is two tasks)
 
 ## Plan Document Template
@@ -203,8 +202,8 @@ If a task is L or larger, it should be broken into smaller tasks. An agent perfo
 When multiple agents or sessions are available:
 
 - **Safe to parallelize:** Independent feature slices, tests for already-implemented features, documentation
-- **Must be sequential:** Database migrations, shared state changes, dependency chains
-- **Needs coordination:** Features that share an API contract (define the contract first, then parallelize)
+- **Must be sequential:** state migrations, shared contract changes, dependency chains
+- **Needs coordination:** features that share a contract or interface (define the contract first, then parallelize)
 
 ## Common Rationalizations
 

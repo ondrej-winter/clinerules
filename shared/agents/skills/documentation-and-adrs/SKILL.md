@@ -1,297 +1,176 @@
 ---
 name: documentation-and-adrs
-description: Records decisions and documentation. Use when making architectural decisions, changing public APIs, shipping features, or when you need to record context that future engineers and agents will need to understand the codebase.
+description: Create or update durable documentation, architecture decision records, API notes, runbooks, changelogs, and agent-facing context that explain decisions, usage, trade-offs, and validation evidence.
 metadata:
-  version: "1.0.0"
+  version: "1.1.0"
 ---
 
 # Documentation and ADRs
 
-## Overview
+Use this skill when a decision, behavior, interface, workflow, or operational
+procedure needs durable context for future maintainers, users, or agents. The
+goal is to document why something exists, how to use it safely, and what evidence
+supports it.
 
-Document decisions, not just code. The most valuable documentation captures the _why_ — the context, constraints, and trade-offs that led to a decision. Code shows _what_ was built; documentation explains _why it was built this way_ and _what alternatives were considered_. This context is essential for future humans and agents working in the codebase.
+Good documentation explains intent, constraints, trade-offs, and consequences.
+It does not restate obvious code or create stale process noise.
 
-## When to Use
+## When to use this skill
 
-- Making a significant architectural decision
-- Choosing between competing approaches
-- Adding or changing a public API
-- Shipping a feature that changes user-facing behavior
-- Onboarding new team members (or agents) to the project
-- When you find yourself explaining the same thing repeatedly
+Use this skill when:
 
-**When NOT to use:** Don't document obvious code. Don't add comments that restate what the code already says. Don't write docs for throwaway prototypes.
+- making an architectural, product, data, security, or workflow decision
+- changing public or compatibility-sensitive interfaces
+- shipping behavior that users, operators, or maintainers need to understand
+- recording migration, deployment, rollback, or troubleshooting guidance
+- updating project commands, setup, conventions, or agent instructions
+- repeatedly explaining the same design or gotcha
 
-## Architecture Decision Records (ADRs)
+Do not use this skill for throwaway prototypes, obvious comments, or documentation
+that has no likely reader or maintenance owner.
 
-ADRs capture the reasoning behind significant technical decisions. They're the highest-value documentation you can write.
+## Steps
 
-### When to Write an ADR
+### 1. Identify the reader and purpose
 
-- Choosing a framework, library, or major dependency
-- Designing a data model or database schema
-- Selecting an authentication strategy
-- Deciding on an API architecture (REST vs. GraphQL vs. tRPC)
-- Choosing between build tools, hosting platforms, or infrastructure
-- Any decision that would be expensive to reverse
+Before writing, state:
 
-### ADR Template
+- who needs the documentation
+- what task or decision it supports
+- what the reader already knows
+- what can go wrong without the documentation
+- where the documentation should live
 
-Store ADRs in `docs/decisions/` with sequential numbering:
+Choose the smallest durable format that fits the need.
 
-```markdown
-# ADR-001: Use PostgreSQL for primary database
+### 2. Choose the documentation type
+
+Common types include:
+
+- README or quick-start guide for project setup and common commands
+- architecture decision record for significant decisions and trade-offs
+- interface documentation for public APIs, commands, events, schemas, or modules
+- runbook for operational procedures and incident recovery
+- migration guide for moving from one behavior to another
+- changelog or release note for shipped user-visible changes
+- agent-facing rules or context for project conventions and constraints
+
+### 3. Write ADRs for durable decisions
+
+Use an ADR when a decision would be expensive to reverse or repeatedly debated.
+
+Portable ADR shape:
+
+```md
+# ADR-<number>: <decision title>
 
 ## Status
 
-Accepted | Superseded by ADR-XXX | Deprecated
-
-## Date
-
-2025-01-15
+<proposed | accepted | superseded | deprecated>
 
 ## Context
 
-We need a primary database for the task management application. Key requirements:
-
-- Relational data model (users, tasks, teams with relationships)
-- ACID transactions for task state changes
-- Support for full-text search on task content
-- Managed hosting available (for small team, limited ops capacity)
+<constraints, forces, requirements, and problem statement>
 
 ## Decision
 
-Use PostgreSQL with Prisma ORM.
+<chosen approach>
 
-## Alternatives Considered
+## Alternatives considered
 
-### MongoDB
-
-- Pros: Flexible schema, easy to start with
-- Cons: Our data is inherently relational; would need to manage relationships manually
-- Rejected: Relational data in a document store leads to complex joins or data duplication
-
-### SQLite
-
-- Pros: Zero configuration, embedded, fast for reads
-- Cons: Limited concurrent write support, no managed hosting for production
-- Rejected: Not suitable for multi-user web application in production
-
-### MySQL
-
-- Pros: Mature, widely supported
-- Cons: PostgreSQL has better JSON support, full-text search, and ecosystem tooling
-- Rejected: PostgreSQL is the better fit for our feature requirements
+- <alternative>: <why it was not chosen>
 
 ## Consequences
 
-- Prisma provides type-safe database access and migration management
-- We can use PostgreSQL's full-text search instead of adding Elasticsearch
-- Team needs PostgreSQL knowledge (standard skill, low risk)
-- Hosting on managed service (Supabase, Neon, or RDS)
+- <benefit, cost, risk, follow-up, or validation implication>
 ```
 
-### ADR Lifecycle
+Do not delete old ADRs. If a decision changes, write a new ADR that supersedes or
+deprecates the old one.
 
-```
-PROPOSED → ACCEPTED → (SUPERSEDED or DEPRECATED)
-```
+### 4. Document interfaces by contract
 
-- **Don't delete old ADRs.** They capture historical context.
-- When a decision changes, write a new ADR that references and supersedes the old one.
+For public or cross-boundary interfaces, document:
 
-## Inline Documentation
+- purpose and supported use cases
+- inputs, outputs, side effects, and error behavior
+- compatibility expectations
+- examples that are minimal and portable
+- validation, authentication, authorization, or operational constraints when
+  relevant
 
-### When to Comment
+Use the project’s preferred contract format, such as schema files, reference docs,
+types, command help, examples, or generated documentation.
 
-Comment the _why_, not the _what_:
+### 5. Comment intent, not obvious mechanics
 
-```typescript
-// BAD: Restates the code
-// Increment counter by 1
-counter += 1;
+Inline comments should explain non-obvious intent, constraints, or hazards.
 
-// GOOD: Explains non-obvious intent
-// Rate limit uses a sliding window — reset counter at window boundary,
-// not on a fixed schedule, to prevent burst attacks at window edges
-if (now - windowStart > WINDOW_SIZE_MS) {
-  counter = 0;
-  windowStart = now;
-}
-```
+Good comments answer:
 
-### When NOT to Comment
+- why this approach is necessary
+- what invariant must be preserved
+- what external constraint shaped the code
+- what future maintainer should not simplify away
 
-```typescript
-// Don't comment self-explanatory code
-function calculateTotal(items: CartItem[]): number {
-  return items.reduce((sum, item) => sum + item.price * item.quantity, 0);
-}
+Avoid comments that restate syntax, preserve deleted code, or create TODOs with no
+owner or timeframe.
 
-// Don't leave TODO comments for things you should just do now
-// TODO: add error handling  ← Just add it
+### 6. Keep setup and workflow docs executable
 
-// Don't leave commented-out code
-// const oldImplementation = () => { ... }  ← Delete it, git has history
-```
+For README, setup, or workflow docs, include:
 
-### Document Known Gotchas
+- prerequisites
+- installation or bootstrap steps
+- common commands using placeholders when the skill is reusable, such as
+  `<test_command>` or `<build_command>`
+- validation expectations
+- troubleshooting notes for common failures
+- links to deeper docs when needed
 
-```typescript
-/**
- * IMPORTANT: This function must be called before the first render.
- * If called after hydration, it causes a flash of unstyled content
- * because the theme context isn't available during SSR.
- *
- * See ADR-003 for the full design rationale.
- */
-export function initializeTheme(theme: Theme): void {
-  // ...
-}
-```
+Verify commands when possible, or clearly state when examples are illustrative.
 
-## API Documentation
+### 7. Update docs with the change
 
-For public APIs (REST, GraphQL, library interfaces):
+Documentation should change with the behavior it describes.
 
-### Inline with Types (Preferred for TypeScript)
+Check whether the change affects:
 
-```typescript
-/**
- * Creates a new task.
- *
- * @param input - Task creation data (title required, description optional)
- * @returns The created task with server-generated ID and timestamps
- * @throws {ValidationError} If title is empty or exceeds 200 characters
- * @throws {AuthenticationError} If the user is not authenticated
- *
- * @example
- * const task = await createTask({ title: 'Buy groceries' });
- * console.log(task.id); // "task_abc123"
- */
-export async function createTask(input: CreateTaskInput): Promise<Task> {
-  // ...
-}
-```
+- README or quick-start instructions
+- ADRs or architecture overview
+- public interface docs
+- migration or deprecation notes
+- changelog or release notes
+- runbooks, alerts, dashboards, or troubleshooting guides
+- agent rules, conventions, or repository navigation docs
 
-### OpenAPI / Swagger for REST APIs
+### 8. Validate and prune
 
-```yaml
-paths:
-  /api/tasks:
-    post:
-      summary: Create a task
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/CreateTaskInput"
-      responses:
-        "201":
-          description: Task created
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Task"
-        "422":
-          description: Validation error
-```
+Before handoff:
 
-## README Structure
+- remove commented-out code and obsolete docs
+- check links and referenced file names when practical
+- confirm examples match current behavior
+- keep docs concise enough to be maintained
+- record validation evidence or skipped validation
 
-Every project should have a README that covers:
+## Red flags
 
-```markdown
-# Project Name
+- significant decision has no rationale
+- docs explain what code already says but omit why
+- public interface lacks contract, examples, or compatibility notes
+- setup docs contain unverified commands or stale prerequisites
+- TODO comments have no owner or follow-up path
+- old decisions are deleted instead of superseded
+- docs are updated separately from the behavior they describe
 
-One-paragraph description of what this project does.
+## Output checklist
 
-## Quick Start
-
-1. Clone the repo
-2. Install dependencies: `npm install`
-3. Set up environment: `cp .env.example .env`
-4. Run the dev server: `npm run dev`
-
-## Commands
-
-| Command         | Description              |
-| --------------- | ------------------------ |
-| `npm run dev`   | Start development server |
-| `npm test`      | Run tests                |
-| `npm run build` | Production build         |
-| `npm run lint`  | Run linter               |
-
-## Architecture
-
-Brief overview of the project structure and key design decisions.
-Link to ADRs for details.
-
-## Contributing
-
-How to contribute, coding standards, PR process.
-```
-
-## Changelog Maintenance
-
-For shipped features:
-
-```markdown
-# Changelog
-
-## [1.2.0] - 2025-01-20
-
-### Added
-
-- Task sharing: users can share tasks with team members (#123)
-- Email notifications for task assignments (#124)
-
-### Fixed
-
-- Duplicate tasks appearing when rapidly clicking create button (#125)
-
-### Changed
-
-- Task list now loads 50 items per page (was 20) for better UX (#126)
-```
-
-## Documentation for Agents
-
-Special consideration for AI agent context:
-
-- **CLAUDE.md / rules files** — Document project conventions so agents follow them
-- **Spec files** — Keep specs updated so agents build the right thing
-- **ADRs** — Help agents understand why past decisions were made (prevents re-deciding)
-- **Inline gotchas** — Prevent agents from falling into known traps
-
-## Common Rationalizations
-
-| Rationalization                            | Reality                                                                                               |
-| ------------------------------------------ | ----------------------------------------------------------------------------------------------------- |
-| "The code is self-documenting"             | Code shows what. It doesn't show why, what alternatives were rejected, or what constraints apply.     |
-| "We'll write docs when the API stabilizes" | APIs stabilize faster when you document them. The doc is the first test of the design.                |
-| "Nobody reads docs"                        | Agents do. Future engineers do. Your 3-months-later self does.                                        |
-| "ADRs are overhead"                        | A 10-minute ADR prevents a 2-hour debate about the same decision six months later.                    |
-| "Comments get outdated"                    | Comments on _why_ are stable. Comments on _what_ get outdated — that's why you only write the former. |
-
-## Red Flags
-
-- Architectural decisions with no written rationale
-- Public APIs with no documentation or types
-- README that doesn't explain how to run the project
-- Commented-out code instead of deletion
-- TODO comments that have been there for weeks
-- No ADRs in a project with significant architectural choices
-- Documentation that restates the code instead of explaining intent
-
-## Verification
-
-After documenting:
-
-- [ ] ADRs exist for all significant architectural decisions
-- [ ] README covers quick start, commands, and architecture overview
-- [ ] API functions have parameter and return type documentation
-- [ ] Known gotchas are documented inline where they matter
-- [ ] No commented-out code remains
-- [ ] Rules files (CLAUDE.md etc.) are current and accurate
+- reader and purpose are explicit
+- documentation type fits the need
+- decisions capture context, alternatives, and consequences
+- interface docs describe contract and compatibility
+- inline comments explain intent rather than obvious mechanics
+- setup or workflow commands are verified or marked as examples
+- stale docs and commented-out code are removed
+- validation evidence is documented before handoff

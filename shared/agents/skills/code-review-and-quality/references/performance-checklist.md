@@ -1,14 +1,18 @@
 # Performance Review Checklist
 
-Use this checklist when reviewing changes that affect request paths, rendering, database access, background work, caching, data volume, startup time, or bundle size.
+Use this checklist when reviewing changes that affect request paths, rendering,
+storage access, background work, caching, data volume, startup time, artifact
+size, or other hot paths.
 
 ## Checks
 
 - Confirm hot paths avoid unnecessary network calls, database queries, file reads, and repeated computation.
 - Confirm loops and joins scale with expected data volume rather than only sample data.
 - Confirm caches have clear invalidation, bounds, and fallback behavior.
-- Confirm frontend changes avoid unnecessary re-renders, oversized assets, and blocking work on the main thread.
-- Confirm database changes use appropriate indexes and avoid N+1 query patterns.
+- Confirm presentation-layer changes avoid unnecessary re-rendering, oversized
+  assets, and blocking user-visible work.
+- Confirm storage or query changes use appropriate indexing, batching, and access
+  patterns.
 - Confirm performance-sensitive changes include measurement or a documented rationale.
 
 ## Review prompts

@@ -1,6 +1,7 @@
 # Orchestration Patterns
 
-Use these rules when coordinating reviews, subagents, personas, or fresh-context checks.
+Use these rules when coordinating reviews, subagents, specialist reviewers, or
+fresh-context checks.
 
 ## Preferred pattern
 
@@ -11,7 +12,7 @@ Use these rules when coordinating reviews, subagents, personas, or fresh-context
 
 ## Anti-patterns
 
-- Persona calls another persona.
+- Specialist reviewer calls another specialist reviewer.
 - Reviewer receives the author's full reasoning and is biased toward agreement.
 - Reviewer gets an unclear artifact or no acceptance contract.
 - Orchestration continues recursively until responsibility is unclear.

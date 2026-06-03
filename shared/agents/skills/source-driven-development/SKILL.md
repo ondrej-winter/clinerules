@@ -1,197 +1,187 @@
 ---
 name: source-driven-development
-description: Grounds every implementation decision in official documentation. Use when you want authoritative, source-cited code free from outdated patterns. Use when building with any framework or library where correctness matters.
+description: Grounds implementation decisions in authoritative sources. Use when building with external APIs, libraries, frameworks, platforms, standards, or tools where current documented behavior matters.
 metadata:
-  version: "1.0.1"
+  version: "1.1.0"
 ---
 
 # Source-Driven Development
 
 ## Overview
 
-Every framework-specific code decision must be backed by official documentation. Don't implement from memory — verify, cite, and let the user see your sources. Training data goes stale, APIs get deprecated, best practices evolve. This skill ensures the user gets code they can trust because every pattern traces back to an authoritative source they can check.
+Use authoritative sources before making implementation decisions that depend on a
+specific dependency, runtime, protocol, platform, standard, or external system.
+Do not rely on memory when documented behavior, version compatibility, or current
+recommended practice matters. APIs change, examples age, and implementation
+details vary by version.
 
-## When to Use
+The expected outcome is implementation guidance or code that can be traced to
+current, relevant sources the user can verify.
 
-- The user wants code that follows current best practices for a given framework
-- Building boilerplate, starter code, or patterns that will be copied across a project
-- The user explicitly asks for documented, verified, or "correct" implementation
-- Implementing features where the framework's recommended approach matters (forms, routing, data fetching, state management, auth)
-- Reviewing or improving code that uses framework-specific patterns
-- Any time you are about to write framework-specific code from memory
+## When to use this skill
 
-**When NOT to use:**
+Use this skill when:
 
-- Correctness does not depend on a specific version (renaming variables, fixing typos, moving files)
-- Pure logic that works the same across all versions (loops, conditionals, data structures)
-- The user explicitly wants speed over verification ("just do it quickly")
+- implementing code against a library, framework, platform, service, standard, or
+  command-line tool
+- writing reusable patterns, starter code, templates, or examples that others may
+  copy
+- the user asks for documented, verified, current, or best-practice
+  implementation
+- reviewing code for outdated, deprecated, or version-specific patterns
+- behavior depends on a particular version, feature flag, runtime, protocol, API,
+  schema, or compatibility matrix
 
-## The Process
+Do not use this skill for changes whose correctness does not depend on an
+external source, such as renaming local variables, fixing typos, or moving files
+without changing behavior.
 
-```
-DETECT: Identify the stack and versions.
-FETCH: Get the relevant official documentation.
-IMPLEMENT: Follow documented patterns.
-CITE: Show your sources.
-```
+## Steps
 
-### Step 1: Detect Stack and Versions
+### 1. Identify the source-sensitive decision
 
-Read the project's dependency file to identify exact versions:
+Name the exact decision that needs verification. Avoid broad searches when a
+focused source is enough.
 
-```
-package.json: Node/React/Vue/Angular/Svelte
-composer.json: PHP/Symfony/Laravel
-requirements.txt / pyproject.toml: Python/Django/Flask
-go.mod: Go
-Cargo.toml: Rust
-Gemfile: Ruby/Rails
-```
+Examples:
 
-State what you found explicitly:
+- which API signature to call for `<library_name>` version `<version>`
+- which configuration key is supported by `<tool_name>`
+- which protocol status code, header, or schema field is expected
+- which migration path replaces a deprecated feature
+- which compatibility constraint applies to `<runtime_or_platform>`
 
-```
-STACK DETECTED:
-- React 19.1.0 (from package.json)
-- Vite 6.2.0
-- Tailwind CSS 4.0.3
-Fetching official docs for the relevant patterns.
-```
+### 2. Detect versions and constraints
 
-If versions are missing or ambiguous, **ask the user**. Don't guess — the version determines which patterns are correct.
+Inspect project files, lockfiles, manifests, schemas, command help, or existing
+configuration to identify the relevant versions and constraints.
 
-### Step 2: Fetch Official Documentation
+Common sources include:
 
-Fetch the specific documentation page for the feature you're implementing. Not the homepage, not the full docs — the relevant page.
+- dependency manifests and lockfiles
+- module, package, or build configuration
+- container, runtime, or infrastructure descriptors
+- API schemas, generated clients, or protocol definitions
+- existing ADRs, specs, or project documentation
 
-**Source hierarchy (in order of authority):**
+State what you found before fetching sources:
 
-| Priority | Source                        | Example                                            |
-| -------- | ----------------------------- | -------------------------------------------------- |
-| 1        | Official documentation        | react.dev, docs.djangoproject.com, symfony.com/doc |
-| 2        | Official blog / changelog     | react.dev/blog, nextjs.org/blog                    |
-| 3        | Web standards references      | MDN, web.dev, html.spec.whatwg.org                 |
-| 4        | Browser/runtime compatibility | caniuse.com, node.green                            |
-
-**Not authoritative — never cite as primary sources:**
-
-- Stack Overflow answers
-- Blog posts or tutorials (even popular ones)
-- AI-generated documentation or summaries
-- Your own training data (that is the whole point — verify it)
-
-**Be precise with what you fetch:**
-
-```
-BAD:  Fetch the React homepage
-GOOD: Fetch react.dev/reference/react/useActionState
-
-BAD:  Search "django authentication best practices"
-GOOD: Fetch docs.djangoproject.com/en/6.0/topics/auth/
+```text
+SOURCE CONTEXT
+- Dependency: <library_name> <version> from <manifest_file>
+- Runtime: <runtime_name> <version> from <config_file>
+- Decision: choose the documented pattern for <capability>
 ```
 
-After fetching, extract the key patterns and note any deprecation warnings or migration guidance.
+If the version or target environment is missing and affects correctness, ask the
+user instead of guessing.
 
-When official sources conflict with each other (e.g. a migration guide contradicts the API reference), surface the discrepancy to the user and verify which pattern actually works against the detected version.
+### 3. Fetch the most authoritative focused source
 
-### Step 3: Implement Following Documented Patterns
+Use the narrowest official source that covers the decision. Prefer a specific API
+reference, migration guide, standard section, command reference, or compatibility
+entry over a documentation homepage.
 
-Write code that matches what the documentation shows:
+Source hierarchy, from most to least authoritative:
 
-- Use the API signatures from the docs, not from memory
-- If the docs show a new way to do something, use the new way
-- If the docs deprecate a pattern, don't use the deprecated version
-- If the docs don't cover something, flag it as unverified
+| Priority | Source                                                                       | Use for                                                                    |
+| -------- | ---------------------------------------------------------------------------- | -------------------------------------------------------------------------- |
+| 1        | Official reference documentation                                             | API signatures, configuration keys, supported behavior                     |
+| 2        | Official migration guides, changelogs, release notes, or deprecation notices | version changes and replacement patterns                                   |
+| 3        | Standards documents or vendor-neutral specifications                         | protocol, file format, accessibility, security, or browser behavior        |
+| 4        | Official compatibility matrices or runtime support tables                    | feature availability by version or platform                                |
+| 5        | Source code in the dependency or tool repository                             | behavior not documented elsewhere, when repository source is authoritative |
 
-**When docs conflict with existing project code:**
+Do not cite community posts, Q&A sites, tutorials, or AI-generated summaries as
+primary evidence. They may help discovery, but the implementation decision should
+trace back to an authoritative source whenever possible.
 
+### 4. Extract the applicable rule
+
+Record the source-backed rule in plain language:
+
+```text
+DOCUMENTED RULE
+- Source: <full_url_or_local_reference>
+- Applies to: <dependency_or_platform> <version_or_range>
+- Relevant guidance: <short quote or paraphrase>
+- Impact: use <chosen_pattern>; avoid <deprecated_or_unsupported_pattern>
 ```
-CONFLICT DETECTED:
-The existing codebase uses useState for form loading state,
-but React 19 docs recommend useActionState for this pattern.
-(Source: react.dev/reference/react/useActionState)
+
+When official sources conflict, surface the discrepancy and explain which source
+appears to apply to the detected version or context. Ask the user when the tradeoff
+changes behavior, compatibility, or project conventions.
+
+### 5. Implement according to the source
+
+Use the documented signatures, configuration keys, lifecycle rules, schemas, or
+workflow steps. When existing project code uses a different pattern, decide
+explicitly whether to follow current documentation or preserve local consistency.
+
+Example conflict note:
+
+```text
+CONFLICT DETECTED
+The project uses <existing_pattern>, but the documented pattern for
+<dependency_name> <version> is <documented_pattern>.
 
 Options:
-A) Use the modern pattern (useActionState) — consistent with current docs
-B) Match existing code (useState) — consistent with codebase
-Which approach do you prefer?
+1. Use the documented pattern for new code.
+2. Match the existing local pattern for consistency and note the follow-up risk.
 ```
 
-Surface the conflict. Don't silently pick one.
+Do not silently choose a path when the choice has compatibility, migration, or
+maintenance implications.
 
-### Step 4: Cite Your Sources
+### 6. Cite the sources
 
-Every framework-specific pattern gets a citation. The user must be able to verify every decision.
+Include citations where they help future maintainers verify non-obvious or
+source-sensitive choices.
 
-**In code comments:**
+Citation rules:
 
-```typescript
-// React 19 form handling with useActionState
-// Source: https://react.dev/reference/react/useActionState#usage
-const [state, formAction, isPending] = useActionState(
-  submitOrder,
-  initialState,
-);
+- Use full URLs or precise repository-local references.
+- Prefer deep links, anchors, section names, or versioned documentation when
+  available.
+- Quote the relevant passage for decisions that are easy to dispute or misapply.
+- Include compatibility evidence when recommending platform or runtime features.
+- If no authoritative source exists, mark the decision as unverified.
+
+Example handoff note:
+
+```text
+I used <documented_pattern> because <official_source> documents it for
+<dependency_name> <version>. I could not find official guidance for
+<unverified_detail>, so that part should be verified before production use.
 ```
 
-**In conversation:**
+## Common rationalizations
 
-```
-I'm using useActionState instead of manual useState for the
-form submission state. React 19 replaced the manual
-isPending/setIsPending pattern with this hook.
+| Rationalization                              | Reality                                                                         |
+| -------------------------------------------- | ------------------------------------------------------------------------------- |
+| "I know this API."                           | Confidence is not evidence. Version-specific details change.                    |
+| "The docs are too broad."                    | Fetch the focused page or reference section, not the whole docs site.           |
+| "A popular blog says this is best practice." | Community material is not a primary source for source-driven implementation.    |
+| "The project already does it this way."      | Existing code may be outdated. Surface the conflict instead of copying blindly. |
+| "I'll add a disclaimer."                     | A clear citation or explicit unverified note is better than vague hedging.      |
 
-Source: https://react.dev/blog/2024/12/05/react-19#actions
-"useTransition now supports async functions [...] to handle
-pending states automatically"
-```
+## Red flags
 
-**Citation rules:**
-
-- Full URLs, not shortened
-- Prefer deep links with anchors where possible (e.g. `/useActionState#usage` over `/useActionState`) — anchors survive doc restructuring better than top-level pages
-- Quote the relevant passage when it supports a non-obvious decision
-- Include browser/runtime support data when recommending platform features
-- If you cannot find documentation for a pattern, say so explicitly:
-
-```
-UNVERIFIED: I could not find official documentation for this
-pattern. This is based on training data and may be outdated.
-Verify before using in production.
-```
-
-Honesty about what you couldn't verify is more valuable than false confidence.
-
-## Common Rationalizations
-
-| Rationalization                           | Reality                                                                                                                                                            |
-| ----------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| "I'm confident about this API"            | Confidence is not evidence. Training data contains outdated patterns that look correct but break against current versions. Verify.                                 |
-| "Fetching docs wastes tokens"             | Hallucinating an API wastes more. The user debugs for an hour, then discovers the function signature changed. One fetch prevents hours of rework.                  |
-| "The docs won't have what I need"         | If the docs don't cover it, that's valuable information — the pattern may not be officially recommended.                                                           |
-| "I'll just mention it might be outdated"  | A disclaimer doesn't help. Either verify and cite, or clearly flag it as unverified. Hedging is the worst option.                                                  |
-| "This is a simple task, no need to check" | Simple tasks with wrong patterns become templates. The user copies your deprecated form handler into ten components before discovering the modern approach exists. |
-
-## Red Flags
-
-- Writing framework-specific code without checking the docs for that version
-- Using "I believe" or "I think" about an API instead of citing the source
-- Implementing a pattern without knowing which version it applies to
-- Citing Stack Overflow or blog posts instead of official documentation
-- Using deprecated APIs because they appear in training data
-- Not reading `package.json` / dependency files before implementing
-- Delivering code without source citations for framework-specific decisions
-- Fetching an entire docs site when only one page is relevant
+- writing source-sensitive code without checking the relevant version
+- using a deprecated or changed API because it appears in older examples
+- citing community content as the primary source for an implementation decision
+- fetching broad documentation instead of the page or section that answers the
+  current question
+- failing to surface conflicts between official guidance and existing project code
+- presenting unverified implementation details as fact
 
 ## Verification
 
-After implementing with source-driven development:
+Before handoff, confirm:
 
-- [ ] Framework and library versions were identified from the dependency file
-- [ ] Official documentation was fetched for framework-specific patterns
-- [ ] All sources are official documentation, not blog posts or training data
-- [ ] Code follows the patterns shown in the current version's documentation
-- [ ] Non-trivial decisions include source citations with full URLs
-- [ ] No deprecated APIs are used (checked against migration guides)
-- [ ] Conflicts between docs and existing code were surfaced to the user
-- [ ] Anything that could not be verified is explicitly flagged as unverified
+- [ ] relevant versions, constraints, or target platforms were identified
+- [ ] focused authoritative sources were consulted
+- [ ] source-backed decisions include citations where useful
+- [ ] deprecated or incompatible patterns were avoided or explicitly justified
+- [ ] conflicts between sources and existing project code were surfaced
+- [ ] unverified details are clearly marked as unverified

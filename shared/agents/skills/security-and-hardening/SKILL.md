@@ -1,374 +1,256 @@
 ---
 name: security-and-hardening
-description: Hardens code against vulnerabilities. Use when handling user input, authentication, data storage, or external integrations. Use when building any feature that accepts untrusted data, manages user sessions, or interacts with third-party services.
+description: Hardens software against vulnerabilities. Use when handling untrusted input, authentication, authorization, sensitive data, dependencies, or external integrations.
 metadata:
-  version: "1.0.1"
+  version: "1.1.0"
 ---
 
 # Security and Hardening
 
-## Overview
+Use this skill when implementing or reviewing security-sensitive behavior. Treat
+external input as untrusted, secrets as protected assets, and authorization as a
+required check on every protected operation.
 
-Security-first development practices for web applications. Treat every external input as hostile, every secret as sacred, and every authorization check as mandatory. Security isn't a phase — it's a constraint on every line of code that touches user data, authentication, or external systems.
+Security is not a final phase. It is a constraint on design, implementation,
+testing, deployment, and maintenance wherever a system touches users, data,
+credentials, networks, files, subprocesses, or third-party services.
 
-## When to Use
+## When to use
 
-- Building anything that accepts user input
-- Implementing authentication or authorization
-- Storing or transmitting sensitive data
-- Integrating with external APIs or services
-- Adding file uploads, webhooks, or callbacks
-- Handling payment or PII data
+- Accepting input from users, clients, files, queues, webhooks, jobs, or external systems
+- Implementing authentication, authorization, sessions, tokens, or roles
+- Storing, processing, logging, transmitting, importing, or exporting sensitive data
+- Adding integrations, callbacks, plugins, extensions, or dependency changes
+- Handling uploads, generated content, templates, commands, or dynamic evaluation
+- Preparing a change for release where dependency or configuration risk matters
 
-## The Three-Tier Boundary System
+## Security boundaries
 
-### Always Do (No Exceptions)
+### Always do
 
-- **Validate all external input** at the system boundary (API routes, form handlers)
-- **Parameterize all database queries** — never concatenate user input into SQL
-- **Encode output** to prevent XSS (use framework auto-escaping, don't bypass it)
-- **Use HTTPS** for all external communication
-- **Hash passwords** with bcrypt/scrypt/argon2 (never store plaintext)
-- **Set security headers** (CSP, HSTS, X-Frame-Options, X-Content-Type-Options)
-- **Use httpOnly, secure, sameSite cookies** for sessions
-- **Run `npm audit`** (or equivalent) before every release
+- Validate and normalize untrusted input at the boundary where it enters the system.
+- Use parameterized database, query, and command APIs instead of string concatenation.
+- Encode or escape output for the target context before rendering or serialization.
+- Authenticate identities before using identity-specific data.
+- Authorize every protected operation against the specific resource and action.
+- Protect secrets with environment, secret-manager, or platform mechanisms instead of source code.
+- Hash passwords with a memory-hard or slow password hashing algorithm such as Argon2, scrypt, or bcrypt.
+- Use encrypted transport for external communication.
+- Apply secure defaults for headers, cookies, tokens, file permissions, and storage.
+- Check dependencies, container images, runtimes, and generated artifacts for known vulnerabilities before release.
 
-### Ask First (Requires Human Approval)
+### Ask first
 
-- Adding new authentication flows or changing auth logic
-- Storing new categories of sensitive data (PII, payment info)
-- Adding new external service integrations
-- Changing CORS configuration
-- Adding file upload handlers
-- Modifying rate limiting or throttling
-- Granting elevated permissions or roles
+Get explicit human approval before expanding scope or risk through changes such as:
 
-### Never Do
+- adding or changing authentication flows
+- changing authorization logic, roles, policies, or tenant boundaries
+- storing new categories of sensitive, regulated, payment, or personal data
+- adding new external service integrations or callbacks
+- changing cross-origin, network, firewall, or trust-boundary configuration
+- adding file upload, archive extraction, template rendering, plugin, or subprocess features
+- changing rate limits, throttling, quotas, abuse controls, or account lockout behavior
+- granting elevated permissions to users, services, credentials, jobs, or infrastructure
 
-- **Never commit secrets** to version control (API keys, passwords, tokens)
-- **Never log sensitive data** (passwords, tokens, full credit card numbers)
-- **Never trust client-side validation** as a security boundary
-- **Never disable security headers** for convenience
-- **Never use `eval()` or `innerHTML`** with user-provided data
-- **Never store sessions in client-accessible storage** (localStorage for auth tokens)
-- **Never expose stack traces** or internal error details to users
+### Never do
 
-## OWASP Top 10 Prevention
+- Never commit secrets, credentials, private keys, tokens, or production configuration to version control.
+- Never log passwords, tokens, session identifiers, private keys, full payment data, or unnecessary personal data.
+- Never trust client-side validation, UI state, hidden fields, or caller claims as a security boundary.
+- Never disable security controls for convenience without an explicit approved exception.
+- Never execute, import, render, or evaluate untrusted content without a documented sandbox or validation strategy.
+- Never expose stack traces, internal identifiers, debug pages, or sensitive error details to untrusted users.
+- Never rely on obscurity, undocumented endpoints, or internal-only assumptions as the primary defense.
 
-### 1. Injection (SQL, NoSQL, OS Command)
+## Common risk areas
 
-```typescript
-// BAD: SQL injection via string concatenation
-const query = `SELECT * FROM users WHERE id = '${userId}'`;
+### Injection
 
-// GOOD: Parameterized query
-const user = await db.query("SELECT * FROM users WHERE id = $1", [userId]);
+Injection happens when untrusted data is interpreted as code, query syntax,
+commands, templates, paths, filters, or markup. Prefer APIs that keep data and
+instructions separate.
 
-// GOOD: ORM with parameterized input
-const user = await prisma.user.findUnique({ where: { id: userId } });
+Example using parameterized SQL in Python:
+
+```python
+# Avoid building queries by concatenating untrusted input.
+cursor.execute("SELECT * FROM users WHERE id = ?", (user_id,))
 ```
 
-### 2. Broken Authentication
+Apply the same principle to document databases, search queries, shell commands,
+template engines, spreadsheet formulas, file paths, and generated configuration.
 
-```typescript
-// Password hashing
-import { hash, compare } from "bcrypt";
+### Authentication and session management
 
-const SALT_ROUNDS = 12;
-const hashedPassword = await hash(plaintext, SALT_ROUNDS);
-const isValid = await compare(plaintext, hashedPassword);
+Protect identity proof and session state deliberately:
 
-// Session management
-app.use(
-  session({
-    secret: process.env.SESSION_SECRET, // From environment, not code
-    resave: false,
-    saveUninitialized: false,
-    cookie: {
-      httpOnly: true, // Not accessible via JavaScript
-      secure: true, // HTTPS only
-      sameSite: "lax", // CSRF protection
-      maxAge: 24 * 60 * 60 * 1000, // 24 hours
-    },
-  }),
-);
+- use established authentication libraries or platform mechanisms where possible
+- hash passwords with Argon2, scrypt, bcrypt, or another approved password hashing scheme
+- store session secrets and signing keys outside source code
+- rotate credentials when exposed or when policy requires it
+- expire password reset, invitation, and one-time tokens
+- bind session protections to the runtime context, such as secure cookie settings for browser clients
+- add rate limiting, lockout, or abuse detection to credential endpoints and sensitive flows
+
+### Access control
+
+Authorization must be checked for each protected operation and resource. A user
+being authenticated is not enough.
+
+Example access-control shape:
+
+```python
+def update_document(actor, document_id, changes):
+    document = documents.get(document_id)
+    if not policies.can_update(actor, document):
+        raise PermissionDenied("not authorized to update this document")
+    return documents.update(document_id, changes)
 ```
 
-### 3. Cross-Site Scripting (XSS)
+Test both allowed and denied paths. Include cross-tenant, ownership, role,
+disabled-account, expired-token, and missing-permission cases where relevant.
 
-```typescript
-// BAD: Rendering user input as HTML
-element.innerHTML = userInput;
+### Output encoding and content handling
 
-// GOOD: Use framework auto-escaping (React does this by default)
-return <div>{userInput}</div>;
+Encode output for the destination context. HTML, JSON, URLs, command arguments,
+logs, CSV, XML, and templates have different escaping rules.
 
-// If you MUST render HTML, sanitize first
-import DOMPurify from 'dompurify';
-const clean = DOMPurify.sanitize(userInput);
+Avoid rendering untrusted markup or scriptable content. If rich content is
+required, sanitize with an allowlist-based sanitizer appropriate for the output
+format and document why rendering is necessary.
+
+### Input validation
+
+Validate at trust boundaries before data reaches core business logic. Validation
+should define expected shape, type, size, range, encoding, and allowed values.
+
+Example Python dataclass validation shape:
+
+```python
+from dataclasses import dataclass
+
+
+@dataclass(frozen=True)
+class CreateTask:
+    title: str
+    priority: str
+
+    def validate(self) -> None:
+        if not 1 <= len(self.title.strip()) <= 200:
+            raise ValueError("title must be 1 to 200 characters")
+        if self.priority not in {"low", "medium", "high"}:
+            raise ValueError("priority is invalid")
 ```
 
-### 4. Broken Access Control
+Use the validation mechanism idiomatic to the target stack. Keep validation close
+to the boundary and convert untrusted input into typed or structured internal
+data before deeper processing.
 
-```typescript
-// Always check authorization, not just authentication
-app.patch("/api/tasks/:id", authenticate, async (req, res) => {
-  const task = await taskService.findById(req.params.id);
+### Files and generated content
 
-  // Check that the authenticated user owns this resource
-  if (task.ownerId !== req.user.id) {
-    return res.status(403).json({
-      error: {
-        code: "FORBIDDEN",
-        message: "Not authorized to modify this task",
-      },
-    });
-  }
+For uploads, imports, exports, archives, reports, or generated files:
 
-  // Proceed with update
-  const updated = await taskService.update(req.params.id, req.body);
-  return res.json(updated);
-});
-```
+- restrict allowed file types, sizes, paths, and encodings
+- inspect content rather than trusting extensions or declared media types
+- store files outside executable paths where possible
+- generate server-side filenames or object keys instead of trusting client names
+- scan files when policy, risk, or platform requirements call for it
+- protect against archive traversal, decompression bombs, metadata leakage, and unsafe previews
 
-### 5. Security Misconfiguration
+### Secrets and sensitive data
 
-```typescript
-// Security headers (use helmet for Express)
-import helmet from "helmet";
-app.use(helmet());
+Keep secrets and sensitive data minimized, scoped, and observable without leaking
+their values.
 
-// Content Security Policy
-app.use(
-  helmet.contentSecurityPolicy({
-    directives: {
-      defaultSrc: ["'self'"],
-      scriptSrc: ["'self'"],
-      styleSrc: ["'self'", "'unsafe-inline'"], // Tighten if possible
-      imgSrc: ["'self'", "data:", "https:"],
-      connectSrc: ["'self'"],
-    },
-  }),
-);
+- Store real secrets in environment-specific secret stores or deployment configuration.
+- Commit only templates with placeholder values when examples are needed.
+- Redact sensitive values in logs, traces, metrics, error reports, and screenshots.
+- Use least-privilege credentials and rotate them after exposure.
+- Define retention, deletion, export, and redaction behavior for personal or regulated data.
 
-// CORS — restrict to known origins
-app.use(
-  cors({
-    origin: process.env.ALLOWED_ORIGINS?.split(",") || "http://localhost:3000",
-    credentials: true,
-  }),
-);
-```
+Before committing, inspect staged changes using the repository's normal Git
+workflow and any configured secret-scanning tools.
 
-### 6. Sensitive Data Exposure
+### Dependencies and supply chain
 
-```typescript
-// Never return sensitive fields in API responses
-function sanitizeUser(user: UserRecord): PublicUser {
-  const { passwordHash, resetToken, ...publicFields } = user;
-  return publicFields;
-}
+Treat dependencies, runtimes, images, lockfiles, generated code, and plugins as
+part of the attack surface.
 
-// Use environment variables for secrets
-const API_KEY = process.env.STRIPE_API_KEY;
-if (!API_KEY) throw new Error("STRIPE_API_KEY not configured");
-```
+When an audit tool reports a vulnerability, triage it with these questions:
 
-## Input Validation Patterns
+- Is the vulnerable component reachable in production or only present in development tooling?
+- Is the vulnerable code path used by this system?
+- Is a patched version or safe replacement available?
+- Does the vulnerability matter in this deployment context?
+- Is there a compensating control, and is it documented with a review date?
 
-### Schema Validation at Boundaries
+Fix critical or high reachable vulnerabilities before release unless an approved
+exception documents the reason, owner, mitigation, and review date.
 
-```typescript
-import { z } from "zod";
+### Configuration and operations
 
-const CreateTaskSchema = z.object({
-  title: z.string().min(1).max(200).trim(),
-  description: z.string().max(2000).optional(),
-  priority: z.enum(["low", "medium", "high"]).default("medium"),
-  dueDate: z.string().datetime().optional(),
-});
+Security controls often depend on runtime configuration. Review:
 
-// Validate at the route handler
-app.post("/api/tasks", async (req, res) => {
-  const result = CreateTaskSchema.safeParse(req.body);
-  if (!result.success) {
-    return res.status(422).json({
-      error: {
-        code: "VALIDATION_ERROR",
-        message: "Invalid input",
-        details: result.error.flatten(),
-      },
-    });
-  }
-  // result.data is now typed and validated
-  const task = await taskService.create(result.data);
-  return res.status(201).json(task);
-});
-```
+- transport encryption and certificate behavior
+- security headers and cookie attributes for browser-facing systems
+- cross-origin, network, firewall, and allowlist configuration
+- rate limits, quotas, throttling, retries, and abuse controls
+- error handling, debug mode, tracing, and observability settings
+- backup, restore, retention, and key-management behavior
+- production versus local defaults
 
-### File Upload Safety
+Fail closed when policy, authorization, validation, or configuration cannot be
+loaded safely.
 
-```typescript
-// Restrict file types and sizes
-const ALLOWED_TYPES = ["image/jpeg", "image/png", "image/webp"];
-const MAX_SIZE = 5 * 1024 * 1024; // 5MB
+## Review checklist
 
-function validateUpload(file: UploadedFile) {
-  if (!ALLOWED_TYPES.includes(file.mimetype)) {
-    throw new ValidationError("File type not allowed");
-  }
-  if (file.size > MAX_SIZE) {
-    throw new ValidationError("File too large (max 5MB)");
-  }
-  // Don't trust the file extension — check magic bytes if critical
-}
-```
+Use this quick checklist before handoff:
 
-## Triaging npm audit Results
+### Boundaries
 
-Not all audit findings require immediate action. Use this decision tree:
+- [ ] Trusted and untrusted inputs are identified.
+- [ ] Input is validated and normalized at system boundaries.
+- [ ] Output is encoded for the target context.
+- [ ] Unsafe parsing, rendering, command, template, or evaluation paths are avoided or controlled.
 
-```
-npm audit reports a vulnerability
-- Severity: critical or high
-  - Is the vulnerable code reachable in your app?
-    - YES: Fix immediately by updating, patching, or replacing the dependency.
-    - NO: Fix soon, but do not treat it as a release blocker if it is dev-only or unreachable.
-  - Is a fix available?
-    - YES: Update to the patched version.
-    - NO: Check for workarounds, consider replacing the dependency, or add it to an allowlist with a review date.
-- Severity: moderate
-  - Reachable in production: Fix in the next release cycle.
-  - Dev-only: Fix when convenient and track it in the backlog.
-- Severity: low
-  - Track and fix during regular dependency updates.
-```
+### Identity and access
 
-**Key questions:**
+- [ ] Authentication uses established mechanisms and protects credential flows.
+- [ ] Authorization checks the actor, action, resource, and tenant or ownership boundary.
+- [ ] Denied paths are tested as well as allowed paths.
+- [ ] Sensitive flows have rate limits or abuse controls where relevant.
 
-- Is the vulnerable function actually called in your code path?
-- Is the dependency a runtime dependency or dev-only?
-- Is the vulnerability exploitable given your deployment context (e.g., a server-side vulnerability in a client-only app)?
+### Data and secrets
 
-When you defer a fix, document the reason and set a review date.
+- [ ] Secrets are not present in source code, logs, generated files, or version history.
+- [ ] Sensitive fields are minimized, encrypted or protected when needed, and excluded from unsafe outputs.
+- [ ] Retention, deletion, redaction, and export behavior are understood for sensitive data.
 
-## Rate Limiting
+### Dependencies and configuration
 
-```typescript
-import rateLimit from "express-rate-limit";
+- [ ] New dependencies, images, runtimes, and plugins were checked for known risks.
+- [ ] Secure defaults are active in the target environment.
+- [ ] Error responses and observability do not expose sensitive internals.
+- [ ] Any accepted risk has an owner, reason, mitigation, and review date.
 
-// General API rate limit
-app.use(
-  "/api/",
-  rateLimit({
-    windowMs: 15 * 60 * 1000, // 15 minutes
-    max: 100, // 100 requests per window
-    standardHeaders: true,
-    legacyHeaders: false,
-  }),
-);
+For a focused companion checklist, see `references/security-checklist.md`.
 
-// Stricter limit for auth endpoints
-app.use(
-  "/api/auth/",
-  rateLimit({
-    windowMs: 15 * 60 * 1000,
-    max: 10, // 10 attempts per 15 minutes
-  }),
-);
-```
+## Red flags
 
-## Secrets Management
-
-```
-.env files:
-  - .env.example: Committed template with placeholder values
-  - .env: NOT committed because it contains real secrets
-  - .env.local: NOT committed because it contains local overrides
-
-.gitignore must include:
-  .env
-  .env.local
-  .env.*.local
-  *.pem
-  *.key
-```
-
-**Always check before committing:**
-
-```bash
-# Check for accidentally staged secrets
-git diff --cached | grep -i "password\|secret\|api_key\|token"
-```
-
-## Security Review Checklist
-
-```markdown
-### Authentication
-
-- [ ] Passwords hashed with bcrypt/scrypt/argon2 (salt rounds ≥ 12)
-- [ ] Session tokens are httpOnly, secure, sameSite
-- [ ] Login has rate limiting
-- [ ] Password reset tokens expire
-
-### Authorization
-
-- [ ] Every endpoint checks user permissions
-- [ ] Users can only access their own resources
-- [ ] Admin actions require admin role verification
-
-### Input
-
-- [ ] All user input validated at the boundary
-- [ ] SQL queries are parameterized
-- [ ] HTML output is encoded/escaped
-
-### Data
-
-- [ ] No secrets in code or version control
-- [ ] Sensitive fields excluded from API responses
-- [ ] PII encrypted at rest (if applicable)
-
-### Infrastructure
-
-- [ ] Security headers configured (CSP, HSTS, etc.)
-- [ ] CORS restricted to known origins
-- [ ] Dependencies audited for vulnerabilities
-- [ ] Error messages don't expose internals
-```
-
-## See Also
-
-For detailed security checklists and pre-commit verification steps, see `references/security-checklist.md`.
-
-## Common Rationalizations
-
-| Rationalization                                     | Reality                                                                         |
-| --------------------------------------------------- | ------------------------------------------------------------------------------- |
-| "This is an internal tool, security doesn't matter" | Internal tools get compromised. Attackers target the weakest link.              |
-| "We'll add security later"                          | Security retrofitting is 10x harder than building it in. Add it now.            |
-| "No one would try to exploit this"                  | Automated scanners will find it. Security by obscurity is not security.         |
-| "The framework handles security"                    | Frameworks provide tools, not guarantees. You still need to use them correctly. |
-| "It's just a prototype"                             | Prototypes become production. Security habits from day one.                     |
-
-## Red Flags
-
-- User input passed directly to database queries, shell commands, or HTML rendering
-- Secrets in source code or commit history
-- API endpoints without authentication or authorization checks
-- Missing CORS configuration or wildcard (`*`) origins
-- No rate limiting on authentication endpoints
-- Stack traces or internal errors exposed to users
-- Dependencies with known critical vulnerabilities
+- User-controlled input reaches queries, commands, templates, file paths, or rendered output without validation and encoding.
+- Authorization checks rely only on UI controls, client-provided roles, or authentication status.
+- Secrets, tokens, private keys, or sensitive personal data appear in source code, logs, traces, errors, or screenshots.
+- Debug mode, permissive cross-origin settings, wildcard network access, or detailed error pages are enabled in production.
+- Dependency vulnerabilities are ignored without reachability analysis or documented risk acceptance.
+- File uploads, archive extraction, dynamic imports, plugins, or generated code execute with excessive privileges.
+- Tests cover success paths but not rejected, unauthorized, malformed, expired, or cross-boundary cases.
 
 ## Verification
 
 After implementing security-relevant code:
 
-- [ ] `npm audit` shows no critical or high vulnerabilities
-- [ ] No secrets in source code or git history
-- [ ] All user input validated at system boundaries
-- [ ] Authentication and authorization checked on every protected endpoint
-- [ ] Security headers present in response (check with browser DevTools)
-- [ ] Error responses don't expose internal details
-- [ ] Rate limiting active on auth endpoints
+- Run the project's configured dependency, secret, static-analysis, lint, test, and build checks that apply to the change.
+- Add or update tests for validation failures, authorization denials, abuse controls, and sensitive-data redaction.
+- Manually inspect configuration and staged changes for secrets or insecure defaults.
+- Document any deferred vulnerability or accepted risk with an owner and review date.
+- Confirm final handoff notes include which security checks passed, failed, or were skipped.

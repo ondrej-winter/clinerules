@@ -2,7 +2,7 @@
 name: interview-me
 description: Extracts what the user actually wants instead of what they think they should want. Achieves this through one-question-at-a-time interview until ~95% confidence about the underlying intent. Use when an ask is underspecified ("build me X" without "for whom" or "why now"), when the user explicitly invokes ("interview me", "grill me", "are we sure?", "stress-test my thinking"), or when you catch yourself silently filling in ambiguous requirements before any plan, spec, or code exists.
 metadata:
-  version: "1.0.0"
+  version: "1.0.1"
 ---
 
 # Interview Me
@@ -188,7 +188,8 @@ Step 4, with an explicit yes from Step 5. Specs, plans, and task lists are
 downstream; they consume the intent this skill produces.
 
 If the user wants the intent to persist for a multi-session project or a handoff
-to another collaborator, offer to save it to `docs/intent/<topic>.md`. Only save
+to another collaborator, offer to save it to an appropriate project location,
+such as an intent note, decision record, planning document, or issue. Only save
 if they confirm.
 
 ## Example
