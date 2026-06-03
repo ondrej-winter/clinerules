@@ -68,7 +68,46 @@ SYNC_MAP: tuple[SyncEntry, ...] = (
     ),
     SyncEntry(
         source='shared/agents/skills/using-agent-skills',
-        targets=('.agent/skills/using-agent-skills',),
+        targets=(
+            'python/hexagonal/agents/skills/using-agent-skills',
+            '.agent/skills/using-agent-skills',
+        ),
+    ),
+    SyncEntry(
+        source='shared/agents/skills/planning-and-task-breakdown',
+        targets=('python/hexagonal/agents/skills/planning-and-task-breakdown',),
+    ),
+    SyncEntry(
+        source='shared/agents/skills/incremental-implementation',
+        targets=('python/hexagonal/agents/skills/incremental-implementation',),
+    ),
+    SyncEntry(
+        source='shared/agents/skills/test-driven-development',
+        targets=('python/hexagonal/agents/skills/test-driven-development',),
+    ),
+    SyncEntry(
+        source='shared/agents/skills/debugging-and-error-recovery',
+        targets=('python/hexagonal/agents/skills/debugging-and-error-recovery',),
+    ),
+    SyncEntry(
+        source='shared/agents/skills/code-review-and-quality',
+        targets=('python/hexagonal/agents/skills/code-review-and-quality',),
+    ),
+    SyncEntry(
+        source='shared/agents/skills/code-simplification',
+        targets=('python/hexagonal/agents/skills/code-simplification',),
+    ),
+    SyncEntry(
+        source='shared/agents/skills/api-and-interface-design',
+        targets=('python/hexagonal/agents/skills/api-and-interface-design',),
+    ),
+    SyncEntry(
+        source='shared/agents/skills/security-and-hardening',
+        targets=('python/hexagonal/agents/skills/security-and-hardening',),
+    ),
+    SyncEntry(
+        source='shared/agents/skills/source-driven-development',
+        targets=('python/hexagonal/agents/skills/source-driven-development',),
     ),
     SyncEntry(
         source='shared/agents/skills/run-local-quality-gate',
