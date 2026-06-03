@@ -17,6 +17,17 @@ Code without a spec is guessing.
 The spec can be short for small changes. Its value is not length; its value is
 making assumptions, success criteria, and boundaries explicit before work starts.
 
+Use `planning-and-task-breakdown` after the spec is accepted when the work needs a
+deeper ordered task list, task sizing, dependency mapping, or parallelization
+plan. Use `review-implementation-plan` before implementation when the resulting
+plan is non-trivial, risky, or needs an independent readiness check.
+
+Use `interview-me` first when the underlying intent is not yet confirmed. Use
+`idea-refine` first when the intent is understood but the concept, option space,
+or MVP boundary still needs exploration. Use this skill when there is a chosen
+project, feature, workflow, integration, migration, or change that needs concrete
+requirements and verification criteria before implementation.
+
 ## When to use this skill
 
 Use this skill when:

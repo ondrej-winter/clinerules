@@ -29,6 +29,7 @@ Task arrives
   - Stakes high or unfamiliar code: doubt-driven-development
 - Writing or running tests: test-driven-development
   - Browser-based testing: browser-runtime-verification
+- Adding logs, metrics, traces, profiling, or dashboards: add-observability
 - Something broke: debugging-and-error-recovery
 - Reviewing code: code-review-and-quality
   - Too complex: code-simplification

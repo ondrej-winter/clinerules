@@ -23,6 +23,13 @@ Use this skill when you need to:
 Do not use this skill to justify toy benchmarks, noisy logs, speculative
 performance claims, or instrumentation that exposes sensitive data.
 
+Use `performance-optimization` when the goal is to diagnose and fix a known or
+suspected bottleneck. Use this skill when the goal is to add or improve the
+signals that make runtime behavior observable. Use
+`debugging-and-error-recovery` when an active failure needs reproduction,
+localization, and root-cause repair. Use `shipping-and-launch` when observability
+is part of a release checklist, rollout, or rollback plan.
+
 ## Steps
 
 ### 1. Define the workflow and signal

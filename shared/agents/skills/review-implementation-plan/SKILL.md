@@ -11,6 +11,11 @@ Use this skill before implementation begins when the user provides or requests a
 plan for a non-trivial change. The goal is to catch ambiguity, missing work,
 unsafe sequencing, and validation gaps before code or content changes begin.
 
+Use `spec-driven-development` first when the plan lacks clear requirements,
+success criteria, assumptions, or scope boundaries. Use
+`planning-and-task-breakdown` first when the plan is too coarse and needs to be
+decomposed into ordered, verifiable implementation tasks.
+
 ## When to use this skill
 
 Use this skill when:

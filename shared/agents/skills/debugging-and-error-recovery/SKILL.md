@@ -23,6 +23,12 @@ Use this skill when:
 - a fix attempt creates new failures
 - a flaky or intermittent issue needs triage
 
+Use `add-observability` when the main task is adding durable visibility rather
+than fixing an active failure. Use `performance-optimization` when the reproduced
+root cause is a performance bottleneck that needs measurement-driven tuning. Use
+`shipping-and-launch` when the concern is release readiness, rollout monitoring,
+or rollback execution.
+
 ## Stop-the-line rule
 
 When anything unexpected happens:

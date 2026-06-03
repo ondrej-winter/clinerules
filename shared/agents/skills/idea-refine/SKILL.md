@@ -30,6 +30,13 @@ Do not use this skill when:
 - the user has already provided a validated concept and wants execution planning
 - there is no live user available to answer clarifying questions
 
+Use `interview-me` first when the underlying intent is still uncertain or the
+request may be a conventional proxy for a different outcome. Use this skill when
+the intent is understood but the concept, options, assumptions, or MVP boundary
+need refinement. Use `spec-driven-development` after the user confirms the chosen
+direction and the work needs concrete requirements, success criteria, and an
+implementation plan.
+
 ## Steps
 
 ### 1. Frame the idea

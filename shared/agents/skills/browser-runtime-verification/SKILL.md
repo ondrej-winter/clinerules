@@ -26,6 +26,10 @@ Use this skill when:
 Do not use this skill for backend-only changes, documentation-only edits, or code
 that cannot affect browser behavior.
 
+Use `frontend-ui-engineering` when the task is to design, build, or refactor UI
+components, layouts, states, or interaction flows. This skill verifies browser
+runtime behavior; it does not replace UI implementation guidance.
+
 ## Steps
 
 ### 1. Define the runtime scenario

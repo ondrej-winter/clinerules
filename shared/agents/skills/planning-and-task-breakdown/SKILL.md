@@ -11,6 +11,11 @@ metadata:
 
 Decompose work into small, verifiable tasks with explicit acceptance criteria. Good task breakdown is the difference between an agent that completes work reliably and one that produces a tangled mess. Every task should be small enough to implement, test, and verify in a single focused session.
 
+Use `spec-driven-development` first when requirements, success criteria, or scope
+boundaries are unclear. Use `review-implementation-plan` after drafting the plan
+when sequencing, dependencies, risk, or validation strategy need an independent
+readiness check.
+
 ## When to Use
 
 - You have a spec and need to break it into implementable units

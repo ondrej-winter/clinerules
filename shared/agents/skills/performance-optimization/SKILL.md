@@ -39,6 +39,13 @@ Do not use this skill when:
 - the optimization would make correctness, security, or maintainability worse
   without a documented trade-off
 
+Use `add-observability` when the missing piece is logs, metrics, traces, or
+profiling signals rather than a confirmed performance fix. Use
+`debugging-and-error-recovery` first when slow behavior is part of an active
+failure that still needs reproduction and root-cause diagnosis. Use
+`shipping-and-launch` when performance checks are launch readiness, rollout, or
+rollback gates.
+
 ## Optimization workflow
 
 ```text

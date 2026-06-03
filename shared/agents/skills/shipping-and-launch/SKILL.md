@@ -19,6 +19,12 @@ Ship with confidence. The goal is not just to deploy — it's to deploy safely, 
 - Opening a beta or early access program
 - Any deployment that carries risk (all of them)
 
+Use `add-observability` when launch readiness requires new logs, metrics, traces,
+dashboards, alerts, or troubleshooting notes. Use `performance-optimization` when
+launch readiness depends on diagnosing and fixing a performance bottleneck. Use
+`debugging-and-error-recovery` when a launch, rollout, or rollback exposes an
+active failure that needs root-cause repair.
+
 ## The Pre-Launch Checklist
 
 ### Code Quality

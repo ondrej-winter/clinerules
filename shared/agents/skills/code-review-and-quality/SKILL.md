@@ -29,6 +29,13 @@ Use this skill when:
 
 ## Review axes
 
+Use `security-and-hardening` when the review identifies security-sensitive
+design, implementation, or remediation work that needs deeper analysis than the
+checklist. Use `performance-optimization` when the review identifies a suspected
+bottleneck, regression, or performance requirement that needs measurement-driven
+diagnosis. Use `code-simplification` when the review identifies unnecessary
+complexity that should be reduced while preserving behavior.
+
 ### 1. Correctness
 
 Check whether the change does what it claims to do.
