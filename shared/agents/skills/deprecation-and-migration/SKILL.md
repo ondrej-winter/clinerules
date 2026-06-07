@@ -100,7 +100,7 @@ Before broad announcement, confirm the replacement:
 - includes migration tooling or examples when migration is repetitive
 
 Use incremental migration patterns when risk is high, such as parallel run,
-adapter, compatibility shim, feature flag, canary, staged rollout, or consumer-by-
+adapter, compatibility shim, feature flag, canary, staged rollout, or staged
 consumer migration.
 
 ### 5. Announce and document
@@ -115,12 +115,14 @@ Replacement: <new_surface>
 Reason: <why this is changing>
 Migration deadline: <date or none>
 Affected consumers: <known scope>
+Removal criteria: <evidence required before removal>
 Migration steps:
 
 1. <step>
 2. <step>
-   Verification: <how to prove migration worked>
-   Support or escalation: <contact or process>
+
+Verification: <how to prove migration worked>
+Support or escalation: <contact or process>
 ```
 
 Keep the notice close to the old surface and in durable project documentation.

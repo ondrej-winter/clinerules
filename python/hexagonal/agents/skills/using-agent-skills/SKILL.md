@@ -2,7 +2,7 @@
 name: using-agent-skills
 description: Discovers and invokes agent skills. Use when starting a session or when you need to discover which skill applies to the current task. This is the meta-skill that governs how all other skills are discovered and invoked.
 metadata:
-  version: "1.0.1"
+  version: "1.0.4"
 ---
 
 # Using Agent Skills
@@ -11,16 +11,24 @@ metadata:
 
 Agent Skills is a collection of engineering workflow skills organized by development phase. Each skill encodes a specific process that senior engineers follow. This meta-skill helps you discover and apply the right skill for your current task.
 
-## Skill Discovery
+## Steps
 
-When a task arrives, identify the development phase and apply the corresponding skill:
+At the start of a task, identify the development phase and apply the corresponding skill.
+
+1. Classify the task by the user's current need.
+2. Select the primary skill that matches the first applicable phase.
+3. Add secondary skills only when their trigger is directly present.
+4. Follow each selected skill's steps, including verification.
+
+Use this routing guide:
 
 ```
 Task arrives
-- Don't know what you want yet: interview-me
+- User does not know what they want yet: interview-me
 - Have a rough concept and need variants: idea-refine
 - New project, feature, or change: spec-driven-development
 - Have a spec and need tasks: planning-and-task-breakdown
+  - Need plan review before coding: review-implementation-plan
 - Implementing code: incremental-implementation
   - UI work: frontend-ui-engineering
   - API work: api-and-interface-design
@@ -29,6 +37,7 @@ Task arrives
   - Stakes high or unfamiliar code: doubt-driven-development
 - Writing or running tests: test-driven-development
   - Browser-based testing: browser-runtime-verification
+  - Need full local quality checks: run-local-quality-gate
 - Adding logs, metrics, traces, profiling, or dashboards: add-observability
 - Something broke: debugging-and-error-recovery
 - Reviewing code: code-review-and-quality
@@ -39,6 +48,9 @@ Task arrives
 - CI/CD pipeline work: ci-cd-and-automation
 - Deprecating or migrating: deprecation-and-migration
 - Writing docs or ADRs: documentation-and-adrs
+  - Need a project documentation update: update-project-docs
+  - Need an architecture decision record: write-adr
+- Creating, updating, or reviewing skills: author-agent-skill
 - Deploying or launching: shipping-and-launch
 ```
 
@@ -51,11 +63,11 @@ These behaviors apply at all times, across all skills. They are non-negotiable.
 Before implementing anything non-trivial, explicitly state your assumptions:
 
 ```
-ASSUMPTIONS I'M MAKING:
+Assumptions I am making:
 1. [assumption about requirements]
 2. [assumption about architecture]
 3. [assumption about scope]
-Correct me now or I'll proceed with these.
+Correct me now or I will proceed with these.
 ```
 
 Don't silently fill in ambiguous requirements. The most common failure mode is making wrong assumptions and running with them unchecked. Surface uncertainty early — it's cheaper than rework.
@@ -64,7 +76,7 @@ Don't silently fill in ambiguous requirements. The most common failure mode is m
 
 When you encounter inconsistencies, conflicting requirements, or unclear specifications:
 
-1. **STOP.** Do not proceed with a guess.
+1. Stop and do not proceed with a guess.
 2. Name the specific confusion.
 3. Present the tradeoff or ask the clarifying question.
 4. Wait for resolution before continuing.
@@ -99,7 +111,7 @@ If you build 1000 lines and 100 would suffice, you have failed. Prefer the borin
 
 Touch only what you're asked to touch.
 
-Do NOT:
+Do not:
 
 - Remove comments you don't understand
 - "Clean up" code orthogonal to the task
@@ -170,6 +182,7 @@ Not every task needs every skill. A bug fix might only need `debugging-and-error
 | Define | idea-refine                  | Refine ideas through structured divergent and convergent thinking                                    |
 | Define | spec-driven-development      | Requirements and acceptance criteria before code                                                     |
 | Plan   | planning-and-task-breakdown  | Decompose into small, verifiable tasks                                                               |
+| Plan   | review-implementation-plan   | Review a plan for gaps, risks, sequencing, dependencies, and validation readiness                    |
 | Build  | incremental-implementation   | Thin vertical slices, test each before expanding                                                     |
 | Build  | source-driven-development    | Verify against official docs before implementing                                                     |
 | Build  | doubt-driven-development     | Adversarial fresh-context review of every non-trivial decision                                       |
@@ -178,6 +191,7 @@ Not every task needs every skill. A bug fix might only need `debugging-and-error
 | Build  | api-and-interface-design     | Stable interfaces with clear contracts                                                               |
 | Verify | test-driven-development      | Failing test first, then make it pass                                                                |
 | Verify | browser-runtime-verification | Real-browser verification of UI behavior, console output, network activity, and accessibility basics |
+| Verify | run-local-quality-gate       | Discover and run local formatting, linting, static analysis, test, and build checks                  |
 | Verify | debugging-and-error-recovery | Reproduce, localize, fix, and guard                                                                  |
 | Review | code-review-and-quality      | Five-axis review with quality gates                                                                  |
 | Review | code-simplification          | Preserve behavior while reducing unnecessary complexity                                              |
@@ -187,4 +201,7 @@ Not every task needs every skill. A bug fix might only need `debugging-and-error
 | Ship   | ci-cd-and-automation         | Automated quality gates on every change                                                              |
 | Ship   | deprecation-and-migration    | Remove old systems and migrate users safely                                                          |
 | Ship   | documentation-and-adrs       | Document the why, not just the what                                                                  |
+| Ship   | update-project-docs          | Keep project-facing documentation aligned with behavior, configuration, or workflow changes          |
+| Ship   | write-adr                    | Record durable architectural decisions with context and consequences                                 |
 | Ship   | shipping-and-launch          | Pre-launch checklist, monitoring, rollback plan                                                      |
+| Skill  | author-agent-skill           | Create, update, or review Agent Skill directories and SKILL.md files                                 |

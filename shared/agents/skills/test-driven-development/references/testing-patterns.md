@@ -2,6 +2,10 @@
 
 Use these patterns when choosing how to make behavior verifiable before or during implementation.
 
+Consult this reference when the main TDD cycle is clear but the test shape is not.
+Choose the narrowest pattern that proves the behavior, then record the focused
+test command and any broader validation that should run before handoff.
+
 ## Behavior-first tests
 
 - Name the behavior from the user's or caller's perspective.
@@ -28,3 +32,10 @@ Use these patterns when choosing how to make behavior verifiable before or durin
 - Writing broad tests with many unrelated assertions.
 - Adding mocks that duplicate the implementation.
 - Accepting a test that never failed for the bug or feature it claims to cover.
+
+## Handoff readiness
+
+- The test failed before the implementation change when the work changed behavior.
+- The passing test proves the public behavior, contract, or regression symptom.
+- The chosen scope is documented when it is broader than a unit test.
+- Focused and broader validation commands are reported in the handoff.

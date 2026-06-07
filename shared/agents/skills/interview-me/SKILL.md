@@ -2,7 +2,7 @@
 name: interview-me
 description: Extracts what the user actually wants instead of what they think they should want. Achieves this through one-question-at-a-time interview until ~95% confidence about the underlying intent. Use when an ask is underspecified ("build me X" without "for whom" or "why now"), when the user explicitly invokes ("interview me", "grill me", "are we sure?", "stress-test my thinking"), or when you catch yourself silently filling in ambiguous requirements before any plan, spec, or code exists.
 metadata:
-  version: "1.0.1"
+  version: "1.0.2"
 ---
 
 # Interview Me
@@ -246,16 +246,23 @@ It is "a list." Different artifact, different scope, different work.
 
 ## Common rationalizations
 
-| Rationalization                                         | Reality                                                                                                                                                        |
-| ------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| "The ask is clear enough"                               | If you cannot write the user's desired outcome in one sentence right now, the ask is not clear. Run Step 1 before deciding.                                    |
-| "Asking too many questions wastes their time"           | Time wasted by several targeted questions is small. Time wasted by building the wrong thing is enormous.                                                       |
-| "I will figure it out as I build"                       | Switching costs after code exists are much higher than they are now. Discovery during implementation is rework.                                                |
-| "They said whatever you think, so I should just decide" | "Whatever you think" is delegation, not decision. Re-ask with two concrete options as a choice.                                                                |
-| "I should give them several options to pick from"       | Options work when the user knows what they want and is choosing between trade-offs. If they do not know what they want yet, listing options widens the search. |
-| "If I attach my guess, I am leading them"               | Leading is the point. Reacting is faster than generating from scratch. The risk is sycophancy, not leading.                                                    |
-| "We have talked enough, I get it"                       | Test it: can you predict their reaction to the next three questions? If not, you do not get it yet.                                                            |
-| "The user said yes, we are done"                        | If the yes followed a vague restate or an open-ended "sounds good," the yes is hollow. Restate concretely and re-confirm.                                      |
+- "The ask is clear enough": If you cannot write the user's desired outcome in
+  one sentence right now, the ask is not clear. Run Step 1 before deciding.
+- "Asking too many questions wastes their time": Time wasted by several targeted
+  questions is small. Time wasted by building the wrong thing is enormous.
+- "I will figure it out as I build": Switching costs after code exists are much
+  higher than they are now. Discovery during implementation is rework.
+- "They said whatever you think, so I should just decide": "Whatever you think"
+  is delegation, not decision. Re-ask with two concrete options as a choice.
+- "I should give them several options to pick from": Options work when the user
+  knows what they want and is choosing between trade-offs. If they do not know
+  what they want yet, listing options widens the search.
+- "If I attach my guess, I am leading them": Leading is the point. Reacting is
+  faster than generating from scratch. The risk is sycophancy, not leading.
+- "We have talked enough, I get it": Test it: can you predict their reaction to
+  the next three questions? If not, you do not get it yet.
+- "The user said yes, we are done": If the yes followed a vague restate or an
+  open-ended "sounds good," the yes is hollow. Restate concretely and re-confirm.
 
 ## Red flags
 

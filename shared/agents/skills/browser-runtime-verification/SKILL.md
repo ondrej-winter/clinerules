@@ -2,7 +2,7 @@
 name: browser-runtime-verification
 description: Verify browser-facing changes in a real browser using visual checks, console output, network behavior, accessibility basics, and user-flow smoke tests. Use when building, debugging, or validating UI behavior beyond static code and unit tests.
 metadata:
-  version: "1.0.0"
+  version: "1.0.1"
 ---
 
 # Browser Runtime Verification
@@ -26,7 +26,8 @@ Use this skill when:
 Do not use this skill for backend-only changes, documentation-only edits, or code
 that cannot affect browser behavior.
 
-Use `frontend-ui-engineering` when the task is to design, build, or refactor UI
+When available, use an implementation-focused UI skill such as
+`frontend-ui-engineering` when the task is to design, build, or refactor UI
 components, layouts, states, or interaction flows. This skill verifies browser
 runtime behavior; it does not replace UI implementation guidance.
 

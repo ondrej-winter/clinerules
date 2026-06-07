@@ -2,7 +2,7 @@
 name: performance-optimization
 description: Optimizes software performance using measurement-driven diagnosis, targeted fixes, and regression guards. Use when performance requirements exist, users or monitoring report slow behavior, a regression is suspected, or profiling reveals bottlenecks that need fixing.
 metadata:
-  version: "1.1.0"
+  version: "1.1.1"
 ---
 
 # Performance Optimization
@@ -112,7 +112,7 @@ What is slow?
     contention, or connection pool exhaustion?
 ```
 
-### Step 2: Identify the Bottleneck
+### Step 2: Identify the bottleneck
 
 Common bottleneck categories:
 
@@ -305,7 +305,7 @@ For a concise planning and verification checklist, see
 | "Users will not notice this delay."              | Users notice delays in the context of their task; measure the user-visible milestone.                                |
 | "The framework or platform handles performance." | Tools help, but they cannot remove unbounded work, inefficient access patterns, or oversized payloads by themselves. |
 
-## Red Flags
+## Red flags
 
 - optimization without profiling data, baseline metrics, or explicit performance
   requirements

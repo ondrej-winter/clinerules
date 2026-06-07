@@ -1,4 +1,4 @@
-.PHONY: help sync sync-delete sync-reset tokens format compile validate update
+.PHONY: help sync sync-delete sync-reset tokens improve-skills format compile validate update
 
 help:
 	@echo "Available targets:"
@@ -6,6 +6,7 @@ help:
 	@echo "  sync-delete  Delete all configured sync targets"
 	@echo "  sync-reset   Delete and recreate all configured sync targets"
 	@echo "  tokens       Update the repository token map"
+	@echo "  improve-skills Run Cline skill maintenance across skill folders"
 	@echo "  format       Format Markdown files"
 	@echo "  compile      Compile repository Python scripts"
 	@echo "  validate     Run repository validation checks"
@@ -22,6 +23,9 @@ sync-reset:
 
 tokens:
 	uv run tools/tokens/repo_token_map.py
+
+improve-skills:
+	python3 tools/skills/run_cline_skill_workflow.py
 
 format:
 	pre-commit run prettier-markdown --all-files

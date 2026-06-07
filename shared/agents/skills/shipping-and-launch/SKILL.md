@@ -2,7 +2,7 @@
 name: shipping-and-launch
 description: Prepares production launches. Use when preparing to deploy to production. Use when you need a pre-launch checklist, when setting up monitoring, when planning a staged rollout, or when you need a rollback strategy.
 metadata:
-  version: "1.1.0"
+  version: "1.1.1"
 ---
 
 # Shipping and Launch
@@ -93,17 +93,15 @@ else:
     use_existing_behavior()
 ```
 
-**Feature flag lifecycle:**
+### Feature Flag Lifecycle
 
-```
-1. DEPLOY with flag OFF: Code is in production but inactive
-2. ENABLE for team/beta: Internal testing in production environment
-3. GRADUAL ROLLOUT: 5% to 25% to 50% to 100% of users
-4. MONITOR at each stage: Watch error rates, performance, and user feedback
-5. CLEAN UP: Remove flag and dead code path after full rollout
-```
+1. Deploy with flag off: code is in production but inactive.
+2. Enable for team or beta users: internal testing happens in the production environment.
+3. Gradually roll out: increase exposure from 5% to 25% to 50% to 100% of users.
+4. Monitor at each stage: watch error rates, performance, and user feedback.
+5. Clean up: remove the flag and dead code path after full rollout.
 
-**Rules:**
+### Feature Flag Rules
 
 - Every feature flag has an owner and an expiration date
 - Clean up flags within 2 weeks of full rollout
@@ -114,33 +112,26 @@ else:
 
 ### The Rollout Sequence
 
-```
-1. DEPLOY to staging
-   - Full test suite in staging environment
-   - Manual smoke test of critical flows
-
-2. DEPLOY to production (feature flag OFF)
-   - Verify deployment succeeded with a health check
-   - Check error monitoring for new errors
-
-3. ENABLE for team (flag ON for internal users)
-   - Team uses the feature in production
-   - 24-hour monitoring window
-
-4. CANARY rollout (flag ON for 5% of users)
-   - Monitor error rates, latency, and user behavior
-   - Compare metrics: canary vs. baseline
-   - 24-48 hour monitoring window
-   - Advance only if all thresholds pass (see table below)
-
-5. GRADUAL increase (25% -> 50% -> 100%)
-   - Same monitoring at each step
-   - Ability to roll back to previous percentage at any point
-
-6. FULL rollout (flag ON for all users)
-   - Monitor for 1 week
-   - Clean up feature flag
-```
+1. Deploy to staging.
+   - Run the full test suite in the staging environment.
+   - Manually smoke test critical flows.
+2. Deploy to production with the feature flag off.
+   - Verify deployment succeeded with a health check.
+   - Check error monitoring for new errors.
+3. Enable for the team with the flag on for internal users.
+   - Have the team use the feature in production.
+   - Use a 24-hour monitoring window.
+4. Start a canary rollout with the flag on for 5% of users.
+   - Monitor error rates, latency, and user behavior.
+   - Compare canary metrics against baseline metrics.
+   - Use a 24-48 hour monitoring window.
+   - Advance only if all thresholds pass.
+5. Gradually increase from 25% to 50% to 100%.
+   - Repeat the same monitoring at each step.
+   - Keep the ability to roll back to the previous percentage at any point.
+6. Complete the full rollout with the flag on for all users.
+   - Monitor for 1 week.
+   - Clean up the feature flag.
 
 ### Rollout Decision Thresholds
 
@@ -167,8 +158,8 @@ Roll back immediately if:
 
 ### What to Monitor
 
-```
 Application metrics:
+
 - Error rate (total and by endpoint)
 - Response time (p50, p95, p99)
 - Request volume
@@ -176,6 +167,7 @@ Application metrics:
 - Key business metrics (conversion, engagement)
 
 Infrastructure metrics:
+
 - CPU and memory utilization
 - Database connection pool usage
 - Disk space
@@ -183,35 +175,32 @@ Infrastructure metrics:
 - Queue depth (if applicable)
 
 Client metrics:
+
 - Frontend responsiveness or page load time, for browser-facing products
 - Client-side, device-side, or edge errors
 - API, integration, or synchronization failures from the consumer perspective
 - Accessibility, usability, or workflow completion signals where relevant
-```
 
 ### Error Reporting
 
-```text
 When an error reaches a release boundary:
+
 1. Record the exception type, operation, correlation ID, release version, and safe context.
 2. Exclude secrets, credentials, raw personal data, and sensitive internals.
 3. Return or display a safe recovery message to the user or caller.
 4. Emit a metric or alert signal when the failure affects launch thresholds.
 5. Preserve enough detail for operators to diagnose the issue from logs or traces.
-```
 
 ### Post-Launch Verification
 
 In the first hour after launch:
 
-```
-1. Check health endpoint returns 200
-2. Check error monitoring dashboard (no new error types)
-3. Check latency dashboard (no regression)
-4. Test the critical user flow manually
-5. Verify logs are flowing and readable
-6. Confirm rollback mechanism works (dry run if possible)
-```
+1. Check that the health endpoint returns 200.
+2. Check the error monitoring dashboard for new error types.
+3. Check the latency dashboard for regressions.
+4. Test the critical user flow manually.
+5. Verify logs are flowing and readable.
+6. Confirm the rollback mechanism works, using a dry run if possible.
 
 ## Rollback Strategy
 

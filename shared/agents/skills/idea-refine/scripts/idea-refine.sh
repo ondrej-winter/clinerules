@@ -7,4 +7,6 @@ ideas_dir=${1:-docs/ideas}
 
 mkdir -p "$ideas_dir"
 
-printf '{"status":"ready","directory":"%s"}\n' "$ideas_dir"
+escaped_dir=$(printf '%s' "$ideas_dir" | sed 's/\\/\\\\/g; s/"/\\"/g')
+
+printf '{"status":"ready","directory":"%s"}\n' "$escaped_dir"

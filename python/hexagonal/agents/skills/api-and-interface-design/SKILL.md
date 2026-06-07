@@ -2,7 +2,7 @@
 name: api-and-interface-design
 description: Design stable APIs, module contracts, schemas, component boundaries, command interfaces, or other public integration surfaces that are predictable, documented, and hard to misuse.
 metadata:
-  version: "1.1.0"
+  version: "1.1.1"
 ---
 
 # API and Interface Design
@@ -171,8 +171,10 @@ Usually breaking:
 - narrowing accepted input values
 - changing idempotency, side effects, or authorization semantics
 
-When a breaking change is unavoidable, use `deprecation-and-migration` to plan
-communication, migration, compatibility support, and removal timing.
+When a breaking change is unavoidable, use a deprecation and migration workflow
+to plan communication, migration, compatibility support, and removal timing. If
+the `deprecation-and-migration` skill is available, use it for that follow-up
+planning.
 
 ### 6. Make naming predictable
 

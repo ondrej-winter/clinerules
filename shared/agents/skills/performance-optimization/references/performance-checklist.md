@@ -29,3 +29,9 @@ Use this checklist to plan and verify performance work.
 - Compare against the baseline and target.
 - Check for regressions in edge cases and resource usage.
 - Document the evidence and remaining risks.
+
+## Regression guards
+
+- Add a benchmark, performance budget, monitor, alert, or review check that fits
+  the risk.
+- Record the reason if a durable guard is not practical for the change.

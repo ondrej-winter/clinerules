@@ -63,7 +63,8 @@ Capture:
 ### 2. Define quality gates
 
 Use the project’s existing commands when available. If commands are missing,
-define placeholders until the project chooses concrete tooling.
+document placeholders in the design and call out that concrete tooling must be
+chosen before the gate can run.
 
 Common gates include:
 

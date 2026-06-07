@@ -2,7 +2,7 @@
 name: git-workflow-and-versioning
 description: Use version control intentionally with small changes, clear branches, atomic commits, safe history operations, useful summaries, and validation before merge or handoff.
 metadata:
-  version: "1.1.0"
+  version: "1.1.1"
 ---
 
 # Git Workflow and Versioning
@@ -32,6 +32,8 @@ Use this skill when:
 - Commit only after relevant validation passes.
 - Treat commit messages as durable documentation.
 - Avoid destructive history operations unless explicitly requested and scoped.
+- Do not create commits, tags, branches, or pushes unless the user requested them
+  or the project workflow clearly requires them.
 - Prefer clear recovery points over large uncommitted work.
 
 ## Steps

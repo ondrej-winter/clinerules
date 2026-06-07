@@ -2,7 +2,7 @@
 name: author-agent-skill
 description: Create, update, or review Agent Skill directories and SKILL.md files for valid frontmatter, structure, portability, progressive disclosure, and validation readiness.
 metadata:
-  version: "1.1.0"
+  version: "1.1.1"
 ---
 
 # Author Agent Skill
@@ -91,8 +91,8 @@ change. Prefer semantic versioning:
 ### 4. Use only supported optional frontmatter fields
 
 Add optional fields only when they are useful and supported by the skill format.
-The `metadata` field is required when it contains the mandatory `version` key;
-additional metadata keys remain optional.
+For this skill format, include `metadata.version`; additional metadata keys remain
+optional.
 
 Supported optional fields are:
 

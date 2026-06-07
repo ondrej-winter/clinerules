@@ -2,7 +2,7 @@
 name: run-local-quality-gate
 description: Discover and run the project's local formatting, linting, static analysis, test, and build checks before handoff.
 metadata:
-  version: "1.0.0"
+  version: "1.1.0"
 ---
 
 # Run Local Quality Gate
@@ -38,11 +38,15 @@ order is:
 6. build, packaging, documentation, or integration checks when relevant
 
 If a project documents a different required order, follow the project order.
+Prefer non-interactive commands and avoid flags that would open pagers, watchers,
+editors, or prompts unless the user explicitly requests an interactive workflow.
 
 ### 3. Run safe auto-fixes deliberately
 
 Only run auto-fix commands that are established in the project. After auto-fixes,
-inspect the resulting changes and ensure they are related to the task.
+inspect the resulting changes and ensure they are related to the task. Do not
+run broad cleanup commands when a narrower project-approved command validates the
+touched area.
 
 Do not use ad hoc flags to bypass the project's configured rules in the final
 validation run.
@@ -74,6 +78,7 @@ for the next maintainer to reproduce the result.
 ## Output checklist
 
 - project-defined commands were discovered before running checks
+- validation commands were non-interactive or any interactive requirement was explained
 - safe auto-fixes were inspected
 - failures were fixed or explicitly reported
 - final validation command set is documented

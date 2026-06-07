@@ -8,6 +8,7 @@ Use this checklist when creating or reviewing browser-facing UI changes.
 - Preserve a logical heading hierarchy.
 - Ensure interactive elements have accessible names.
 - Associate form inputs with labels, descriptions, and errors.
+- Make important status changes perceivable when loading, validation, success, or error states update.
 
 ## Keyboard and focus
 

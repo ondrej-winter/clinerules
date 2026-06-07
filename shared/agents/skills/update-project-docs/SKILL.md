@@ -2,7 +2,7 @@
 name: update-project-docs
 description: Update project-facing documentation after a user-visible behavior, configuration, operation, or workflow change.
 metadata:
-  version: "1.0.0"
+  version: "1.1.0"
 ---
 
 # Update Project Docs
@@ -11,8 +11,9 @@ Use this skill when a change affects user-visible behavior, configuration,
 operations, or developer workflows and project-facing documentation must stay in
 sync.
 
-Use `documentation-and-adrs` first when it is unclear which durable documentation
-artifact is needed. Use `write-adr` as well when the change records a durable
+Use `documentation-and-adrs` first when it is unclear whether the change needs an
+ADR, project documentation, interface documentation, a runbook, or no durable
+documentation. Use `write-adr` as well when the change records a durable
 architectural, product, data, security, or workflow decision.
 
 ## When to use this skill
@@ -46,6 +47,12 @@ explain why no durable docs changed.
 
 Inspect existing documentation before editing. Prefer updating the canonical
 source that readers already use instead of creating duplicate explanations.
+Match the existing documentation's terminology, heading style, link style, and
+level of detail unless those conventions are inaccurate for the change.
+
+If a documentation page is generated, synced, or derived from another file, edit
+the source of truth instead of the generated target unless the project explicitly
+requires a local exception.
 
 Common surfaces include:
 
@@ -103,6 +110,9 @@ Review the final documentation as a reader would.
 - Confirm the documentation does not overpromise behavior.
 - Confirm architectural rationale is recorded in an ADR when needed.
 - Run any available documentation checks if the project provides them.
+- Report any skipped documentation updates and the reason they were not needed.
+- Include the documentation files changed and validation performed in the
+  handoff.
 
 ## Output checklist
 
@@ -111,3 +121,4 @@ Review the final documentation as a reader would.
 - examples and configuration references are accurate
 - release-facing note is captured when relevant
 - operational or migration notes are included when needed
+- generated or synced documentation was updated at its source of truth

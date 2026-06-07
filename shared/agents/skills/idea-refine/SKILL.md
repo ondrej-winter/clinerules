@@ -2,7 +2,7 @@
 name: idea-refine
 description: Refine raw ideas into actionable concepts through divergent exploration, convergent evaluation, assumption testing, and a final one-page brief. Use when an idea is vague, over-scoped, solution-led, or needs pressure-testing before planning or implementation.
 metadata:
-  version: "1.0.0"
+  version: "1.0.1"
 ---
 
 # Idea Refine

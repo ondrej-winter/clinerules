@@ -2,21 +2,21 @@
 name: planning-and-task-breakdown
 description: Breaks work into ordered tasks. Use when you have a spec or clear requirements and need to break work into implementable tasks. Use when a task feels too large to start, when you need to estimate scope, or when parallel work is possible.
 metadata:
-  version: "1.1.0"
+  version: "1.1.1"
 ---
 
 # Planning and Task Breakdown
 
 ## Overview
 
-Decompose work into small, verifiable tasks with explicit acceptance criteria. Good task breakdown is the difference between an agent that completes work reliably and one that produces a tangled mess. Every task should be small enough to implement, test, and verify in a single focused session.
+Decompose work into small, verifiable tasks with explicit acceptance criteria. Good task breakdown helps an agent complete work reliably without turning related changes into one tangled implementation pass. Every task should be small enough to implement, test, and verify in a single focused session.
 
 Use `spec-driven-development` first when requirements, success criteria, or scope
 boundaries are unclear. Use `review-implementation-plan` after drafting the plan
 when sequencing, dependencies, risk, or validation strategy need an independent
 readiness check.
 
-## When to Use
+## When to use this skill
 
 - You have a spec and need to break it into implementable units
 - A task feels too large or vague to start
@@ -24,20 +24,20 @@ readiness check.
 - You need to communicate scope to a human
 - The implementation order isn't obvious
 
-**When NOT to use:** Single-file changes with obvious scope, or when the spec already contains well-defined tasks.
+Do not use this skill for single-file changes with obvious scope, or when the spec already contains well-defined tasks.
 
-## The Planning Process
+## Steps
 
-### Step 1: Enter Plan Mode
+### Step 1: Gather context before planning
 
-Before writing any code, operate in read-only mode:
+Before writing any code or content changes, inspect enough context to understand the requested outcome and likely constraints:
 
 - Read the spec and relevant codebase sections
 - Identify existing patterns and conventions
 - Map dependencies between components
 - Note risks and unknowns
 
-**Do NOT write code during planning.** The output is a plan document, not implementation.
+Do not implement while drafting the plan. The output is a plan document, not code or content changes.
 
 ### Step 2: Identify the Dependency Graph
 
@@ -58,7 +58,7 @@ Implementation order follows the dependency graph bottom-up: build foundations f
 
 Instead of building every foundation layer, then every interface, then every user-facing surface, build one complete feature path at a time:
 
-**Bad (horizontal slicing):**
+Bad horizontal slicing:
 
 ```
 Task 1: Build the entire data or state model
@@ -67,7 +67,7 @@ Task 3: Build all user-facing surfaces
 Task 4: Connect everything
 ```
 
-**Good (vertical slicing):**
+Good vertical slicing:
 
 ```
 Task 1: User can create a record (state model + interface + creation surface)
@@ -227,6 +227,17 @@ When multiple agents or sessions are available:
 - All tasks are XL-sized
 - No checkpoints between tasks
 - Dependency order isn't considered
+
+## Handoff before implementation
+
+Before handing the plan to an implementer or starting implementation yourself, include:
+
+- the ordered task list
+- dependencies and sequencing constraints
+- acceptance criteria for each task
+- likely files or components touched, using portable project-relative placeholders when needed
+- validation commands or manual checks for each task
+- open questions that need human input before work can proceed safely
 
 ## Verification
 

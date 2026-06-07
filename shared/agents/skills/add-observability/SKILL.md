@@ -2,7 +2,7 @@
 name: add-observability
 description: Add logs, metrics, traces, profiling, or operational notes for meaningful workflows without unsupported performance claims.
 metadata:
-  version: "1.0.0"
+  version: "1.1.0"
 ---
 
 # Add Observability
@@ -76,6 +76,12 @@ the signal, such as:
 Avoid scattering instrumentation across low-value internal helpers.
 
 ### 4. Add safe logs, metrics, or traces
+
+Inspect existing observability conventions before adding new instrumentation.
+Prefer established loggers, metric clients, tracing APIs, naming patterns, and
+documentation locations. Do not introduce a new observability dependency or
+vendor-specific tool unless the project already uses it or the user explicitly
+asks for it.
 
 Choose signals that fit the project conventions.
 

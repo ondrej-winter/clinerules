@@ -2,7 +2,7 @@
 name: incremental-implementation
 description: Delivers changes incrementally. Use when implementing any feature or change that touches more than one file. Use when you're about to write a large amount of code at once, or when a task feels too big to land in one step.
 metadata:
-  version: "1.1.0"
+  version: "1.1.2"
 ---
 
 # Incremental Implementation
@@ -11,16 +11,18 @@ metadata:
 
 Build in thin vertical slices — implement one piece, test it, verify it, then expand. Avoid implementing an entire feature in one pass. Each increment should leave the system in a working, testable state. This is the execution discipline that makes large features manageable.
 
-## When to Use
+## When to use
 
 - Implementing any multi-file change
 - Building a new feature from a task breakdown
 - Refactoring existing code
 - Any time you're tempted to write more than ~100 lines before testing
 
-**When NOT to use:** Single-file, single-function changes where the scope is already minimal.
+**When not to use:** Single-file, single-function changes where the scope is already minimal.
 
-## The Increment Cycle
+## Steps
+
+Use this increment cycle for each implementation slice:
 
 ```
 Implement -> Test -> Verify -> Checkpoint -> Next slice
@@ -32,7 +34,7 @@ For each slice:
 1. **Implement** the smallest complete piece of functionality
 2. **Test** — run the test suite (or write a test if none exists)
 3. **Verify** — confirm the slice works as expected (tests pass, build succeeds, manual check)
-4. **Checkpoint** -- save your progress with the project's normal checkpoint mechanism, such as an atomic commit with a descriptive message
+4. **Checkpoint** -- save progress with the project's normal checkpoint or handoff mechanism, such as a descriptive commit when appropriate or an explicit progress note
 5. **Move to the next slice** — carry forward, don't restart
 
 ## Slicing Strategies
@@ -111,7 +113,7 @@ Three similar lines of code is better than a premature abstraction. Implement th
 
 Touch only what the task requires.
 
-Do NOT:
+Do not:
 
 - "Clean up" code adjacent to your change
 - Refactor imports in files you're not modifying
@@ -125,7 +127,7 @@ If you notice something worth improving outside your task scope, note it — don
 NOTICED BUT NOT TOUCHING:
 - <module_path> has an unused dependency (unrelated to this task)
 - The <boundary_or_component> could use clearer error messages (separate task)
-Want me to create tasks for these?
+Capture these as follow-up notes or separate tasks only if requested.
 ```
 
 ### Rule 1: One Thing at a Time
@@ -189,7 +191,7 @@ After implementing, run `<test_command>` and `<build_command>` to verify
 nothing is broken."
 ```
 
-Be explicit about what's in scope and what's NOT in scope for each increment.
+Be explicit about what is in scope and what is not in scope for each increment.
 
 ## Increment Checklist
 

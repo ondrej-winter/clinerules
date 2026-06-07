@@ -1,8 +1,8 @@
 ---
 name: write-adr
-description: Create an Architecture Decision Record with the next sequential number, a clear title, and documented consequences.
+description: Create an Architecture Decision Record with the next sequential number, a clear title, and documented consequences when asked to record an architectural decision.
 metadata:
-  version: "1.0.0"
+  version: "1.1.0"
 ---
 
 # Write an Architecture Decision Record (ADR)
@@ -126,6 +126,19 @@ If the ADR directory already contains an index file such as `README.md` or
 | ---------------------------- | ------------- | ------ | -------- |
 | [<NNNN>](./<NNNN>-<slug>.md) | <Short Title> | <Date> | <Status> |
 ```
+
+### 7. Review and hand off
+
+Before finishing, review the ADR and any index update for:
+
+- the expected sequential number and file name
+- a clear decision statement
+- consequences that describe meaningful trade-offs
+- valid relative links to related ADRs, issues, or supporting documents
+- consistency with the repository's existing ADR style
+
+In the handoff, report the ADR path, status, and any documentation updates made
+alongside it.
 
 ## Good ADR practices
 
