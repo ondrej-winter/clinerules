@@ -2,7 +2,7 @@
 name: api-and-interface-design
 description: Design stable APIs, module contracts, schemas, component boundaries, command interfaces, or other public integration surfaces that are predictable, documented, and hard to misuse.
 metadata:
-  version: "1.1.1"
+  version: "1.1.2"
 ---
 
 # API and Interface Design
@@ -92,6 +92,7 @@ At minimum, define:
 - operation names and responsibilities
 - required and optional inputs
 - output shape and generated fields
+- default values and side effects
 - error shape and retry semantics
 - compatibility expectations
 - examples for common and edge cases

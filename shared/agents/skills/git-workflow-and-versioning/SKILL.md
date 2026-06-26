@@ -2,7 +2,7 @@
 name: git-workflow-and-versioning
 description: Use version control intentionally with small changes, clear branches, atomic commits, safe history operations, useful summaries, and validation before merge or handoff.
 metadata:
-  version: "1.1.1"
+  version: "1.1.2"
 ---
 
 # Git Workflow and Versioning
@@ -52,6 +52,10 @@ git --no-pager diff
 ```
 
 Use non-interactive Git commands and disable pagers when possible.
+
+Distinguish staged, unstaged, and untracked changes. If the working tree already
+contains changes you did not make, preserve them unless the user explicitly asks
+you to modify, stage, discard, or commit them.
 
 ### 2. Keep work scoped
 

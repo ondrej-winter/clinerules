@@ -14,7 +14,8 @@ Use this checklist to plan and verify performance work.
 - Separate client, server, database, network, and infrastructure causes.
 - Find the bottleneck with measurement rather than assumption.
 - Check logs, traces, profiles, query plans, and resource metrics as applicable.
-- Identify whether latency, throughput, memory, CPU, I/O, or payload size is limiting the system.
+- Identify whether latency, throughput, memory, CPU, I/O, or payload size is
+  limiting the system.
 
 ## Optimization
 

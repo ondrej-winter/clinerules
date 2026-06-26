@@ -2,7 +2,7 @@
 name: code-simplification
 description: Simplify working code without changing behavior by reducing unnecessary complexity, improving names and structure, preserving project conventions, and validating each refactoring step.
 metadata:
-  version: "1.1.0"
+  version: "1.1.1"
 ---
 
 # Code Simplification
@@ -146,7 +146,7 @@ changes usually mean behavior changed.
 After simplifying, compare before and after:
 
 - Is the new version easier to understand?
-- Is the diff smaller and more reviewable than the original complexity?
+- Is the result easier to review than the original implementation?
 - Did the change preserve local patterns?
 - Did it remove useful names or abstractions?
 - Did validation cover the affected behavior?

@@ -2,7 +2,7 @@
 name: spec-driven-development
 description: Creates a specification before implementation. Use when starting a project, feature, integration, workflow, migration, or significant change with unclear or incomplete requirements.
 metadata:
-  version: "1.1.0"
+  version: "1.2.0"
 ---
 
 # Spec-Driven Development
@@ -46,6 +46,9 @@ small documentation edits where the requested outcome is already precise.
 
 Spec-driven development has four phases. Do not advance until the current phase
 is reviewed or clearly accepted by the user.
+
+If no live user is available, stop at a draft spec, plan, or task list and label
+unconfirmed assumptions clearly. Do not treat an unreviewed draft as accepted.
 
 ```text
 SPECIFY: define requirements, assumptions, constraints, and success criteria.

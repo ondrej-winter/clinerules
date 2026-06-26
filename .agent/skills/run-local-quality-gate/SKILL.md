@@ -2,7 +2,7 @@
 name: run-local-quality-gate
 description: Discover and run the project's local formatting, linting, static analysis, test, and build checks before handoff.
 metadata:
-  version: "1.1.0"
+  version: "1.1.3"
 ---
 
 # Run Local Quality Gate
@@ -22,8 +22,16 @@ Inspect the repository for documented or configured checks, such as:
 - continuous integration configuration
 - pre-commit or hook configuration
 - test, lint, format, type-check, static-analysis, or build scripts
+- documented prerequisite or environment setup commands
 
-Prefer documented aggregate commands when they exist.
+Prefer documented aggregate commands when they exist. Also identify narrower
+checks for the files or behavior changed so iteration can start with fast,
+relevant feedback before expanding to the full gate.
+
+Do not install dependencies, update lockfiles, or modify the runtime environment
+unless the project documents that step as part of the local gate or the user has
+approved it. If required setup is unavailable or out of scope, report the
+limitation before running dependent checks.
 
 ### 2. Decide the validation sequence
 
@@ -66,9 +74,9 @@ the command and relevant output.
 
 ### 5. Run the final gate before handoff
 
-Before handoff, run the broadest practical project-approved quality gate. If the
-full gate is expensive or unavailable, run the strongest available subset and
-state the limitation.
+Before handoff, run the broadest practical project-approved quality gate after
+any focused checks have passed. If the full gate is expensive or unavailable,
+run the strongest available subset and state the limitation.
 
 ### 6. Summarize validation results
 
@@ -79,7 +87,7 @@ for the next maintainer to reproduce the result.
 
 - project-defined commands were discovered before running checks
 - validation commands were non-interactive or any interactive requirement was explained
-- safe auto-fixes were inspected
+- safe auto-fixes were inspected when run
 - failures were fixed or explicitly reported
 - final validation command set is documented
 - no checks were bypassed with unsupported flags in the final run

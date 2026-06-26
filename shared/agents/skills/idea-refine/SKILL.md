@@ -2,7 +2,7 @@
 name: idea-refine
 description: Refine raw ideas into actionable concepts through divergent exploration, convergent evaluation, assumption testing, and a final one-page brief. Use when an idea is vague, over-scoped, solution-led, or needs pressure-testing before planning or implementation.
 metadata:
-  version: "1.0.1"
+  version: "1.0.2"
 ---
 
 # Idea Refine
@@ -163,8 +163,9 @@ location. Save only after the user confirms.
 
 ## Optional helper
 
-The script at `scripts/idea-refine.sh` creates `docs/ideas/` and prints a JSON
-status line. Use it only when the user wants to persist idea briefs in the current
+The script at `scripts/idea-refine.sh` creates an idea brief directory and prints
+a JSON status line. It defaults to `docs/ideas/` and accepts an optional directory
+argument. Use it only when the user wants to persist idea briefs in the current
 workspace.
 
 ## References

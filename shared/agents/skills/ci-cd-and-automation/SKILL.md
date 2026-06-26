@@ -2,7 +2,7 @@
 name: ci-cd-and-automation
 description: Design, review, or improve CI/CD and automation workflows for quality gates, deployment safety, rollback readiness, secrets handling, and feedback loops across any technology stack.
 metadata:
-  version: "1.1.0"
+  version: "1.3.0"
 ---
 
 # CI/CD and Automation
@@ -95,6 +95,8 @@ For each job, define:
 - artifacts to collect on success or failure
 - secrets and permissions required
 - timeout and retry policy
+- concurrency and cancellation behavior for duplicate or superseded runs
+- trust, pinning, and update policy for third-party actions, images, or plugins
 
 Provider-specific YAML, hosted runner names, and marketplace actions are examples,
 not portable requirements. Scope them as examples when documenting reusable skill
@@ -196,11 +198,15 @@ After changing automation, verify that it runs in the intended environment.
 Confirm:
 
 - the workflow triggers on the intended events
+- workflow configuration syntax, schema, or provider linting passes when the
+  provider offers a non-destructive validation command
 - required gates run and block unsafe merges or deployments
 - secrets are not exposed
 - artifacts and logs are available when needed
 - rollback or recovery path is documented and tested where practical
 - local reproduction instructions exist for likely failures
+- any gate that cannot be run before handoff is documented with the reason,
+  risk, owner, and follow-up condition
 
 ## Red flags
 

@@ -2,7 +2,7 @@
 name: context-engineering
 description: Curate the right project, task, source, validation, and conversation context for agent work so outputs follow real conventions, avoid hallucinated assumptions, and remain focused.
 metadata:
-  version: "1.1.0"
+  version: "1.1.1"
 ---
 
 # Context Engineering
@@ -11,6 +11,10 @@ Use this skill when starting agent-assisted work, switching tasks, recovering fr
 poor output, or preparing a project so agents can follow its real constraints and
 patterns. The goal is to provide enough relevant context for accurate work while
 avoiding context overload.
+
+The expected outcome is a compact, current context packet that identifies the
+task intent, relevant sources, trusted constraints, validation path, and open
+questions before the agent acts.
 
 ## When to use this skill
 

@@ -1,20 +1,22 @@
 ---
 name: review-implementation-plan
-description: Review an implementation plan for completeness, ambiguity, sequencing, risks, dependencies, validation, and handoff readiness before coding.
+description: Review an implementation plan for completeness, ambiguity, sequencing, risks, dependencies, validation, readiness labeling, and handoff before coding.
 metadata:
-  version: "1.0.0"
+  version: "1.0.4"
 ---
 
 # Review Implementation Plan
 
-Use this skill before implementation begins when the user provides or requests a
-plan for a non-trivial change. The goal is to catch ambiguity, missing work,
-unsafe sequencing, and validation gaps before code or content changes begin.
+Use this skill before implementation begins, after an implementation plan exists
+or is being proposed for a non-trivial change. The goal is to catch ambiguity,
+missing work, unsafe sequencing, and validation gaps before code or content
+changes begin.
 
-Use `spec-driven-development` first when the plan lacks clear requirements,
-success criteria, assumptions, or scope boundaries. Use
-`planning-and-task-breakdown` first when the plan is too coarse and needs to be
-decomposed into ordered, verifiable implementation tasks.
+When those skills are available, use `spec-driven-development` first when the
+plan lacks clear requirements, success criteria, assumptions, or scope
+boundaries. Use `planning-and-task-breakdown` first when requirements are clear
+but the plan is too coarse and needs to be decomposed into ordered, verifiable
+implementation tasks.
 
 ## When to use this skill
 
@@ -121,6 +123,14 @@ Return a concise review that includes:
 - required validation commands or checks
 - deferred backlog items that should not block the first pass
 
+Use a clear readiness label when helpful:
+
+- `Ready`: the plan is specific enough to implement with known validation
+- `Needs revision`: the plan has gaps, but they can be resolved without changing
+  the core goal
+- `Blocked`: implementation should not start until a missing decision,
+  requirement, dependency, or approval is resolved
+
 Do not begin implementation until required questions are answered and the user has
 approved moving from planning to execution.
 
@@ -132,3 +142,4 @@ approved moving from planning to execution.
 - implementation sequence is reviewable
 - validation strategy is explicit
 - risks, fallback options, and deferred work are documented
+- readiness label is clear when used

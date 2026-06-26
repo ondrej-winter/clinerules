@@ -2,7 +2,7 @@
 name: debugging-and-error-recovery
 description: Diagnose failures systematically by preserving evidence, reproducing the issue, localizing and reducing the cause, fixing the root problem, adding a guard, and verifying recovery.
 metadata:
-  version: "1.1.0"
+  version: "1.1.2"
 ---
 
 # Debugging and Error Recovery

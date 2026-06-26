@@ -2,7 +2,7 @@
 name: using-agent-skills
 description: Discovers and invokes agent skills. Use when starting a session or when you need to discover which skill applies to the current task. This is the meta-skill that governs how all other skills are discovered and invoked.
 metadata:
-  version: "1.0.4"
+  version: "1.0.5"
 ---
 
 # Using Agent Skills
@@ -193,6 +193,7 @@ Not every task needs every skill. A bug fix might only need `debugging-and-error
 | Verify | browser-runtime-verification | Real-browser verification of UI behavior, console output, network activity, and accessibility basics |
 | Verify | run-local-quality-gate       | Discover and run local formatting, linting, static analysis, test, and build checks                  |
 | Verify | debugging-and-error-recovery | Reproduce, localize, fix, and guard                                                                  |
+| Review | add-observability            | Add useful logs, metrics, traces, profiling, alerts, or dashboards                                   |
 | Review | code-review-and-quality      | Five-axis review with quality gates                                                                  |
 | Review | code-simplification          | Preserve behavior while reducing unnecessary complexity                                              |
 | Review | security-and-hardening       | OWASP prevention, input validation, least privilege                                                  |

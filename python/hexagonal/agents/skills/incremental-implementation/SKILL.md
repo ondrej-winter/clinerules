@@ -1,24 +1,24 @@
 ---
 name: incremental-implementation
-description: Delivers changes incrementally. Use when implementing any feature or change that touches more than one file. Use when you're about to write a large amount of code at once, or when a task feels too big to land in one step.
+description: Guide agents to deliver changes incrementally. Use when implementing a feature or change that touches more than one file, when a task feels too large to land in one step, or before writing a large amount of code at once.
 metadata:
-  version: "1.1.2"
+  version: "1.1.3"
 ---
 
 # Incremental Implementation
 
 ## Overview
 
-Build in thin vertical slices — implement one piece, test it, verify it, then expand. Avoid implementing an entire feature in one pass. Each increment should leave the system in a working, testable state. This is the execution discipline that makes large features manageable.
+Build in thin vertical slices: implement one piece, test it, verify it, then expand. Avoid implementing an entire feature in one pass. Each increment should leave the system in a working, testable state. This execution discipline makes large features manageable.
 
 ## When to use
 
 - Implementing any multi-file change
 - Building a new feature from a task breakdown
 - Refactoring existing code
-- Any time you're tempted to write more than ~100 lines before testing
+- Any time an agent is tempted to write more than about 100 lines before testing
 
-**When not to use:** Single-file, single-function changes where the scope is already minimal.
+Do not use this skill for single-file, single-function changes where the scope is already minimal.
 
 ## Steps
 
@@ -34,7 +34,7 @@ For each slice:
 1. **Implement** the smallest complete piece of functionality
 2. **Test** — run the test suite (or write a test if none exists)
 3. **Verify** — confirm the slice works as expected (tests pass, build succeeds, manual check)
-4. **Checkpoint** -- save progress with the project's normal checkpoint or handoff mechanism, such as a descriptive commit when appropriate or an explicit progress note
+4. **Checkpoint**: save progress with the project's normal checkpoint or handoff mechanism, such as a descriptive commit when appropriate or an explicit progress note
 5. **Move to the next slice** — carry forward, don't restart
 
 ## Slicing Strategies
@@ -92,7 +92,7 @@ After writing code, review it against these checks:
 
 - Can this be done in fewer lines?
 - Are these abstractions earning their complexity?
-- Would a staff engineer look at this and say "why didn't you just..."?
+- Would an experienced reviewer ask why this was not implemented more directly?
 - Am I building for hypothetical future requirements, or the current task?
 
 ```
@@ -121,7 +121,7 @@ Do not:
 - Add features not in the spec because they "seem useful"
 - Modernize syntax in files you're only reading
 
-If you notice something worth improving outside your task scope, note it — don't fix it:
+If you notice something worth improving outside your task scope, note it instead of fixing it:
 
 ```
 NOTICED BUT NOT TOUCHING:
@@ -134,9 +134,9 @@ Capture these as follow-up notes or separate tasks only if requested.
 
 Each increment changes one logical thing. Don't mix concerns:
 
-**Bad:** One commit that adds a new component, refactors an existing one, and updates the build config.
+Avoid: One checkpoint that adds a new component, refactors an existing one, and updates the build config.
 
-**Good:** Three separate commits — one for each change.
+Prefer: Three separate checkpoints, one for each change.
 
 ### Rule 2: Keep It Compilable
 
@@ -146,12 +146,11 @@ After each increment, the project must build and existing tests must pass. Don't
 
 If a feature isn't ready for users but you need to merge increments:
 
-```python
-# Feature flag for work-in-progress behavior.
-enable_new_behavior = settings.get("ENABLE_NEW_BEHAVIOR", False)
-
-if enable_new_behavior:
-    show_new_behavior()
+```text
+if feature flag is enabled:
+    show the new behavior
+else:
+    keep the existing behavior
 ```
 
 This lets you merge small increments to the main branch without exposing incomplete work.
@@ -160,12 +159,10 @@ This lets you merge small increments to the main branch without exposing incompl
 
 New code should default to safe, conservative behavior:
 
-```python
-# Safe: disabled by default, opt-in.
-def create_record(data, *, notify=False):
-    if notify:
-        send_notification(data)
-    return save_record(data)
+```text
+create record with notify defaulting to false:
+    save the record
+    send notification only when notify is explicitly enabled
 ```
 
 ### Rule 5: Rollback-Friendly

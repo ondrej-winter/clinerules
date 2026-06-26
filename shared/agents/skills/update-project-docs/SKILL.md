@@ -2,7 +2,7 @@
 name: update-project-docs
 description: Update project-facing documentation after a user-visible behavior, configuration, operation, or workflow change.
 metadata:
-  version: "1.1.0"
+  version: "1.2.0"
 ---
 
 # Update Project Docs
@@ -53,6 +53,9 @@ level of detail unless those conventions are inaccurate for the change.
 If a documentation page is generated, synced, or derived from another file, edit
 the source of truth instead of the generated target unless the project explicitly
 requires a local exception.
+
+Do not create a new documentation surface unless no existing canonical location
+fits the change or the user specifically asks for a new artifact.
 
 Common surfaces include:
 

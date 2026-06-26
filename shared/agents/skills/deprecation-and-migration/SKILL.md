@@ -2,7 +2,7 @@
 name: deprecation-and-migration
 description: Plan and execute safe deprecations, migrations, replacements, and removals by measuring usage, supporting consumers, preserving compatibility, and verifying that old paths are no longer active.
 metadata:
-  version: "1.1.0"
+  version: "1.1.1"
 ---
 
 # Deprecation and Migration
@@ -67,6 +67,7 @@ runtime traces, docs, and owner interviews.
 Record:
 
 - active consumers and owners
+- removal owner and decision maker
 - known undocumented dependencies
 - usage volume and criticality
 - compatibility-sensitive behaviors
@@ -93,10 +94,11 @@ For compulsory deprecation, provide:
 Before broad announcement, confirm the replacement:
 
 - covers critical use cases
-- has documented differences and compatibility limits
+- has parity or intentionally documented differences and compatibility limits
 - is validated in representative environments
 - has rollback or fallback guidance when applicable
-- exposes enough observability to compare old and new behavior
+- exposes enough observability to compare old and new behavior and prove usage
+  decline on the old path
 - includes migration tooling or examples when migration is repetitive
 
 Use incremental migration patterns when risk is high, such as parallel run,
@@ -113,6 +115,7 @@ Write a concise notice:
 Status: <advisory or compulsory>
 Replacement: <new_surface>
 Reason: <why this is changing>
+Removal owner: <owner or decision maker>
 Migration deadline: <date or none>
 Affected consumers: <known scope>
 Removal criteria: <evidence required before removal>
@@ -146,6 +149,7 @@ Before removal, verify:
 
 - no active consumers remain
 - fallback or rollback expectations are clear
+- replacement behavior is stable under representative usage
 - alerts, dashboards, docs, examples, generated files, and configuration no
   longer reference the old path
 - tests cover the replacement and no longer depend on the old behavior
@@ -169,6 +173,7 @@ and notices that have served their purpose.
 
 - deprecation rationale and scope are explicit
 - active usage and ownership were measured
+- removal owner and decision maker are known
 - replacement readiness is verified
 - advisory or compulsory status is documented
 - migration guide and support path exist

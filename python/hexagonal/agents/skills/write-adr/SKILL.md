@@ -2,7 +2,7 @@
 name: write-adr
 description: Create an Architecture Decision Record with the next sequential number, a clear title, and documented consequences when asked to record an architectural decision.
 metadata:
-  version: "1.1.0"
+  version: "1.1.2"
 ---
 
 # Write an Architecture Decision Record (ADR)
@@ -29,8 +29,9 @@ Use the repository's existing ADR directory when one is present. Common names
 include `adr/` and `docs/adr/`.
 
 If no ADR directory exists, ask for the preferred location when that choice is
-unclear. If the user has asked you to proceed without asking, use
-`<adr_directory>` as a placeholder and create it.
+unclear. Create a new ADR directory only when the user provides a location or the
+repository has an existing documentation convention that makes the location
+obvious.
 
 ### 2. Determine the next ADR number
 
@@ -54,6 +55,9 @@ Derive the slug from the ADR title by converting it to kebab-case. Remove filler
 words only when doing so keeps the title recognizable.
 
 ### 4. Fill in the ADR template
+
+If the repository already has an ADR template or consistent ADR format, follow
+that local style and adapt the fields below rather than replacing it.
 
 Use today's date for the Date field unless the user requests a different date.
 

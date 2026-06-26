@@ -2,7 +2,7 @@
 name: frontend-ui-engineering
 description: Build, review, or refine browser-facing user interfaces so they are accessible, responsive, performant, visually coherent, and aligned with the project design system.
 metadata:
-  version: "1.1.1"
+  version: "1.1.2"
 ---
 
 # Frontend UI Engineering
@@ -149,7 +149,7 @@ Use the project’s breakpoints or device classes rather than hardcoded assumpti
 
 ### 8. Verify runtime behavior
 
-Use `browser-runtime-verification` when the change affects rendering,
+Use the `browser-runtime-verification` skill when the change affects rendering,
 interaction, network behavior, focus, accessibility, or visual layout.
 
 At minimum, verify:

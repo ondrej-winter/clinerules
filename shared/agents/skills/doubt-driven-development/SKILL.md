@@ -2,7 +2,7 @@
 name: doubt-driven-development
 description: Cross-examine non-trivial decisions with a fresh, adversarial review loop before they stand, especially when correctness, safety, migration risk, or unfamiliar code makes overconfidence costly.
 metadata:
-  version: "1.1.0"
+  version: "1.1.1"
 ---
 
 # Doubt-Driven Development
@@ -81,6 +81,11 @@ input.
 
 Do not validate or summarize. Report evidence-backed issues, uncertainty, or state
 that you cannot find any issues after thorough examination.
+
+Response format:
+- Issues: <evidence-backed findings, or none found>
+- Uncertainty: <unknowns that affect confidence>
+- Scope limits: <anything not examined>
 
 Artifact: <artifact>
 Contract: <contract>

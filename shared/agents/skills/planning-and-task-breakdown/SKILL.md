@@ -2,7 +2,7 @@
 name: planning-and-task-breakdown
 description: Breaks work into ordered tasks. Use when you have a spec or clear requirements and need to break work into implementable tasks. Use when a task feels too large to start, when you need to estimate scope, or when parallel work is possible.
 metadata:
-  version: "1.1.1"
+  version: "1.1.4"
 ---
 
 # Planning and Task Breakdown
@@ -26,6 +26,15 @@ readiness check.
 
 Do not use this skill for single-file changes with obvious scope, or when the spec already contains well-defined tasks.
 
+## Expected output
+
+Produce a written implementation plan that includes:
+
+- ordered tasks with acceptance criteria and verification steps
+- dependencies, checkpoints, and sequencing constraints
+- likely files or components touched, using portable placeholders when needed
+- risks, assumptions, and open questions that affect safe implementation
+
 ## Steps
 
 ### Step 1: Gather context before planning
@@ -36,6 +45,7 @@ Before writing any code or content changes, inspect enough context to understand
 - Identify existing patterns and conventions
 - Map dependencies between components
 - Note risks and unknowns
+- Capture assumptions and open questions that affect sequencing or scope
 
 Do not implement while drafting the plan. The output is a plan document, not code or content changes.
 
@@ -123,9 +133,9 @@ Add explicit checkpoints:
 ## Checkpoint: After Tasks 1-3
 
 - [ ] All tests pass
-- [ ] Application builds without errors
+- [ ] Relevant build or static checks pass without errors
 - [ ] Core user flow works end-to-end
-- [ ] Review with human before proceeding
+- [ ] Review before proceeding when risk, scope, or uncertainty is high
 ```
 
 ## Task Sizing Guidelines
@@ -238,6 +248,7 @@ Before handing the plan to an implementer or starting implementation yourself, i
 - likely files or components touched, using portable project-relative placeholders when needed
 - validation commands or manual checks for each task
 - open questions that need human input before work can proceed safely
+- assumptions that an implementer should confirm or preserve
 
 ## Verification
 
@@ -248,4 +259,5 @@ Before starting implementation, confirm:
 - [ ] Task dependencies are identified and ordered correctly
 - [ ] No task touches more than ~5 files
 - [ ] Checkpoints exist between major phases
-- [ ] The human has reviewed and approved the plan
+- [ ] Required reviews or approvals are identified before implementation starts
+- [ ] Open questions and assumptions are captured or marked not applicable

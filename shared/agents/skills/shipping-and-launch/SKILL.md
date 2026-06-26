@@ -2,14 +2,14 @@
 name: shipping-and-launch
 description: Prepares production launches. Use when preparing to deploy to production. Use when you need a pre-launch checklist, when setting up monitoring, when planning a staged rollout, or when you need a rollback strategy.
 metadata:
-  version: "1.1.1"
+  version: "1.2.0"
 ---
 
 # Shipping and Launch
 
 ## Overview
 
-Ship with confidence. The goal is not just to deploy — it's to deploy safely, with monitoring in place, a rollback plan ready, and a clear understanding of what success looks like. Every launch should be reversible, observable, and incremental.
+Ship with confidence. The goal is not just to deploy, but to deploy safely, with monitoring in place, a rollback plan ready, and a clear understanding of what success looks like. Every launch should be reversible, observable, and incremental.
 
 ## When to Use
 
@@ -24,6 +24,20 @@ dashboards, alerts, or troubleshooting notes. Use `performance-optimization` whe
 launch readiness depends on diagnosing and fixing a performance bottleneck. Use
 `debugging-and-error-recovery` when a launch, rollout, or rollback exposes an
 active failure that needs root-cause repair.
+
+## Steps
+
+1. Identify the release scope, production risk, owners, target users, and planned
+   launch window.
+2. Complete the pre-launch checklist sections that apply to the release.
+3. Use the supporting reference checklists for deeper security, performance, or
+   accessibility verification when those risks apply.
+4. Define the rollout sequence, monitoring thresholds, and rollback triggers
+   before changing production state.
+5. Deploy incrementally, verify post-launch signals, and hold or roll back when
+   thresholds are missed.
+6. Record launch evidence, accepted residual risks, cleanup owners, and any
+   follow-up work after the release.
 
 ## The Pre-Launch Checklist
 
@@ -104,8 +118,8 @@ else:
 ### Feature Flag Rules
 
 - Every feature flag has an owner and an expiration date
-- Clean up flags within 2 weeks of full rollout
-- Don't nest feature flags (creates exponential combinations)
+- Clean up flags within the agreed post-rollout cleanup window
+- Do not nest feature flags because doing so creates exponential combinations
 - Test both flag states (on and off) in CI
 
 ## Staged Rollout
@@ -243,13 +257,13 @@ Every deployment needs a rollback plan before it happens:
 
 ## Common Rationalizations
 
-| Rationalization                                 | Reality                                                                                       |
-| ----------------------------------------------- | --------------------------------------------------------------------------------------------- |
-| "It works in staging, it'll work in production" | Production has different data, traffic patterns, and edge cases. Monitor after deploy.        |
-| "We don't need feature flags for this"          | Every feature benefits from a kill switch. Even "simple" changes can break things.            |
-| "Monitoring is overhead"                        | Not having monitoring means you discover problems from user complaints instead of dashboards. |
-| "We'll add monitoring later"                    | Add it before launch. You can't debug what you can't see.                                     |
-| "Rolling back is admitting failure"             | Rolling back is responsible engineering. Shipping a broken feature is the failure.            |
+| Rationalization                                   | Reality                                                                                       |
+| ------------------------------------------------- | --------------------------------------------------------------------------------------------- |
+| "It works in staging, it will work in production" | Production has different data, traffic patterns, and edge cases. Monitor after deploy.        |
+| "We do not need feature flags for this"           | Every feature benefits from a kill switch. Even "simple" changes can break things.            |
+| "Monitoring is overhead"                          | Not having monitoring means you discover problems from user complaints instead of dashboards. |
+| "We will add monitoring later"                    | Add it before launch. You cannot debug what you cannot see.                                   |
+| "Rolling back is admitting failure"               | Rolling back is responsible engineering. Shipping a broken feature is the failure.            |
 
 ## Red Flags
 
@@ -259,7 +273,7 @@ Every deployment needs a rollback plan before it happens:
 - Feature flags with no expiration or owner
 - No one monitoring the deploy for the first hour
 - Production environment configuration done by memory, not code
-- "It's Friday afternoon, let's ship it"
+- "It is Friday afternoon, let us ship it"
 
 ## Verification
 

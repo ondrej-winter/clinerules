@@ -2,7 +2,7 @@
 name: add-observability
 description: Add logs, metrics, traces, profiling, or operational notes for meaningful workflows without unsupported performance claims.
 metadata:
-  version: "1.1.0"
+  version: "1.1.1"
 ---
 
 # Add Observability
@@ -116,6 +116,12 @@ When the change matters operationally, update project-facing docs with:
 
 Use `update-project-docs` for durable documentation updates.
 
+### 7. Validate the signal
+
+Exercise the instrumented workflow when practical and confirm the expected logs,
+metrics, traces, or profile outputs are emitted. Check that labels and fields are
+stable, low-cardinality, and free of sensitive data.
+
 ## Output checklist
 
 - workflow and observed signal are explicit
@@ -123,3 +129,4 @@ Use `update-project-docs` for durable documentation updates.
 - instrumentation is placed at meaningful boundaries
 - logs, metrics, and traces use safe low-cardinality context
 - operational documentation is updated when needed
+- emitted signals were validated when practical

@@ -2,7 +2,7 @@
 name: browser-runtime-verification
 description: Verify browser-facing changes in a real browser using visual checks, console output, network behavior, accessibility basics, and user-flow smoke tests. Use when building, debugging, or validating UI behavior beyond static code and unit tests.
 metadata:
-  version: "1.0.1"
+  version: "1.0.2"
 ---
 
 # Browser Runtime Verification
@@ -11,6 +11,10 @@ Use this skill when a change affects behavior that runs in a browser. Static
 analysis and unit tests are useful, but they do not prove that the page renders,
 loads data, handles input, remains accessible, and behaves correctly in the real
 runtime.
+
+Verification may be manual or assisted by browser automation, as long as it
+observes the application in an actual browser runtime and records enough evidence
+for handoff.
 
 ## When to use this skill
 

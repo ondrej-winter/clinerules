@@ -2,7 +2,7 @@
 name: documentation-and-adrs
 description: Decide whether durable documentation is needed, choose the right documentation artifact, and route ADR or project documentation work to the appropriate specialized skill.
 metadata:
-  version: "1.1.0"
+  version: "1.2.0"
 ---
 
 # Documentation and ADRs
@@ -82,6 +82,10 @@ Use the narrowest skill that owns the concrete mechanics:
 
 Do not delete old ADRs. If a decision changes, write a new ADR that supersedes or
 deprecates the old one.
+
+When routing to a specialized skill, read that skill's `SKILL.md` before editing
+so its format, naming, validation, and handoff requirements govern the concrete
+documentation change.
 
 ### 4. Check cross-document consistency
 

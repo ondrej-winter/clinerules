@@ -2,7 +2,7 @@
 name: test-driven-development
 description: Drives development with tests. Use when implementing behavior, fixing bugs, changing existing functionality, or proving that a change works and is guarded against regression.
 metadata:
-  version: "1.1.1"
+  version: "1.2.0"
 ---
 
 # Test-Driven Development
@@ -227,3 +227,4 @@ After completing behavior-changing work:
 - [ ] test names describe the behavior being verified
 - [ ] no tests were skipped, disabled, or weakened without explicit approval
 - [ ] coverage or quality gates did not regress where tracked
+- [ ] handoff notes include the failing and passing test evidence and validation commands

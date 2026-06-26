@@ -2,7 +2,7 @@
 name: code-review-and-quality
 description: Review code, tests, documentation, and configuration across correctness, readability, architecture, security, performance, maintainability, and verification before merging or handing off a change.
 metadata:
-  version: "1.1.0"
+  version: "1.1.1"
 ---
 
 # Code Review and Quality
@@ -29,12 +29,17 @@ Use this skill when:
 
 ## Review axes
 
-Use `security-and-hardening` when the review identifies security-sensitive
-design, implementation, or remediation work that needs deeper analysis than the
-checklist. Use `performance-optimization` when the review identifies a suspected
-bottleneck, regression, or performance requirement that needs measurement-driven
-diagnosis. Use `code-simplification` when the review identifies unnecessary
-complexity that should be reduced while preserving behavior.
+Use the local checklists for focused review prompts. Escalate to related skills
+when review findings need deeper follow-up work:
+
+- Use `security-and-hardening` when the review identifies security-sensitive
+  design, implementation, or remediation work that needs deeper analysis than the
+  checklist.
+- Use `performance-optimization` when the review identifies a suspected
+  bottleneck, regression, or performance requirement that needs
+  measurement-driven diagnosis.
+- Use `code-simplification` when the review identifies unnecessary complexity
+  that should be reduced while preserving behavior.
 
 ### 1. Correctness
 

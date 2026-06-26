@@ -2,7 +2,7 @@
 name: performance-optimization
 description: Optimizes software performance using measurement-driven diagnosis, targeted fixes, and regression guards. Use when performance requirements exist, users or monitoring report slow behavior, a regression is suspected, or profiling reveals bottlenecks that need fixing.
 metadata:
-  version: "1.1.1"
+  version: "1.1.3"
 ---
 
 # Performance Optimization
@@ -46,7 +46,7 @@ failure that still needs reproduction and root-cause diagnosis. Use
 `shipping-and-launch` when performance checks are launch readiness, rollout, or
 rollback gates.
 
-## Optimization workflow
+## Steps
 
 ```text
 1. MEASURE: Capture a baseline with realistic conditions.
@@ -124,7 +124,7 @@ Common bottleneck categories:
 | Intermittent slowness         | Contention, retries, saturation, cold starts, or external dependency variance    | Compare traces across fast and slow cases     |
 | Poor perceived responsiveness | Blocking user-visible work or delaying first useful output                       | Measure the user-visible milestone directly   |
 
-### Step 3: Fix Common Anti-Patterns
+### Step 3: Fix common anti-patterns
 
 Prefer removing unnecessary work before adding caches or complex infrastructure.
 The examples below are technology-neutral patterns; adapt them to the project
