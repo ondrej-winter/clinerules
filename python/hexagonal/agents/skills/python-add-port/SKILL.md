@@ -1,11 +1,12 @@
 ---
 name: python-add-port
-description: Add a technology-agnostic application port interface to a Python hexagonal project for a new use case or dependency.
+description: Add a technology-agnostic inbound or outbound application port interface to the owning vertical slice in a Python hexagonal project for a new use case or dependency.
 ---
 
 # Add a Port
 
-Use this skill to add a port interface to a Python hexagonal project.
+Use this skill to add a port interface to the owning vertical slice in a Python
+hexagonal project.
 
 A port defines an application-layer boundary. It describes either how the
 outside world uses the application or what the application needs from external
@@ -18,24 +19,25 @@ Keep feature orchestration and adapter implementation in related skills.
 
 Use this skill when you need to:
 
-- expose a new use case through an input port
-- define a new dependency the application needs through an output port
+- expose a new use case through an inbound port
+- define a new dependency the application needs through an outbound port
 - extract an application-facing interface so adapters depend on an application
   contract rather than concrete implementation details
 
 ## Prerequisites
 
-- The project follows a hexagonal structure under `src/<app_name>/`.
+- The project follows a hexagonal vertical-slice structure under
+  `src/<app_name>/features/<feature_name>/` or a documented equivalent.
 - You understand the use case or dependency the port represents.
 - Any command, query, or result DTOs used by the port already exist or are part
   of the same change.
 
 ## Port types
 
-### Input port
+### Inbound port
 
-An input port defines how the outside world invokes an application use case.
-Input adapters depend on this contract, and application services satisfy it.
+An inbound port defines how the outside world invokes an application use case.
+Inbound adapters depend on this contract, and application services satisfy it.
 
 Examples:
 
@@ -43,10 +45,10 @@ Examples:
 - `RegisterUserPort`
 - `GenerateReportPort`
 
-### Output port
+### Outbound port
 
-An output port defines a dependency the application needs from external
-infrastructure. It is declared by the application and implemented by an output
+An outbound port defines a dependency the application needs from external
+infrastructure. It is declared by the application and implemented by an outbound
 adapter.
 
 Examples:
@@ -62,8 +64,11 @@ Examples:
 Create the interface under:
 
 ```
-src/<app_name>/application/ports/
+src/<app_name>/features/<feature_name>/application/ports/
 ```
+
+Use a shared application port location only when the port is intentionally shared
+across slices and that public boundary is documented.
 
 Use a focused file name that matches the responsibility, for example:
 
@@ -87,7 +92,7 @@ Example:
 ```python
 from typing import Protocol
 
-from <app_name>.application.dtos.create_invoice import (
+from <app_name>.features.<feature_name>.application.dtos.create_invoice import (
     CreateInvoiceCommand,
     CreateInvoiceResult,
 )
@@ -98,13 +103,13 @@ class CreateInvoicePort(Protocol):
         ...
 ```
 
-For output ports, follow the same pattern using domain objects or application
+For outbound ports, follow the same pattern using domain objects or application
 DTOs in the signature.
 
 Store related command, query, and result DTOs under:
 
 ```
-src/<app_name>/application/dtos/
+src/<app_name>/features/<feature_name>/application/dtos/
 ```
 
 ### 3. Keep the port clean
@@ -112,13 +117,13 @@ src/<app_name>/application/dtos/
 - Keep ports in the application layer.
 - Do not import from `adapters/` or infrastructure libraries.
 - Do not embed framework request or response types in port method signatures.
-- Prefer domain objects and application DTOs from `application/dtos/` in method signatures.
+- Prefer domain objects and application DTOs from the owning slice's `application/dtos/` in method signatures.
 - Keep each port narrowly focused on one use case or one dependency role.
 - Name methods by business intent, not transport or storage mechanics.
 
-For input ports, a single `execute(...)` method is often enough.
+For inbound ports, a single `execute(...)` method is often enough.
 
-For output ports, define only the operations the application needs. Do not
+For outbound ports, define only the operations the application needs. Do not
 mirror a full ORM, SDK, or driver API.
 
 ### 4. Wire dependencies in the right direction
@@ -127,16 +132,16 @@ The arrows below show call flow, not import dependency direction. For dependency
 direction rules, see `003-architecture-guardrails.md`.
 
 ```text
-input adapters -> input ports -> application service
-application service -> output ports -> output adapters
+inbound adapters -> inbound ports -> application service
+application service -> outbound ports -> outbound adapters
 ```
 
 In practice:
 
-- input adapters depend on input port contracts
-- application services satisfy input port contracts
-- application services depend on output port contracts
-- output adapters implement output port contracts
+- inbound adapters depend on inbound port contracts
+- application services satisfy inbound port contracts
+- application services depend on outbound port contracts
+- outbound adapters implement outbound port contracts
 
 Never let a port import an adapter or mention a specific framework.
 
@@ -146,8 +151,8 @@ Ports are interfaces, so they usually need little or no direct testing.
 
 Test surrounding behavior instead:
 
-- unit test that the application service honors the input port contract
-- unit test that application services call output ports as expected
+- unit test that the application service honors the inbound port contract
+- unit test that application services call outbound ports as expected
 - test adapter implementations separately in adapter-focused tests
 
 If the project uses runtime-checkable protocols or shared contract fixtures, add
@@ -157,9 +162,9 @@ small targeted tests only when they provide clear value.
 
 When adding a new port, check whether the same change needs:
 
-- a new application service satisfying the input port
-- a new output adapter implementing the output port contract
-- new command, query, or result DTOs under `application/dtos/`
+- a new application service satisfying the inbound port
+- a new outbound adapter implementing the outbound port contract
+- new command, query, or result DTOs under the owning slice's `application/dtos/`
 - dependency injection or composition-root wiring updates
 
 If a required adapter does not exist yet, use `python-add-adapter` for that

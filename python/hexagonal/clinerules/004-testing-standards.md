@@ -18,7 +18,7 @@ mechanics, test-double patterns, or example test structures.
 - **Must** keep tests deterministic and isolated; avoid hidden reliance on wall clock time, randomness, ambient environment variables, or test order.
 - **Should** control time, randomness, filesystem, and network behavior explicitly through fixtures, fakes, or test helpers.
 - **Should** prefer small builders/factories over large shared fixtures when setup starts hiding the behavior under test.
-- **Should** place tests in directories that mirror the source responsibility, such as `tests/unit/domain/`, `tests/unit/application/`, and `tests/unit/adapters/input/`.
+- **Should** place tests in directories that mirror slice ownership and source responsibility, such as `tests/unit/features/<feature_name>/domain/`, `tests/unit/features/<feature_name>/application/`, and `tests/unit/features/<feature_name>/adapters/inbound/`.
 - **Must not** rely on live external services in the default local or CI suites.
 
 ## Pytest conventions
@@ -34,7 +34,7 @@ mechanics, test-double patterns, or example test structures.
 
 ## Mocks, stubs, and fakes
 
-- **Must** isolate output ports in application tests with mocks, fakes, or stubs so orchestration stays deterministic.
+- **Must** isolate outbound ports in application tests with mocks, fakes, or stubs so orchestration stays deterministic.
 - **Must** avoid mocking domain entities or value objects.
 - **Should** prefer hand-written fakes or thin test doubles over broad `MagicMock`
   usage and deep mock chains that mirror implementation details.

@@ -1,4 +1,4 @@
-from example_app.application.dtos import AppSettings
+from example_app.features.runtime_configuration.application.dtos import AppSettings
 
 REQUIRED_SECRET_VALUE = 'local-secret-value'
 

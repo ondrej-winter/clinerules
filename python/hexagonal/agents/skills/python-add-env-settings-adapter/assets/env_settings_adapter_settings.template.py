@@ -5,8 +5,11 @@ from pathlib import Path
 from pydantic import Field, ValidationError, field_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
-from example_app.application.dtos.app_settings import DEFAULT_OUTPUT_PATH, DEFAULT_SERVICE_URL
-from example_app.application.exceptions import ConfigurationError
+from example_app.features.runtime_configuration.application.dtos.app_settings import (
+    DEFAULT_OUTPUT_PATH,
+    DEFAULT_SERVICE_URL,
+)
+from example_app.features.runtime_configuration.application.exceptions import ConfigurationError
 
 BLANK_TEXT_ERROR = 'must not be blank'
 ENV_PREFIX = 'EXAMPLE_APP'

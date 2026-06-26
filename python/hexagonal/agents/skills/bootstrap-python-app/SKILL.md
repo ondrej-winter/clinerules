@@ -1,12 +1,12 @@
 ---
 name: bootstrap-python-app
-description: Initialize a new Python project with a hexagonal architecture layout, core tooling, and quality checks.
+description: Initialize a new Python project with a hexagonal vertical-slice architecture layout, core tooling, and quality checks.
 ---
 
-# Bootstrap a Python Hexagonal Application
+# Bootstrap a Python Hexagonal Vertical-Slice Application
 
 Use this skill to initialize a new Python project with a hexagonal
-(ports-and-adapters) architecture.
+(ports-and-adapters) architecture organized by vertical feature slices.
 
 ## Prerequisites
 
@@ -26,53 +26,55 @@ cd <app_name>
 
 Run the remaining steps from the project root.
 
-### 2. Create the hexagonal `src/` layout
+### 2. Create the hexagonal vertical-slice `src/` layout
 
 ```
 src/
 └── <app_name>/
     ├── __init__.py
-    ├── domain/          # Pure domain: entities, value objects, domain events
-    │   └── __init__.py
-    ├── application/     # Use cases, application services, port interfaces
+    ├── features/        # Business capabilities as vertical slices
     │   ├── __init__.py
-    │   ├── use_cases/
-    │   │   └── __init__.py
-    │   ├── ports/
-    │   │   └── __init__.py
-    │   └── dtos/
-    │       └── __init__.py
-    └── adapters/        # Input & output adapter implementations
-        ├── __init__.py
-        ├── input/
-        │   └── __init__.py
-        └── output/
-            └── __init__.py
+    │   └── <feature_name>/
+    │       ├── __init__.py
+    │       ├── domain/          # Slice-owned entities, value objects, events
+    │       │   └── __init__.py
+    │       ├── application/     # Slice-owned use cases, ports, DTOs
+    │       │   ├── __init__.py
+    │       │   ├── use_cases/
+    │       │   │   └── __init__.py
+    │       │   ├── ports/
+    │       │   │   └── __init__.py
+    │       │   └── dtos/
+    │       │       └── __init__.py
+    │       └── adapters/        # Slice-owned inbound and outbound adapters
+    │           ├── __init__.py
+    │           ├── inbound/
+    │           │   └── __init__.py
+    │           └── outbound/
+    │               └── __init__.py
+    ├── shared_kernel/   # Optional pure domain concepts shared by slices
+    │   └── __init__.py
+    └── bootstrap/       # Optional composition-root helpers
+        └── __init__.py
 tests/
 ├── __init__.py
 ├── unit/
 │   ├── __init__.py
-│   ├── domain/
-│   │   └── __init__.py
-│   ├── application/
-│   │   └── __init__.py
-│   └── adapters/
+│   └── features/
 │       ├── __init__.py
-│       ├── input/
-│       │   └── __init__.py
-│       └── output/
+│       └── <feature_name>/
 │           └── __init__.py
 └── integration/
     ├── __init__.py
-    └── adapters/
+    └── features/
         ├── __init__.py
-        ├── input/
-        │   └── __init__.py
-        └── output/
+        └── <feature_name>/
             └── __init__.py
 ```
 
-Create the listed directories. Add `__init__.py` files when the project uses
+Create the listed directories that are useful for the initial capability. Use a
+real business slice name instead of `<feature_name>`, or omit the example slice
+until the first feature is known. Add `__init__.py` files when the project uses
 regular packages or intentionally exposes package-level APIs; namespace packages
 are acceptable only when chosen deliberately.
 
@@ -121,16 +123,19 @@ Write a `README.md` that includes:
 - What the application does.
 - How to install dependencies (`uv sync --group dev`).
 - How to run quality checks (`uv run ruff format .`, `uv run ruff check .`, `uv run mypy .`, `uv run pytest`).
-- A high-level architecture overview (domain / application / adapters).
+- A high-level architecture overview (features / domain / application / adapters).
 
-## Hexagonal architecture conventions
+## Hexagonal vertical-slice architecture conventions
 
-| Layer             | Directory                         | Rule                                                                                                        |
-| ----------------- | --------------------------------- | ----------------------------------------------------------------------------------------------------------- |
-| Domain            | `src/<app_name>/domain/`          | No imports from `application` or `adapters`. Pure Python only.                                              |
-| Application       | `src/<app_name>/application/`     | Depends only on `domain`. Keeps use cases in `use_cases/`, ports in `ports/`, and boundary DTOs in `dtos/`. |
-| Adapters (input)  | `src/<app_name>/adapters/input/`  | Calls input ports and maps external data to application boundary types.                                     |
-| Adapters (output) | `src/<app_name>/adapters/output/` | Implements output ports and keeps infrastructure types inside adapters.                                     |
+| Area                | Directory                                                   | Rule                                                                                                                |
+| ------------------- | ----------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------- |
+| Feature slice       | `src/<app_name>/features/<feature_name>/`                   | Owns one business capability end to end.                                                                            |
+| Domain              | `src/<app_name>/features/<feature_name>/domain/`            | No imports from `application` or `adapters`. Pure Python only.                                                      |
+| Application         | `src/<app_name>/features/<feature_name>/application/`       | Depends only on slice domain, shared kernel, and ports. Keeps use cases, ports, and boundary DTOs inside the slice. |
+| Adapters (inbound)  | `src/<app_name>/features/<feature_name>/adapters/inbound/`  | Calls inbound ports and maps external data to application boundary types.                                           |
+| Adapters (outbound) | `src/<app_name>/features/<feature_name>/adapters/outbound/` | Implements outbound ports and keeps infrastructure types inside adapters.                                           |
+| Shared kernel       | `src/<app_name>/shared_kernel/`                             | Optional pure domain concepts shared by multiple slices.                                                            |
+| Bootstrap           | `src/<app_name>/bootstrap/`                                 | Optional composition-root helpers and dependency wiring.                                                            |
 
 If appropriate for the project, enforce these rules with an import linter such
 as `import-linter`, or document them in a root-level `ARCHITECTURE.md`.

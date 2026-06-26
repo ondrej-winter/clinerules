@@ -1,6 +1,6 @@
 ---
 name: python-add-env-settings-adapter
-description: Add an environment-backed runtime settings adapter for a Python hexagonal app or library, using application-owned settings DTOs, pydantic-settings adapter validation, and focused tests.
+description: Add an environment-backed runtime settings adapter to a Python hexagonal vertical-slice app or library, using a configuration slice, application-owned settings DTOs, pydantic-settings adapter validation, and focused tests.
 ---
 
 # Add an Environment Settings Adapter
@@ -10,10 +10,10 @@ configuration loaded from environment variables or a `.env` file.
 
 This skill follows a concrete env settings adapter pattern:
 
-- the application layer owns the runtime settings DTO and configuration
-  exception,
-- the input adapter owns `pydantic-settings`, environment aliases, parsing, and
-  validation,
+- the owning configuration slice's application layer owns the runtime settings
+  DTO and configuration exception,
+- the owning configuration slice's inbound adapter owns `pydantic-settings`,
+  environment aliases, parsing, and validation,
 - the adapter entry point stays thin and maps validated adapter settings to the
   application DTO,
 - tests isolate the process environment and `.env` lookup.
@@ -23,7 +23,8 @@ defaults, validation rules, and package paths to the target project.
 
 ## Prerequisites
 
-- The project follows a Python hexagonal layout with `src/<app_name>/`.
+- The project follows a Python hexagonal vertical-slice layout with
+  `src/<app_name>/features/` or a documented equivalent.
 - Runtime configuration requirements are known well enough to identify required
   values, defaults, and validation rules.
 - The project either already uses `pydantic-settings` or the user has approved
@@ -33,21 +34,25 @@ defaults, validation rules, and package paths to the target project.
 
 ```text
 src/<app_name>/
-├── application/
-│   ├── dtos/
-│   │   ├── __init__.py
-│   │   └── app_settings.py
-│   └── exceptions.py
-└── adapters/
-    └── input/
-        └── env_settings_adapter/
-            ├── __init__.py
-            ├── adapter.py
-            └── settings.py
+└── features/
+    └── runtime_configuration/
+        ├── application/
+        │   ├── dtos/
+        │   │   ├── __init__.py
+        │   │   └── app_settings.py
+        │   └── exceptions.py
+        └── adapters/
+            └── inbound/
+                └── env_settings_adapter/
+                    ├── __init__.py
+                    ├── adapter.py
+                    └── settings.py
 
 tests/unit/
-├── application/dtos/test_app_settings.py
-└── adapters/input/env_settings_adapter/test_env_settings.py
+└── features/
+    └── runtime_configuration/
+        ├── application/dtos/test_app_settings.py
+        └── adapters/inbound/env_settings_adapter/test_env_settings.py
 
 docs/
 └── configuration.md
@@ -56,15 +61,17 @@ README.md
 .env.example
 ```
 
-Adjust paths to match the repository's existing test layout. Keep the same
-responsibilities and dependency direction.
+Use `runtime_configuration` as the default slice name unless the project already
+has a documented configuration slice. Adjust paths to match the repository's
+existing test layout. Keep the same responsibilities and dependency direction.
 
 ## Steps
 
 ### 1. Define application-owned settings
 
-Create or update `src/<app_name>/application/dtos/app_settings.py` from
-`assets/app_settings.template.py`.
+Create or update
+`src/<app_name>/features/runtime_configuration/application/dtos/app_settings.py`
+from `assets/app_settings.template.py`.
 
 The DTO should:
 
@@ -74,21 +81,25 @@ The DTO should:
 - keep application defaults in one canonical place,
 - stay independent of `pydantic`, environment variables, and framework types.
 
-If the project exposes DTOs from `application/dtos/__init__.py`, export
-`AppSettings` there following the local pattern.
+If the project exposes DTOs from the configuration slice's
+`application/dtos/__init__.py`, export `AppSettings` there following the local
+pattern.
 
 ### 2. Add or reuse a configuration exception
 
 If the project does not already have an application-level configuration error,
-add one to `src/<app_name>/application/exceptions.py` using
+add one to
+`src/<app_name>/features/runtime_configuration/application/exceptions.py` using
 `assets/exceptions.template.py` as a guide.
 
 The adapter should translate `pydantic` validation failures into this exception
 so callers do not depend on adapter library exception types.
 
-### 3. Create the input adapter package
+### 3. Create the inbound adapter package
 
-Create `src/<app_name>/adapters/input/env_settings_adapter/` with:
+Create
+`src/<app_name>/features/runtime_configuration/adapters/inbound/env_settings_adapter/`
+with:
 
 - `__init__.py` from `assets/env_settings_adapter_init.template.py`,
 - `adapter.py` from `assets/env_settings_adapter_adapter.template.py`,

@@ -4,14 +4,19 @@ from typing import TYPE_CHECKING
 
 import pytest
 
-from example_app.adapters.input.env_settings_adapter import EnvSettingsAdapter
-from example_app.adapters.input.env_settings_adapter.settings import (
+from example_app.features.runtime_configuration.adapters.inbound.env_settings_adapter import (
+    EnvSettingsAdapter,
+)
+from example_app.features.runtime_configuration.adapters.inbound.env_settings_adapter.settings import (
     OUTPUT_PATH_ALIAS,
     REQUIRED_SECRET_ALIAS,
     SERVICE_URL_ALIAS,
 )
-from example_app.application.dtos.app_settings import DEFAULT_OUTPUT_PATH, DEFAULT_SERVICE_URL
-from example_app.application.exceptions import ConfigurationError
+from example_app.features.runtime_configuration.application.dtos.app_settings import (
+    DEFAULT_OUTPUT_PATH,
+    DEFAULT_SERVICE_URL,
+)
+from example_app.features.runtime_configuration.application.exceptions import ConfigurationError
 
 if TYPE_CHECKING:
     from pathlib import Path

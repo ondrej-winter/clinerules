@@ -1,6 +1,6 @@
 # Module structure and file organization
 
-Use these rules to keep files focused, navigable, and easy to maintain.
+Use these rules to keep files focused, navigable, and easy to maintain in a hexagonal codebase organized by vertical slices.
 Use the `split-python-module` skill when a file or package needs a safe,
 step-by-step split or reorganization.
 
@@ -15,10 +15,20 @@ step-by-step split or reorganization.
 
 - **Should** prefer cohesion and clear ownership over arbitrary file-count targets.
 - **Should** use packages when a concept has multiple responsibilities or is likely to expand.
-- **Should** group related classes and functions by responsibility, not by type.
+- **Must** group feature behavior by business capability or use case before introducing broad global layer packages.
+- **Should** group related classes and functions by responsibility inside the owning slice, not by type.
 - **Should** keep one primary responsibility per file or module when splitting code.
 - **Must** keep import side effects minimal; importing a module should not perform I/O, network calls, or heavyweight initialization.
 - Adapter-specific structure should satisfy the architectural consistency expectations in `003-architecture-guardrails.md`.
+
+## Feature slice package mechanics
+
+- **Must** put new business capability code under `features/<feature_name>/` or the host project's documented equivalent.
+- **Must** keep hexagonal responsibilities visible inside each slice with local `domain/`, `application/`, and `adapters/` packages when the slice needs those responsibilities.
+- **Should** omit empty layer packages in very small slices until they are needed, but do not move behavior into the wrong layer just to avoid a directory.
+- **Must** keep slice-private modules private by convention unless they are intentionally published through an inbound port, application API, domain event, or shared-kernel type.
+- **Should** keep cross-slice shared domain concepts in `shared_kernel/` only when at least two slices genuinely need the same concept.
+- **Must not** place mixed business behavior in top-level `common/`, `utils/`, or `services/` packages.
 
 ## Package and `__init__.py` conventions
 
@@ -32,6 +42,7 @@ step-by-step split or reorganization.
 ## Naming conventions for split modules
 
 - Module directory: `snake_case/` (e.g., `cli_adapter/`)
+- Feature slice directory: `snake_case/` named by business capability (e.g., `features/report_generation/`)
 - Main file: `adapter.py`, `service.py`, `writer.py`, etc. (semantic, not repetitive)
 - Supporting files should prefer purpose-revealing names such as `validators.py`, `formatters.py`, `serialization.py`, `exceptions.py`, or similarly narrow modules.
 - Avoid catch-all modules such as broad `utils.py`, `helpers.py`, or `common.py` unless the scope is intentionally tiny and local to the package.
@@ -39,16 +50,17 @@ step-by-step split or reorganization.
 
 ## Adapter package mechanics
 
-- **Must** keep sibling adapter categories internally consistent.
+- **Must** keep sibling adapter categories internally consistent within the owning slice.
 - **Should** use subdirectories when multiple adapters exist in the same parent directory or near-term expansion is likely.
 - A single file is acceptable for a genuinely simple adapter with no near-term sibling adapters.
 - **Must** name the main adapter implementation semantically, such as `adapter.py`, `parser.py`, `writer.py`, or `client.py`.
 - **Must not** mix standalone files and subpackages within the same adapter category without a documented reason.
+- Shared adapter infrastructure may live outside a slice only when it contains no business behavior and is wired through slice-owned ports.
 
 ## Splitting strategies
 
 - When a split is warranted, separate modules by responsibility, domain concept,
-  or layer concern rather than by arbitrary file-count targets.
+  slice ownership, or layer concern rather than by arbitrary file-count targets.
 - Use the `split-python-module` skill for concrete split sequencing, import
   preservation, and compatibility follow-up.
 

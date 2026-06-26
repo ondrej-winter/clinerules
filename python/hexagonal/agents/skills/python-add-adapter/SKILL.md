@@ -1,18 +1,21 @@
 ---
 name: python-add-adapter
-description: Add an input or output adapter to a Python hexagonal project while keeping business logic in the application layer.
+description: Add an inbound or outbound adapter to the owning vertical slice in a Python hexagonal project while keeping business logic in the application layer.
 ---
 
 # Add an Adapter
 
-Add an input or output adapter to a Python hexagonal project while keeping business logic in the application layer.
+Add an inbound or outbound adapter to the owning vertical slice in a Python
+hexagonal project while keeping business logic in the application layer.
 
 This skill owns adapter implementation. If the required application boundary
 does not exist yet, define the port first with `python-add-port`.
 
 ## Prerequisites
 
-- The relevant port interface exists in `src/<app_name>/application/ports/`.
+- The relevant port interface exists in
+  `src/<app_name>/features/<feature_name>/application/ports/` or a documented
+  shared application port location.
 - The adapter technology has been chosen and any required library is installed (for example with `uv add <library>`).
 
 If the port does not exist yet, use `python-add-port` before implementing the
@@ -20,18 +23,18 @@ adapter.
 
 ## Steps
 
-Choose the input or output adapter path below based on the direction of the
+Choose the inbound or outbound adapter path below based on the direction of the
 boundary being implemented.
 
-## Input adapter
+## Inbound adapter
 
-An input adapter receives external input, maps it into application boundary
-types, and calls the application through an input port.
+An inbound adapter receives external input, maps it into application boundary
+types, and calls the application through an inbound port.
 
 ### 1. Create the module
 
 ```
-src/<app_name>/adapters/input/<adapter_name>/
+src/<app_name>/features/<feature_name>/adapters/inbound/<adapter_name>/
     __init__.py
     adapter.py
 ```
@@ -47,13 +50,13 @@ __all__ = ["router"]
 ### 2. Implement
 
 - Accept external input and map it to an application command or query DTO.
-- Call the application through its input port contract.
+- Call the application through its inbound port contract.
 - Map the result or exception back to the external format.
 - Map domain or application exceptions to adapter-level error responses when
   they are part of the caller-visible boundary.
 - Import domain types directly only when the port contract or exception mapping
   requires them; otherwise prefer application DTOs.
-- Do not call domain services, repositories, or output adapters directly from
+- Do not call domain services, repositories, or outbound adapters directly from
   the adapter.
 - Keep all business logic in the application service.
 - Update routing, framework registration, or other entry-point wiring so the
@@ -61,22 +64,24 @@ __all__ = ["router"]
 
 ### 3. Test
 
-Place transport-level tests under `tests/integration/adapters/input/<adapter_name>/`.
+Place transport-level tests under
+`tests/integration/features/<feature_name>/adapters/inbound/<adapter_name>/`.
 Test through the framework test client or transport boundary, injecting a fake
-or stubbed input port implementation to keep tests focused on adapter behavior.
+or stubbed inbound port implementation to keep tests focused on adapter behavior.
 
-Add unit tests under `tests/unit/adapters/input/<adapter_name>/` only when the
-adapter contains meaningful mapping or serialization helpers that warrant
-direct, framework-free verification.
+Add unit tests under
+`tests/unit/features/<feature_name>/adapters/inbound/<adapter_name>/` only when the
+adapter contains meaningful mapping or serialization helpers that warrant direct,
+framework-free verification.
 
-## Output adapter
+## Outbound adapter
 
-An output adapter implements a port interface and talks to external infrastructure.
+An outbound adapter implements a port interface and talks to external infrastructure.
 
 ### 1. Create the module
 
 ```
-src/<app_name>/adapters/output/<adapter_name>/
+src/<app_name>/features/<feature_name>/adapters/outbound/<adapter_name>/
     __init__.py
     adapter.py
 ```
@@ -102,7 +107,9 @@ __all__ = ["<AdapterName>"]
 
 ### 3. Test
 
-Write unit tests under `tests/unit/adapters/output/<adapter_name>/` using fakes,
+Write unit tests under
+`tests/unit/features/<feature_name>/adapters/outbound/<adapter_name>/` using fakes,
 stubs, or mocks around the infrastructure boundary. Follow with integration
-tests under `tests/integration/adapters/output/<adapter_name>/` when adapter
-behavior depends on actual driver, network, or persistence integration.
+tests under
+`tests/integration/features/<feature_name>/adapters/outbound/<adapter_name>/` when
+adapter behavior depends on actual driver, network, or persistence integration.

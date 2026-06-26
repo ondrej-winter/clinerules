@@ -1,5 +1,8 @@
-from example_app.adapters.input.env_settings_adapter.settings import EnvSettings, load_settings_from_env
-from example_app.application.dtos import AppSettings
+from example_app.features.runtime_configuration.adapters.inbound.env_settings_adapter.settings import (
+    EnvSettings,
+    load_settings_from_env,
+)
+from example_app.features.runtime_configuration.application.dtos import AppSettings
 
 
 def _to_app_settings(settings: EnvSettings) -> AppSettings:
