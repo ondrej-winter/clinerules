@@ -25,6 +25,7 @@ DECORATIVE_SEPARATOR_PATTERN = re.compile(r'^([=*_])\1{3,}$|^-{4,}$')
 REUSABLE_ASSET_PATHS = (
     REPO_ROOT / 'shared',
     REPO_ROOT / 'python' / 'hexagonal',
+    REPO_ROOT / 'swift' / 'macos',
 )
 REPO_SPECIFIC_REFERENCE_PATTERNS = (
     re.compile(r'/Users/'),
@@ -35,6 +36,7 @@ REPO_SPECIFIC_REFERENCE_PATTERNS = (
     re.compile(r'tools/'),
     re.compile(r'shared/'),
     re.compile(r'python/hexagonal/'),
+    re.compile(r'swift/macos/'),
 )
 SKIP_MARKDOWN_DIRS = {
     '.git',

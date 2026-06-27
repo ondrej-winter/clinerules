@@ -164,3 +164,26 @@ Drop-in SKILL.md files that guide Cline through common development tasks:
 - Documentation standards
 - Logging conventions
 - Command execution safety
+
+### `swift/macos/`
+
+Reusable Cline rules for Swift macOS projects using hexagonal architecture with
+vertical slices. The ruleset is designed to be copied into a target project's
+`.clinerules/` directory.
+
+#### Ruleset topics covered
+
+- Core Swift coding standards
+- Hexagonal architecture guardrails
+- Testing standards for SwiftPM and Xcode projects
+- Docs and ADR guidance
+- Module and file structure conventions
+- Performance and observability guidance for macOS apps
+- Configuration, secrets, permissions, and entitlement management
+- Repo navigation workflow
+- PR and commit hygiene
+- SwiftPM, Xcode, tooling, and CI expectations
+- Source documentation standards
+- Logging conventions for Apple unified logging
+- Apple platform boundary rules for SwiftUI, AppKit, sandboxing, keychain, file access, notifications, and OS services
+- Command execution safety
