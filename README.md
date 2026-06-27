@@ -199,3 +199,12 @@ Synced shared skills live under `swift/macos/agents/skills/`.
 - Logging conventions for Apple unified logging
 - Apple platform boundary rules for SwiftUI, AppKit, sandboxing, keychain, file access, notifications, and OS services
 - Command execution safety
+
+## Target repository sync example
+
+Use `scripts/sync-clinerules.sh` as a copyable starting point for target
+repositories that vendor a ruleset from this repository. Copy the script into a
+target repository and adjust the `sync_folder` calls for the assets the target
+repository should consume.
+
+The script overwrites each configured destination directory.
