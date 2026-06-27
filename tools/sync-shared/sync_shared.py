@@ -52,6 +52,10 @@ SYNC_MAP: tuple[SyncEntry, ...] = (
         ),
     ),
     SyncEntry(
+        source='shared/agents/skills',
+        targets=('swift/macos/agents/skills',),
+    ),
+    SyncEntry(
         source='shared/agents/skills/write-adr',
         targets=('python/hexagonal/agents/skills/write-adr',),
     ),

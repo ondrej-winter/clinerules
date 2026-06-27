@@ -10,6 +10,7 @@ REPO_ROOT = Path(__file__).resolve().parent.parent
 SKILL_PATHS = (
     REPO_ROOT / 'shared' / 'agents' / 'skills',
     REPO_ROOT / 'python' / 'hexagonal' / 'agents' / 'skills',
+    REPO_ROOT / 'swift' / 'macos' / 'agents' / 'skills',
     REPO_ROOT / '.agent' / 'skills',
 )
 README_PATH = REPO_ROOT / 'README.md'

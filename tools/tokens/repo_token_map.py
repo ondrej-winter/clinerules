@@ -16,7 +16,7 @@ from pathlib import Path
 import tiktoken
 
 
-DEFAULT_ROOTS = ('shared', 'python')
+DEFAULT_ROOTS = ('shared', 'python', 'swift')
 DEFAULT_OUTPUT = 'tools/tokens/repo-token-map.md'
 DEFAULT_ENCODING = 'cl100k_base'
 SKIP_DIRS = {
@@ -88,7 +88,7 @@ def parse_args() -> argparse.Namespace:
         'roots',
         nargs='*',
         default=list(DEFAULT_ROOTS),
-        help='Root directories to scan recursively. Defaults to: shared python',
+        help='Root directories to scan recursively. Defaults to: shared python swift',
     )
     parser.add_argument(
         '--output',

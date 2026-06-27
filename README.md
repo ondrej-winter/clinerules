@@ -24,7 +24,7 @@ Typical maintenance flow:
 
 ## Repository tools
 
-- `tools/tokens/repo_token_map.py`: Scans `shared/` and `python/` recursively and writes one tree-style Markdown token map at `tools/tokens/repo-token-map.md`.
+- `tools/tokens/repo_token_map.py`: Scans `shared/`, `python/`, and `swift/` recursively and writes one tree-style Markdown token map at `tools/tokens/repo-token-map.md`.
 - `tools/sync-shared/sync_shared.py`: Copies shared repository assets into their configured target locations and can verify whether derived targets have drifted from their shared sources. It supports file and directory sources, multiple targets per source, cleanup of all configured targets, and a non-mutating drift check.
 - `tools/validate_repo.py`: Validates repository-specific conventions for skill frontmatter, skill names, plain Markdown formatting, reusable-asset portability, and repository inventory path references.
 
@@ -176,9 +176,12 @@ Drop-in SKILL.md files that guide Cline through common development tasks:
 
 ### `swift/macos/`
 
-Reusable Cline rules for Swift macOS projects using hexagonal architecture with
-vertical slices. The ruleset is designed to be copied into a target project's
-`.clinerules/` directory.
+Reusable Cline rules and synced shared Agent Skills for Swift macOS projects
+using hexagonal architecture with vertical slices. The ruleset is designed to be
+copied into a target project's `.clinerules/` directory, and the skills can be
+copied into the target project's Agent Skills directory.
+
+Synced shared skills live under `swift/macos/agents/skills/`.
 
 #### Ruleset topics covered
 
