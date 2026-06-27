@@ -74,6 +74,10 @@ SYNC_MAP: tuple[SyncEntry, ...] = (
         ),
     ),
     SyncEntry(
+        source='shared/agents/skills/spec-driven-development',
+        targets=('python/hexagonal/agents/skills/spec-driven-development',),
+    ),
+    SyncEntry(
         source='shared/agents/skills/planning-and-task-breakdown',
         targets=('python/hexagonal/agents/skills/planning-and-task-breakdown',),
     ),
@@ -82,8 +86,26 @@ SYNC_MAP: tuple[SyncEntry, ...] = (
         targets=('python/hexagonal/agents/skills/incremental-implementation',),
     ),
     SyncEntry(
+        source='shared/agents/skills/frontend-ui-engineering',
+        targets=('python/hexagonal/agents/skills/frontend-ui-engineering',),
+    ),
+    SyncEntry(
+        source='shared/agents/skills/context-engineering',
+        targets=('python/hexagonal/agents/skills/context-engineering',),
+    ),
+    SyncEntry(
+        source='shared/agents/skills/doubt-driven-development',
+        targets=('python/hexagonal/agents/skills/doubt-driven-development',),
+    ),
+    SyncEntry(
         source='shared/agents/skills/test-driven-development',
         targets=('python/hexagonal/agents/skills/test-driven-development',),
+    ),
+    SyncEntry(
+        source='shared/agents/skills/browser-runtime-verification',
+        targets=(
+            'python/hexagonal/agents/skills/browser-runtime-verification',
+        ),
     ),
     SyncEntry(
         source='shared/agents/skills/debugging-and-error-recovery',
@@ -106,8 +128,36 @@ SYNC_MAP: tuple[SyncEntry, ...] = (
         targets=('python/hexagonal/agents/skills/security-and-hardening',),
     ),
     SyncEntry(
+        source='shared/agents/skills/performance-optimization',
+        targets=('python/hexagonal/agents/skills/performance-optimization',),
+    ),
+    SyncEntry(
+        source='shared/agents/skills/git-workflow-and-versioning',
+        targets=('python/hexagonal/agents/skills/git-workflow-and-versioning',),
+    ),
+    SyncEntry(
+        source='shared/agents/skills/ci-cd-and-automation',
+        targets=('python/hexagonal/agents/skills/ci-cd-and-automation',),
+    ),
+    SyncEntry(
+        source='shared/agents/skills/deprecation-and-migration',
+        targets=('python/hexagonal/agents/skills/deprecation-and-migration',),
+    ),
+    SyncEntry(
+        source='shared/agents/skills/documentation-and-adrs',
+        targets=('python/hexagonal/agents/skills/documentation-and-adrs',),
+    ),
+    SyncEntry(
         source='shared/agents/skills/source-driven-development',
         targets=('python/hexagonal/agents/skills/source-driven-development',),
+    ),
+    SyncEntry(
+        source='shared/agents/skills/shipping-and-launch',
+        targets=('python/hexagonal/agents/skills/shipping-and-launch',),
+    ),
+    SyncEntry(
+        source='shared/agents/skills/idea-refine',
+        targets=('python/hexagonal/agents/skills/idea-refine',),
     ),
     SyncEntry(
         source='shared/agents/skills/run-local-quality-gate',
