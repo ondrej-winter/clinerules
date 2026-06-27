@@ -1,6 +1,7 @@
 # Validation workflow for repository maintenance
 
-This is a repo-specific maintenance rule for choosing validation commands after changing rules, reusable assets, synced sources, hooks, skills, or tooling.
+This is a repo-specific maintenance rule for choosing validation commands after
+changing rules, reusable assets, synced sources, hooks, skills, or tooling.
 
 ## Core rule
 

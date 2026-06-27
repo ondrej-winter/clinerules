@@ -1,8 +1,13 @@
 # Repository-level Cline rules
 
-This directory contains repo-specific maintenance rules for this repository. These files guide how reusable skills, rules, workflows, documentation, and validation tooling are maintained here.
+This directory contains repo-specific maintenance rules. These files guide how
+reusable skills, rules, workflows, documentation, and validation tooling are
+maintained in this repository.
 
-Root `.clinerules/` files may reference repository-local paths because they are not portable reusable assets. Reusable content under `shared/` and `python/hexagonal/` should remain drop-in portable unless a file or section is explicitly marked as repo-specific.
+Root `.clinerules/` files may reference repository-local paths because they are
+not portable reusable assets. Reusable content under `shared/` and
+`python/hexagonal/` should remain drop-in portable unless a file or section is
+explicitly marked as repo-specific.
 
 ## Rule ordering
 

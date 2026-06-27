@@ -1,12 +1,12 @@
 ---
 name: improve
-description: Focused improvement workflow. Audit, simplify, improve, and proofread a target without unnecessary expansion or speculative edits.
+description: Focused improvement workflow. Audit, simplify, edit, and proofread a target without unnecessary expansion or speculative changes.
 ---
 
 # Improve
 
-Review the provided target with a focused improvement pass. Audit, simplify, and
-proofread it without unnecessary expansion.
+Review the provided target with a focused improvement pass. Audit, simplify,
+edit, and proofread it without unnecessary expansion.
 
 Edit directly when the target is available, editable, and the user asked for
 changes. Otherwise, provide specific recommendations.
@@ -17,10 +17,10 @@ Make the target:
 
 - clearer
 - more consistent
-- more correct
+- more accurate
 - better structured
 - easier to maintain
-- grammatically correct and well worded
+- well worded and proofread
 
 ## Approach
 
@@ -49,7 +49,7 @@ Work in a lightweight, practical review mode:
    - grammar, spelling, punctuation, or phrasing problems
    - obvious maintainability problems
 3. Improve the target directly when editing is appropriate.
-4. If direct editing is not appropriate, list the recommended changes instead.
+4. If direct editing is not appropriate, list specific recommended changes.
 5. Keep edits practical and proportional to the material.
 6. Tighten formatting and structure where it helps.
 7. Leave strong content alone.

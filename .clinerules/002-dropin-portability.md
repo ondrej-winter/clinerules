@@ -1,6 +1,8 @@
 # Drop-in portability for reusable assets
 
-This is a repo-specific maintenance rule for reusable assets maintained in this repository. Root `.clinerules/` files may reference repository-local paths because they describe how this repository is maintained.
+This is a repo-specific maintenance rule for reusable assets maintained here.
+Root `.clinerules/` files may reference repository-local paths because they
+describe how this repository is maintained.
 
 By default, reusable assets in this repository must remain drop-in portable unless a file or section is explicitly marked as repo-specific.
 
@@ -20,7 +22,8 @@ By default, reusable assets in this repository must remain drop-in portable unle
 
 - Must avoid references to repository-local maintenance paths such as `tools/`, `shared/`, `.clinerules/`, or `python/hexagonal/` inside portable content unless the section is explicitly repo-specific.
 - Must use generic placeholders such as `<package_name>`, `<app_name>`, `<repo_name>`, and `<python_version>` instead of local project identifiers.
-- Must keep instructions self-contained so they still make sense when copied into another repository.
+- Must keep instructions self-contained so they make sense when copied into
+  another repository.
 - Should describe conventions and expected outcomes in generic terms rather than anchoring them to this repository.
 - Should keep reusable assets free of assumptions about adjacent files unless those files are part of the reusable asset itself.
 

@@ -1,8 +1,11 @@
 # Required format for skill files
 
-This is a repo-specific maintenance rule for `SKILL.md` files maintained in this repository's skill roots. The skill files themselves should remain reusable unless explicitly marked otherwise.
+This is a repo-specific maintenance rule for `SKILL.md` files maintained in
+this repository's skill roots. Individual skill files should remain reusable
+unless explicitly marked otherwise.
 
-This rule is the authoritative local copy of the Agent Skills specification for this repository.
+This rule is the authoritative local copy of the Agent Skills specification for
+this repository.
 
 ## Core rule
 
