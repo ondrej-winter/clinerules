@@ -2,7 +2,94 @@
 name: using-agent-skills
 description: Discovers and invokes agent skills. Use when starting a session or when you need to discover which skill applies to the current task. This is the meta-skill that governs how all other skills are discovered and invoked.
 metadata:
-  version: "1.0.5"
+  version: "1.0.6"
+  dependencies:
+    tools: []
+    skills:
+      - name: add-observability
+        purpose: Route observability, logging, metrics, tracing, profiling, and dashboard work.
+        required: false
+      - name: api-and-interface-design
+        purpose: Route API and interface contract design work.
+        required: false
+      - name: author-agent-skill
+        purpose: Route Agent Skill creation, update, and review work.
+        required: false
+      - name: browser-runtime-verification
+        purpose: Route browser-based verification of UI behavior.
+        required: false
+      - name: ci-cd-and-automation
+        purpose: Route CI/CD pipeline and automation work.
+        required: false
+      - name: code-review-and-quality
+        purpose: Route code review and quality gate work.
+        required: false
+      - name: code-simplification
+        purpose: Route behavior-preserving complexity reduction work.
+        required: false
+      - name: context-engineering
+        purpose: Route work that needs better task context before implementation.
+        required: false
+      - name: debugging-and-error-recovery
+        purpose: Route broken behavior, error recovery, and root-cause analysis work.
+        required: false
+      - name: deprecation-and-migration
+        purpose: Route deprecation, migration, and old-system removal work.
+        required: false
+      - name: documentation-and-adrs
+        purpose: Route documentation and architecture decision work.
+        required: false
+      - name: doubt-driven-development
+        purpose: Route high-stakes or unfamiliar implementation decisions for adversarial review.
+        required: false
+      - name: frontend-ui-engineering
+        purpose: Route browser-facing UI implementation and refinement work.
+        required: false
+      - name: git-workflow-and-versioning
+        purpose: Route branch, commit, and version-control workflow work.
+        required: false
+      - name: idea-refine
+        purpose: Route rough concepts that need structured refinement.
+        required: false
+      - name: incremental-implementation
+        purpose: Route implementation work that should be built and verified in slices.
+        required: false
+      - name: interview-me
+        purpose: Route unclear user intent that needs discovery before planning.
+        required: false
+      - name: performance-optimization
+        purpose: Route measurement-driven performance investigation and optimization work.
+        required: false
+      - name: planning-and-task-breakdown
+        purpose: Route work that needs decomposition into verifiable tasks.
+        required: false
+      - name: review-implementation-plan
+        purpose: Route implementation plan review work.
+        required: false
+      - name: run-local-quality-gate
+        purpose: Route local formatting, linting, static analysis, test, and build validation work.
+        required: false
+      - name: security-and-hardening
+        purpose: Route security review and hardening work.
+        required: false
+      - name: shipping-and-launch
+        purpose: Route deployment, launch, monitoring, and rollback-readiness work.
+        required: false
+      - name: source-driven-development
+        purpose: Route implementation that needs verification against authoritative sources.
+        required: false
+      - name: spec-driven-development
+        purpose: Route requirements and acceptance criteria definition before code.
+        required: false
+      - name: test-driven-development
+        purpose: Route work that should be driven by tests or test additions.
+        required: false
+      - name: update-project-docs
+        purpose: Route project documentation updates.
+        required: false
+      - name: write-adr
+        purpose: Route architecture decision record creation and updates.
+        required: false
 ---
 
 # Using Agent Skills

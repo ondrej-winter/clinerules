@@ -2,7 +2,16 @@
 name: review-implementation-plan
 description: Review an implementation plan for completeness, ambiguity, sequencing, risks, dependencies, validation, readiness labeling, and handoff before coding.
 metadata:
-  version: "1.0.4"
+  version: "1.0.6"
+  dependencies:
+    tools: []
+    skills:
+      - name: spec-driven-development
+        purpose: Clarify requirements, success criteria, assumptions, and scope boundaries before reviewing a plan.
+        required: false
+      - name: planning-and-task-breakdown
+        purpose: Decompose clear requirements into ordered, verifiable implementation tasks before reviewing a plan.
+        required: false
 ---
 
 # Review Implementation Plan
@@ -12,8 +21,8 @@ or is being proposed for a non-trivial change. The goal is to catch ambiguity,
 missing work, unsafe sequencing, and validation gaps before code or content
 changes begin.
 
-When those skills are available, use `spec-driven-development` first when the
-plan lacks clear requirements, success criteria, assumptions, or scope
+When those optional skills are available, use `spec-driven-development` first
+when the plan lacks clear requirements, success criteria, assumptions, or scope
 boundaries. Use `planning-and-task-breakdown` first when requirements are clear
 but the plan is too coarse and needs to be decomposed into ordered, verifiable
 implementation tasks.
@@ -38,6 +47,7 @@ Restate the requested outcome in concrete terms. Identify:
 
 - what will change
 - what will not change
+- where the plan, specification, issue, or decision record lives
 - who or what is affected
 - assumptions that need confirmation
 - constraints from architecture, compatibility, policy, or tooling
@@ -68,6 +78,7 @@ Look for:
 - migration, compatibility, or rollback implications
 - generated files, documentation, or examples that must stay aligned
 - security, privacy, or operational implications
+- source-of-truth or ownership decisions that should be settled before editing
 
 ### 4. Check sequencing and reviewability
 
@@ -93,7 +104,7 @@ Verify that the plan names the checks that prove the work is complete. Consider:
 - linting, formatting, type checking, static analysis, build, or docs checks
 - migration or compatibility validation
 - failure cases and regression coverage
-- what to do if an expected check is unavailable
+- project-defined commands and what to do if an expected check is unavailable
 
 A plan should distinguish focused iteration checks from final handoff checks.
 
@@ -117,6 +128,7 @@ For each significant risk, note a mitigation, fallback, or question.
 Return a concise review that includes:
 
 - readiness assessment
+- intended implementation owner or handoff audience when relevant
 - required clarifying questions, if any
 - missing or weak plan sections
 - recommended implementation order changes

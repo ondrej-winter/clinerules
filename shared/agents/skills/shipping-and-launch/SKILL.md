@@ -2,7 +2,13 @@
 name: shipping-and-launch
 description: Prepares production launches. Use when preparing to deploy to production. Use when you need a pre-launch checklist, when setting up monitoring, when planning a staged rollout, or when you need a rollback strategy.
 metadata:
-  version: "1.2.0"
+  version: "1.2.1"
+  dependencies:
+    tools: []
+    skills:
+      - add-observability
+      - performance-optimization
+      - debugging-and-error-recovery
 ---
 
 # Shipping and Launch

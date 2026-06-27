@@ -2,7 +2,16 @@
 name: planning-and-task-breakdown
 description: Breaks work into ordered tasks. Use when you have a spec or clear requirements and need to break work into implementable tasks. Use when a task feels too large to start, when you need to estimate scope, or when parallel work is possible.
 metadata:
-  version: "1.1.4"
+  version: "1.1.6"
+  dependencies:
+    tools: []
+    skills:
+      - name: spec-driven-development
+        purpose: Clarify requirements, success criteria, and scope boundaries before task breakdown.
+        required: false
+      - name: review-implementation-plan
+        purpose: Review sequencing, dependencies, risks, and validation strategy after drafting a plan.
+        required: false
 ---
 
 # Planning and Task Breakdown
@@ -49,7 +58,7 @@ Before writing any code or content changes, inspect enough context to understand
 
 Do not implement while drafting the plan. The output is a plan document, not code or content changes.
 
-### Step 2: Identify the Dependency Graph
+### Step 2: Identify the dependency graph
 
 Map what depends on what:
 
@@ -64,7 +73,7 @@ Foundational data or state model
 
 Implementation order follows the dependency graph bottom-up: build foundations first.
 
-### Step 3: Slice Vertically
+### Step 3: Slice vertically
 
 Instead of building every foundation layer, then every interface, then every user-facing surface, build one complete feature path at a time:
 
@@ -88,7 +97,7 @@ Task 4: User can view item history (query path + interface + list or report surf
 
 Each vertical slice delivers working, testable functionality.
 
-### Step 4: Write Tasks
+### Step 4: Write tasks
 
 Each task follows this structure:
 
@@ -118,7 +127,7 @@ Each task follows this structure:
 **Estimated scope:** [Small: 1-2 files | Medium: 3-5 files | Large: 5+ files]
 ```
 
-### Step 5: Order and Checkpoint
+### Step 5: Order and checkpoint
 
 Arrange tasks so that:
 

@@ -2,7 +2,10 @@
 name: api-and-interface-design
 description: Design stable APIs, module contracts, schemas, component boundaries, command interfaces, or other public integration surfaces that are predictable, documented, and hard to misuse.
 metadata:
-  version: "1.1.2"
+  version: "1.1.3"
+  dependencies:
+    tools: []
+    skills: []
 ---
 
 # API and Interface Design

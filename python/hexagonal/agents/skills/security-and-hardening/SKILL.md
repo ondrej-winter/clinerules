@@ -2,7 +2,10 @@
 name: security-and-hardening
 description: Hardens software against vulnerabilities. Use when handling untrusted input, authentication, authorization, sensitive data, dependencies, or external integrations.
 metadata:
-  version: "1.1.2"
+  version: "1.1.4"
+  dependencies:
+    tools: []
+    skills: []
 ---
 
 # Security and Hardening
@@ -14,6 +17,18 @@ required check on every protected operation.
 Security is not a final phase. It is a constraint on design, implementation,
 testing, deployment, and maintenance wherever a system touches users, data,
 credentials, networks, files, subprocesses, or third-party services.
+
+## Steps
+
+1. Identify trust boundaries, protected assets, actors, and sensitive data touched
+   by the change.
+2. Apply the relevant boundary, identity, data, dependency, and configuration
+   controls before or while implementing the change.
+3. Add or update tests for rejected input, denied access, expired credentials,
+   abuse controls, and sensitive-data redaction where relevant.
+4. Run the applicable dependency, secret, static-analysis, lint, test, and build
+   checks before handoff.
+5. Document any accepted risk with an owner, mitigation, and review date.
 
 ## When to use
 

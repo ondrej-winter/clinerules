@@ -2,7 +2,11 @@
 name: git-workflow-and-versioning
 description: Use version control intentionally with small changes, clear branches, atomic commits, safe history operations, useful summaries, and validation before merge or handoff.
 metadata:
-  version: "1.1.2"
+  version: "1.1.3"
+  dependencies:
+    tools:
+      - git
+    skills: []
 ---
 
 # Git Workflow and Versioning

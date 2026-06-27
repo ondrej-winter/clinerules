@@ -2,7 +2,12 @@
 name: documentation-and-adrs
 description: Decide whether durable documentation is needed, choose the right documentation artifact, and route ADR or project documentation work to the appropriate specialized skill.
 metadata:
-  version: "1.2.0"
+  version: "1.2.1"
+  dependencies:
+    tools: []
+    skills:
+      - write-adr
+      - update-project-docs
 ---
 
 # Documentation and ADRs

@@ -2,7 +2,10 @@
 name: run-local-quality-gate
 description: Discover and run the project's local formatting, linting, static analysis, test, and build checks before handoff.
 metadata:
-  version: "1.1.3"
+  version: "1.1.4"
+  dependencies:
+    tools: []
+    skills: []
 ---
 
 # Run Local Quality Gate

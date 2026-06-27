@@ -2,7 +2,10 @@
 name: incremental-implementation
 description: Guide agents to deliver changes incrementally. Use when implementing a feature or change that touches more than one file, when a task feels too large to land in one step, or before writing a large amount of code at once.
 metadata:
-  version: "1.1.3"
+  version: "1.1.4"
+  dependencies:
+    tools: []
+    skills: []
 ---
 
 # Incremental Implementation
@@ -167,7 +170,7 @@ create record with notify defaulting to false:
 
 ### Rule 5: Rollback-Friendly
 
-Each increment should be independently revertable:
+Each increment should be independently revertible:
 
 - Additive changes (new files, new functions) are easy to revert
 - Modifications to existing code should be minimal and focused

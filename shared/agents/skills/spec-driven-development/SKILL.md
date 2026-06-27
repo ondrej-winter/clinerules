@@ -2,7 +2,14 @@
 name: spec-driven-development
 description: Creates a specification before implementation. Use when starting a project, feature, integration, workflow, migration, or significant change with unclear or incomplete requirements.
 metadata:
-  version: "1.2.0"
+  version: "1.2.1"
+  dependencies:
+    tools: []
+    skills:
+      - planning-and-task-breakdown
+      - review-implementation-plan
+      - interview-me
+      - idea-refine
 ---
 
 # Spec-Driven Development

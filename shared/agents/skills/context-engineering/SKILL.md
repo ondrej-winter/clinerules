@@ -2,7 +2,10 @@
 name: context-engineering
 description: Curate the right project, task, source, validation, and conversation context for agent work so outputs follow real conventions, avoid hallucinated assumptions, and remain focused.
 metadata:
-  version: "1.1.1"
+  version: "1.1.2"
+  dependencies:
+    tools: []
+    skills: []
 ---
 
 # Context Engineering

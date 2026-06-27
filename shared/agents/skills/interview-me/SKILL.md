@@ -2,7 +2,25 @@
 name: interview-me
 description: Extracts what the user actually wants instead of what they think they should want. Achieves this through one-question-at-a-time interview until ~95% confidence about the underlying intent. Use when an ask is underspecified ("build me X" without "for whom" or "why now"), when the user explicitly invokes ("interview me", "grill me", "are we sure?", "stress-test my thinking"), or when you catch yourself silently filling in ambiguous requirements before any plan, spec, or code exists.
 metadata:
-  version: "1.0.2"
+  version: "1.0.3"
+  dependencies:
+    tools: []
+    skills:
+      - name: idea-refine
+        purpose: Refine the confirmed intent when the user knows the desired outcome but not the scope or concept boundary.
+        required: false
+      - name: spec-driven-development
+        purpose: Convert confirmed concrete intent into requirements.
+        required: false
+      - name: planning-and-task-breakdown
+        purpose: Break down work after confirmed intent has been written as a specification.
+        required: false
+      - name: doubt-driven-development
+        purpose: Review downstream artifacts after a decision or draft exists.
+        required: false
+      - name: source-driven-development
+        purpose: Verify framework or source facts after clarifying what the user wants.
+        required: false
 ---
 
 # Interview Me

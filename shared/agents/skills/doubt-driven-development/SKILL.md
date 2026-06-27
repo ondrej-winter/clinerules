@@ -2,7 +2,10 @@
 name: doubt-driven-development
 description: Cross-examine non-trivial decisions with a fresh, adversarial review loop before they stand, especially when correctness, safety, migration risk, or unfamiliar code makes overconfidence costly.
 metadata:
-  version: "1.1.1"
+  version: "1.1.2"
+  dependencies:
+    tools: []
+    skills: []
 ---
 
 # Doubt-Driven Development
