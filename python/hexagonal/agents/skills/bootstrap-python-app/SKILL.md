@@ -1,6 +1,8 @@
 ---
 name: bootstrap-python-app
 description: Initialize a new Python project with a hexagonal vertical-slice architecture layout, core tooling, and quality checks.
+metadata:
+  version: "1.0.0"
 ---
 
 # Bootstrap a Python Hexagonal Vertical-Slice Application

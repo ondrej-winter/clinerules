@@ -1,16 +1,21 @@
 ---
 name: lint-python-code
-description: Lints Python code using ruff and mypy for type checking.
+description: Run Python linting and type checking with ruff and mypy when a project uses uv-managed development tooling.
+metadata:
+  version: "1.0.0"
 ---
 
-# Skill: Lint Python Code
+# Lint Python Code
 
-Use this skill to lint Python code using `ruff` and perform type checking with `mypy`.
+Use this skill when a Python project is configured to run `ruff` for linting and
+`mypy` for static type checking through `uv`.
 
 ## Prerequisites
 
 - `uv` is installed and configured for the project.
-- `ruff` and `mypy` are installed as development dependencies and configured in `pyproject.toml`.
+- `ruff` and `mypy` are installed as development dependencies.
+- The project includes configuration for `ruff` and `mypy`, such as in
+  `pyproject.toml` or tool-specific configuration files.
 
 ## Steps
 
@@ -29,6 +34,9 @@ uv run mypy .
 ```
 
 This command performs static type checking on the Python codebase.
+
+If the project defines narrower package, source, or test paths, use those paths in
+place of `.` while preserving the same tools and project configuration.
 
 ## When linting or type checking fails
 

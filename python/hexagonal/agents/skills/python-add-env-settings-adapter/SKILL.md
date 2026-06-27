@@ -1,6 +1,8 @@
 ---
 name: python-add-env-settings-adapter
 description: Add an environment-backed runtime settings adapter to a Python hexagonal vertical-slice app or library, using a configuration slice, application-owned settings DTOs, pydantic-settings adapter validation, and focused tests.
+metadata:
+  version: "1.0.0"
 ---
 
 # Add an Environment Settings Adapter

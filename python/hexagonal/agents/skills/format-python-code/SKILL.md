@@ -1,11 +1,13 @@
 ---
 name: format-python-code
-description: Formats Python code using ruff and applies safe auto-fixes.
+description: Format Python code with ruff and apply safe auto-fixes when a Python project needs consistent style before linting, testing, or handoff.
+metadata:
+  version: "1.0.0"
 ---
 
 # Skill: Format Python Code
 
-Use this skill to format Python code and apply safe auto-fixes using `ruff`.
+Use this skill to format Python code and apply safe auto-fixes using `ruff` before linting, testing, or handing off changes.
 
 ## Prerequisites
 
@@ -22,6 +24,10 @@ uv run ruff format .
 ```
 
 These commands will automatically reformat Python code and apply any safe linting auto-fixes.
+
+### 2. Review the result
+
+Review the changed files before continuing. Confirm that formatting and auto-fixes preserved the intended behavior, then continue with the `lint-python-code` step when linting or type checking is required.
 
 ## When formatting fails
 

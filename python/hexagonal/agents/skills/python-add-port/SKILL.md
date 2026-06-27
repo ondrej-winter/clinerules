@@ -1,6 +1,8 @@
 ---
 name: python-add-port
 description: Add a technology-agnostic inbound or outbound application port interface to the owning vertical slice in a Python hexagonal project for a new use case or dependency.
+metadata:
+  version: "1.0.0"
 ---
 
 # Add a Port
@@ -128,8 +130,8 @@ mirror a full ORM, SDK, or driver API.
 
 ### 4. Wire dependencies in the right direction
 
-The arrows below show call flow, not import dependency direction. For dependency
-direction rules, see `003-architecture-guardrails.md`.
+The arrows below show call flow, not import dependency direction. Keep import
+dependencies pointed inward toward the application boundary.
 
 ```text
 inbound adapters -> inbound ports -> application service

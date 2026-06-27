@@ -1,6 +1,8 @@
 ---
 name: run-local-quality-gate
-description: Orchestrates the execution of Python code formatting, linting, type checking, and testing.
+description: Run the full local Python quality gate with formatting, linting, type checking, and tests before handoff or a pull request.
+metadata:
+  version: "1.0.1"
 ---
 
 # Skill: Run Local Quality Gate
@@ -11,7 +13,7 @@ Use this skill to run the full local quality gate for a Python project, includin
 
 - `uv` is installed and configured for the project.
 - `ruff`, `mypy`, and `pytest` are installed as development dependencies and configured in `pyproject.toml`.
-- The `format-python-code`, `lint-python-code`, and `run-python-tests` skills are available.
+- The same skill root provides `format-python-code`, `lint-python-code`, and `run-python-tests`.
 
 ## Steps
 

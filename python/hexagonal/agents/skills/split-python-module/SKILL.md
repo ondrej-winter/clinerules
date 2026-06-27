@@ -1,6 +1,8 @@
 ---
 name: split-python-module
-description: Split a growing Python module or package while preserving boundaries, imports, and reviewability.
+description: Split a growing Python module or package while preserving behavior, boundaries, imports, public APIs, and reviewability when code has mixed responsibilities or needs clearer ownership.
+metadata:
+  version: "1.0.0"
 ---
 
 # Split a Python Module
@@ -19,7 +21,7 @@ Use this skill when:
 - a package API must be preserved while internals are reorganized
 
 Do not use this skill for broad speculative rewrites. Keep the split justified
-and proportional.
+and proportional. Do not split cohesive code only to satisfy a line-count target.
 
 ## Steps
 
@@ -44,7 +46,9 @@ Prefer one of these patterns:
 - by layer concern, such as types vs logic
 
 Use names that describe responsibility rather than generic `utils` or
-`helpers` buckets.
+`helpers` buckets. Prefer focused names such as `validators.py`,
+`formatters.py`, `serialization.py`, or `exceptions.py` when those names match
+the actual responsibility.
 
 ### 3. Preserve boundaries and imports
 

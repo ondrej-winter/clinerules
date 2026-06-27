@@ -1,6 +1,8 @@
 ---
 name: add-hexagonal-feature
 description: Implement a new vertical feature slice or use case in a Python hexagonal project, including domain modeling, ports, application service, adapters when needed, and tests.
+metadata:
+  version: "1.0.0"
 ---
 
 # Add a Hexagonal Vertical Feature Slice
@@ -133,8 +135,8 @@ implementation is fine and often preferable.
 
 ## Dependency direction reminder
 
-The canonical dependency rules are in `003-architecture-guardrails.md`. This
-diagram is a quick reference only.
+Follow the target project's architecture guardrails when they are available. This
+diagram is a quick dependency-direction reference only.
 
 ```
 adapters/inbound   →  application  →  domain

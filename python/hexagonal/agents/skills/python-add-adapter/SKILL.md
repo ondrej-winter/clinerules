@@ -1,6 +1,8 @@
 ---
 name: python-add-adapter
 description: Add an inbound or outbound adapter to the owning vertical slice in a Python hexagonal project while keeping business logic in the application layer.
+metadata:
+  version: "1.0.0"
 ---
 
 # Add an Adapter
@@ -11,12 +13,24 @@ hexagonal project while keeping business logic in the application layer.
 This skill owns adapter implementation. If the required application boundary
 does not exist yet, define the port first with `python-add-port`.
 
+## When to use this skill
+
+Use this skill when you need to:
+
+- add an inbound adapter that receives external input and calls an existing
+  application port
+- add an outbound adapter that implements an existing application port and talks
+  to infrastructure
+- wire a concrete adapter into dependency injection, routing, bootstrap, or the
+  composition root without moving business logic out of the application layer
+
 ## Prerequisites
 
 - The relevant port interface exists in
   `src/<app_name>/features/<feature_name>/application/ports/` or a documented
   shared application port location.
-- The adapter technology has been chosen and any required library is installed (for example with `uv add <library>`).
+- The adapter technology has been chosen and any required library is installed,
+  for example with `uv add <library>`.
 
 If the port does not exist yet, use `python-add-port` before implementing the
 adapter.
@@ -33,13 +47,14 @@ types, and calls the application through an inbound port.
 
 ### 1. Create the module
 
-```
+```text
 src/<app_name>/features/<feature_name>/adapters/inbound/<adapter_name>/
     __init__.py
     adapter.py
 ```
 
-Keep `__init__.py` lightweight. Re-export the public symbol only when you want a stable package-level API, and declare `__all__` when it adds clarity:
+Keep `__init__.py` lightweight. Re-export the public symbol only when you want a
+stable package-level API, and declare `__all__` when it adds clarity:
 
 ```python
 from .adapter import router
@@ -80,13 +95,14 @@ An outbound adapter implements a port interface and talks to external infrastruc
 
 ### 1. Create the module
 
-```
+```text
 src/<app_name>/features/<feature_name>/adapters/outbound/<adapter_name>/
     __init__.py
     adapter.py
 ```
 
-Keep `__init__.py` lightweight. Re-export the public symbol only when you want a stable package-level API, and declare `__all__` when it adds clarity:
+Keep `__init__.py` lightweight. Re-export the public symbol only when you want a
+stable package-level API, and declare `__all__` when it adds clarity:
 
 ```python
 from .adapter import <AdapterName>
@@ -101,7 +117,8 @@ __all__ = ["<AdapterName>"]
   port. Do not expose infrastructure types beyond the adapter boundary.
 - Translate infrastructure exceptions into the domain or application exceptions
   expected by the port contract.
-- Keep framework clients, ORM models, serializers, and transport-specific configuration inside the adapter package.
+- Keep framework clients, ORM models, serializers, and transport-specific
+  configuration inside the adapter package.
 - Update dependency injection, bootstrap, or composition-root wiring when the
   new adapter becomes part of the runtime path.
 
@@ -113,3 +130,27 @@ stubs, or mocks around the infrastructure boundary. Follow with integration
 tests under
 `tests/integration/features/<feature_name>/adapters/outbound/<adapter_name>/` when
 adapter behavior depends on actual driver, network, or persistence integration.
+
+## Validation
+
+Run the narrowest tests that cover the adapter first, then the repository's
+normal quality gate when available.
+
+Useful checks often include:
+
+- adapter unit or integration tests for the changed adapter path
+- `uv run ruff check .`
+- `uv run mypy .`
+- `uv run pytest`
+
+When available, use `run-local-quality-gate` for the full validation pass before
+handoff.
+
+## Related skills
+
+- Use `python-add-port` when the required application boundary does not exist
+  yet.
+- Use `python-add-env-settings-adapter` for the dedicated environment settings
+  adapter workflow.
+- Use `add-hexagonal-feature` when the change is a complete feature slice that
+  spans domain, application, adapters, and tests.
