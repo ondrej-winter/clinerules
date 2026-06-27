@@ -5,11 +5,11 @@ description: Focused improvement workflow. Audit, simplify, improve, and proofre
 
 # Improve
 
-Review the provided target with a focused improvement pass.
+Review the provided target with a focused improvement pass. Audit, simplify, and
+proofread it without unnecessary expansion.
 
-Audit, simplify, and proofread it without unnecessary expansion. Edit directly
-when the target is editable and the user asked for changes; otherwise provide
-specific recommendations.
+Edit directly when the target is available, editable, and the user asked for
+changes. Otherwise, provide specific recommendations.
 
 ## Goal
 
@@ -18,8 +18,8 @@ Make the target:
 - clearer
 - more consistent
 - more correct
-- easier to maintain
 - better structured
+- easier to maintain
 - grammatically correct and well worded
 
 ## Approach
@@ -29,7 +29,7 @@ Work in a lightweight, practical review mode:
 - prefer small, high-value improvements
 - preserve the original intent
 - avoid unnecessary rewrites
-- avoid changing meaning unless needed
+- avoid changing meaning unless correctness or clarity requires it
 - avoid introducing abstractions unless they remove obvious complexity
 - simplify rather than expand
 - remove noise, redundancy, and awkward phrasing
@@ -38,8 +38,8 @@ Work in a lightweight, practical review mode:
 
 ## Process
 
-1. Inspect the target carefully.
-2. Identify issues such as:
+1. Inspect the target carefully before changing it.
+2. Look for issues such as:
    - unclear wording
    - duplication
    - inconsistency
@@ -48,15 +48,15 @@ Work in a lightweight, practical review mode:
    - naming issues
    - grammar, spelling, punctuation, or phrasing problems
    - obvious maintainability problems
-3. Improve the target directly when editing is appropriate; otherwise list the
-   recommended changes.
-4. Keep edits practical and proportional to the material.
-5. Tighten formatting and structure where it helps.
-6. Leave strong content alone.
+3. Improve the target directly when editing is appropriate.
+4. If direct editing is not appropriate, list the recommended changes instead.
+5. Keep edits practical and proportional to the material.
+6. Tighten formatting and structure where it helps.
+7. Leave strong content alone.
 
 ## Output
 
-Provide both of the following after editing or reviewing:
+After editing or reviewing, provide:
 
 1. A short audit summary.
 2. A concise list of the key improvements made or recommended.
@@ -68,7 +68,7 @@ Provide both of the following after editing or reviewing:
 - Do not invent requirements, facts, or context.
 - Do not change tone unless it improves clarity and fit.
 - Keep the result lean, practical, and internally consistent.
-- Prefer obvious, defensible improvements over subjective rewriting.
+- Prefer defensible improvements over subjective rewriting.
 
 The final result should be clearer, leaner where possible, and fully proofread
 without losing necessary context.
