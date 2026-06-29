@@ -78,10 +78,8 @@ workflows:
 | Write ADR                  | `shared/agents/skills/write-adr/SKILL.md`                  | Create a numbered Architecture Decision Record with context, decision, and consequences            |
 
 Shared skills are synced into the Python hexagonal skill catalog unless the
-Python catalog keeps a specialized replacement. The shared
-`author-agent-skill`, `interview-me`, `review-implementation-plan`,
-`run-local-quality-gate`, `update-project-docs`, and `using-agent-skills` skills
-are also synced into the repository-level `.agent/skills/` catalog when they are
+Python catalog keeps a specialized replacement. A focused subset of shared
+skills is also synced into the repository-level `.agent/skills/` catalog when
 useful for maintaining this repository. The Python hexagonal catalog keeps
 specialized Python quality gate guidance for `run-local-quality-gate`.
 
@@ -89,14 +87,26 @@ specialized Python quality gate guidance for `run-local-quality-gate`.
 
 Repository-level Agent Skill files available at the workspace root:
 
-| Skill                      | Path                                                | Purpose                                                                                     |
-| -------------------------- | --------------------------------------------------- | ------------------------------------------------------------------------------------------- |
-| Using Agent Skills         | `.agent/skills/using-agent-skills/SKILL.md`         | Discover and invoke the right skill for the current task                                    |
-| Interview Me               | `.agent/skills/interview-me/SKILL.md`               | Clarify underspecified user intent before planning or implementation                        |
-| Author Agent Skill         | `.agent/skills/author-agent-skill/SKILL.md`         | Create, update, or review Agent Skill directories and SKILL.md files                        |
-| Review implementation plan | `.agent/skills/review-implementation-plan/SKILL.md` | Review plans for scope, ambiguity, sequencing, dependencies, risks, validation, and handoff |
-| Run local quality gate     | `.agent/skills/run-local-quality-gate/SKILL.md`     | Discover and run project-defined quality checks before handoff                              |
-| Update project docs        | `.agent/skills/update-project-docs/SKILL.md`        | Update project-facing documentation after visible changes                                   |
+| Skill                       | Path                                                  | Purpose                                                                                     |
+| --------------------------- | ----------------------------------------------------- | ------------------------------------------------------------------------------------------- |
+| Using Agent Skills          | `.agent/skills/using-agent-skills/SKILL.md`           | Discover and invoke the right skill for the current task                                    |
+| Interview Me                | `.agent/skills/interview-me/SKILL.md`                 | Clarify underspecified user intent before planning or implementation                        |
+| Author Agent Skill          | `.agent/skills/author-agent-skill/SKILL.md`           | Create, update, or review Agent Skill directories and SKILL.md files                        |
+| Spec-driven development     | `.agent/skills/spec-driven-development/SKILL.md`      | Clarify requirements and acceptance criteria before significant changes                     |
+| Planning and task breakdown | `.agent/skills/planning-and-task-breakdown/SKILL.md`  | Break clear requirements into ordered implementable tasks                                   |
+| Incremental implementation  | `.agent/skills/incremental-implementation/SKILL.md`   | Land multi-file repository changes in small validated slices                                |
+| Context engineering         | `.agent/skills/context-engineering/SKILL.md`          | Curate relevant project, source, validation, and conversation context                       |
+| Review implementation plan  | `.agent/skills/review-implementation-plan/SKILL.md`   | Review plans for scope, ambiguity, sequencing, dependencies, risks, validation, and handoff |
+| Debugging and recovery      | `.agent/skills/debugging-and-error-recovery/SKILL.md` | Reproduce, localize, fix, guard, and verify tooling or validation failures                  |
+| Code review and quality     | `.agent/skills/code-review-and-quality/SKILL.md`      | Review code, tests, docs, configuration, and validation evidence before handoff             |
+| Code simplification         | `.agent/skills/code-simplification/SKILL.md`          | Reduce unnecessary complexity without changing behavior                                     |
+| Git workflow and versioning | `.agent/skills/git-workflow-and-versioning/SKILL.md`  | Keep branches, commits, diffs, and handoff summaries intentional                            |
+| CI/CD and automation        | `.agent/skills/ci-cd-and-automation/SKILL.md`         | Design or improve validation, sync, and automation workflows                                |
+| Documentation and ADRs      | `.agent/skills/documentation-and-adrs/SKILL.md`       | Decide whether to update docs, write an ADR, or avoid unnecessary durable docs              |
+| Source-driven development   | `.agent/skills/source-driven-development/SKILL.md`    | Ground tool, platform, API, and standards changes in authoritative sources                  |
+| Write ADR                   | `.agent/skills/write-adr/SKILL.md`                    | Record durable repository decisions with context, decision, and consequences                |
+| Run local quality gate      | `.agent/skills/run-local-quality-gate/SKILL.md`       | Discover and run project-defined quality checks before handoff                              |
+| Update project docs         | `.agent/skills/update-project-docs/SKILL.md`          | Update project-facing documentation after visible changes                                   |
 
 ### `shared/clinerules/`
 
