@@ -1,14 +1,19 @@
 default_language_version:
   python: python3.14
 
+default_stages: [pre-commit]
+fail_fast: false
+
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v6.0.0
     hooks:
       - id: check-added-large-files
+        args: ["--maxkb=500"]
       - id: check-ast
       - id: check-builtin-literals
       - id: check-case-conflict
+      - id: check-docstring-first
       - id: check-executables-have-shebangs
       - id: check-illegal-windows-names
       - id: check-json
@@ -20,6 +25,7 @@ repos:
       - id: check-xml
       - id: check-yaml
       - id: destroyed-symlinks
+      - id: debug-statements
       - id: double-quote-string-fixer
       - id: end-of-file-fixer
       - id: mixed-line-ending
@@ -28,7 +34,7 @@ repos:
   - repo: local
     hooks:
       - id: prettier-markdown
-        name: prettier-markdown
+        name: Format Markdown with Prettier
         entry: prettier --write
         language: node
         types_or: [markdown]
@@ -36,13 +42,18 @@ repos:
           - prettier@3.6.2
   - repo: local
     hooks:
+      - id: compile-tools
+        name: Compile repository Python tools
+        entry: python3 -m compileall tools
+        language: system
+        pass_filenames: false
       - id: check-shared-sync
-        name: check-shared-sync
+        name: Check shared sync drift
         entry: python3 tools/sync-shared/sync_shared.py check
         language: system
         pass_filenames: false
       - id: validate-repo
-        name: validate-repo
+        name: Validate repository conventions
         entry: python3 tools/validate_repo.py
         language: system
         pass_filenames: false
