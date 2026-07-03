@@ -167,6 +167,13 @@ SYNC_MAP: tuple[SyncEntry, ...] = (
         ),
     ),
     SyncEntry(
+        source='shared/agents/skills/conventional-commits',
+        targets=(
+            'python/hexagonal/agents/skills/conventional-commits',
+            '.agent/skills/conventional-commits',
+        ),
+    ),
+    SyncEntry(
         source='shared/agents/skills/ci-cd-and-automation',
         targets=(
             'python/hexagonal/agents/skills/ci-cd-and-automation',

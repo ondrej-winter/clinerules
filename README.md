@@ -71,6 +71,7 @@ workflows:
 | -------------------------- | ---------------------------------------------------------- | -------------------------------------------------------------------------------------------------- |
 | Add observability          | `shared/agents/skills/add-observability/SKILL.md`          | Add logs, metrics, traces, profiling, and operational notes without unsupported performance claims |
 | Author Agent Skill         | `shared/agents/skills/author-agent-skill/SKILL.md`         | Create, update, or review Agent Skill directories and SKILL.md files                               |
+| Conventional Commits       | `shared/agents/skills/conventional-commits/SKILL.md`       | Write, review, and validate Conventional Commits v1.0.0 messages                                   |
 | Interview Me               | `shared/agents/skills/interview-me/SKILL.md`               | Interview users one question at a time to confirm intent before planning or implementation         |
 | Review implementation plan | `shared/agents/skills/review-implementation-plan/SKILL.md` | Review plans for scope, ambiguity, sequencing, dependencies, risks, validation, and handoff        |
 | Run local quality gate     | `shared/agents/skills/run-local-quality-gate/SKILL.md`     | Discover and run project-defined formatting, linting, static analysis, tests, and build checks     |
@@ -101,6 +102,7 @@ Repository-level Agent Skill files available at the workspace root:
 | Code review and quality     | `.agent/skills/code-review-and-quality/SKILL.md`      | Review code, tests, docs, configuration, and validation evidence before handoff             |
 | Code simplification         | `.agent/skills/code-simplification/SKILL.md`          | Reduce unnecessary complexity without changing behavior                                     |
 | Git workflow and versioning | `.agent/skills/git-workflow-and-versioning/SKILL.md`  | Keep branches, commits, diffs, and handoff summaries intentional                            |
+| Conventional Commits        | `.agent/skills/conventional-commits/SKILL.md`         | Write, review, and validate Conventional Commits v1.0.0 messages                            |
 | CI/CD and automation        | `.agent/skills/ci-cd-and-automation/SKILL.md`         | Design or improve validation, sync, and automation workflows                                |
 | Documentation and ADRs      | `.agent/skills/documentation-and-adrs/SKILL.md`       | Decide whether to update docs, write an ADR, or avoid unnecessary durable docs              |
 | Source-driven development   | `.agent/skills/source-driven-development/SKILL.md`    | Ground tool, platform, API, and standards changes in authoritative sources                  |
@@ -164,6 +166,7 @@ Drop-in SKILL.md files that guide Cline through common development tasks:
 | Code review              | `python/hexagonal/agents/skills/code-review-and-quality/SKILL.md`      | Synced shared skill for reviewing correctness, architecture, tests, docs, and validation evidence |
 | Code simplification      | `python/hexagonal/agents/skills/code-simplification/SKILL.md`          | Synced shared skill for reducing unnecessary complexity without changing behavior                 |
 | Git workflow             | `python/hexagonal/agents/skills/git-workflow-and-versioning/SKILL.md`  | Synced shared skill for branch, commit, and version-control workflow work                         |
+| Conventional Commits     | `python/hexagonal/agents/skills/conventional-commits/SKILL.md`         | Synced shared skill for Conventional Commits v1.0.0 message syntax and review                     |
 | CI/CD automation         | `python/hexagonal/agents/skills/ci-cd-and-automation/SKILL.md`         | Synced shared skill for CI/CD pipeline and automation work                                        |
 | Deprecation migration    | `python/hexagonal/agents/skills/deprecation-and-migration/SKILL.md`    | Synced shared skill for deprecation, migration, and old-system removal work                       |
 | Shipping launch          | `python/hexagonal/agents/skills/shipping-and-launch/SKILL.md`          | Synced shared skill for deployment, launch, monitoring, and rollback-readiness work               |
