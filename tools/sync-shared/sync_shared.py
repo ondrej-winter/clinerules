@@ -167,6 +167,13 @@ SYNC_MAP: tuple[SyncEntry, ...] = (
         ),
     ),
     SyncEntry(
+        source='shared/agents/skills/hexagonal-vertical-slices',
+        targets=(
+            'python/hexagonal/agents/skills/hexagonal-vertical-slices',
+            '.agent/skills/hexagonal-vertical-slices',
+        ),
+    ),
+    SyncEntry(
         source='shared/agents/skills/conventional-commits',
         targets=(
             'python/hexagonal/agents/skills/conventional-commits',

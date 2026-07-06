@@ -72,6 +72,7 @@ workflows:
 | Add observability          | `shared/agents/skills/add-observability/SKILL.md`          | Add logs, metrics, traces, profiling, and operational notes without unsupported performance claims |
 | Author Agent Skill         | `shared/agents/skills/author-agent-skill/SKILL.md`         | Create, update, or review Agent Skill directories and SKILL.md files                               |
 | Conventional Commits       | `shared/agents/skills/conventional-commits/SKILL.md`       | Write, review, and validate Conventional Commits v1.0.0 messages                                   |
+| Hexagonal vertical slices  | `shared/agents/skills/hexagonal-vertical-slices/SKILL.md`  | Design, review, or refactor hexagonal architecture organized by vertical feature slices            |
 | Interview Me               | `shared/agents/skills/interview-me/SKILL.md`               | Interview users one question at a time to confirm intent before planning or implementation         |
 | Review implementation plan | `shared/agents/skills/review-implementation-plan/SKILL.md` | Review plans for scope, ambiguity, sequencing, dependencies, risks, validation, and handoff        |
 | Run local quality gate     | `shared/agents/skills/run-local-quality-gate/SKILL.md`     | Discover and run project-defined formatting, linting, static analysis, tests, and build checks     |
@@ -102,6 +103,7 @@ Repository-level Agent Skill files available at the workspace root:
 | Code review and quality     | `.agent/skills/code-review-and-quality/SKILL.md`      | Review code, tests, docs, configuration, and validation evidence before handoff             |
 | Code simplification         | `.agent/skills/code-simplification/SKILL.md`          | Reduce unnecessary complexity without changing behavior                                     |
 | Git workflow and versioning | `.agent/skills/git-workflow-and-versioning/SKILL.md`  | Keep branches, commits, diffs, and handoff summaries intentional                            |
+| Hexagonal vertical slices   | `.agent/skills/hexagonal-vertical-slices/SKILL.md`    | Design, review, or refactor hexagonal architecture organized by vertical feature slices     |
 | Conventional Commits        | `.agent/skills/conventional-commits/SKILL.md`         | Write, review, and validate Conventional Commits v1.0.0 messages                            |
 | CI/CD and automation        | `.agent/skills/ci-cd-and-automation/SKILL.md`         | Design or improve validation, sync, and automation workflows                                |
 | Documentation and ADRs      | `.agent/skills/documentation-and-adrs/SKILL.md`       | Decide whether to update docs, write an ADR, or avoid unnecessary durable docs              |
@@ -127,49 +129,50 @@ rulesets or repository-level `.clinerules/` directories:
 
 Drop-in SKILL.md files that guide Cline through common development tasks:
 
-| Skill                    | Path                                                                   | Purpose                                                                                           |
-| ------------------------ | ---------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------- |
-| Using Agent Skills       | `python/hexagonal/agents/skills/using-agent-skills/SKILL.md`           | Synced shared skill for discovering and invoking the right skill for the current task             |
-| Local skill catalog      | `python/hexagonal/agents/skills/local-using-agent-skills/SKILL.md`     | Discovers Python hexagonal local skills at session start                                          |
-| Spec-driven dev          | `python/hexagonal/agents/skills/spec-driven-development/SKILL.md`      | Synced shared skill for clarifying requirements and acceptance criteria before code               |
-| Planning tasks           | `python/hexagonal/agents/skills/planning-and-task-breakdown/SKILL.md`  | Synced shared skill for breaking clear requirements into ordered implementable tasks              |
-| Incremental build        | `python/hexagonal/agents/skills/incremental-implementation/SKILL.md`   | Synced shared skill for landing changes in small validated slices                                 |
-| Bootstrap app            | `python/hexagonal/agents/skills/bootstrap-python-app/SKILL.md`         | Initialise a Python app repo with `uv`, `ruff`, `mypy`, `pytest`, and a hexagonal `src/` layout   |
-| Add hexagonal feature    | `python/hexagonal/agents/skills/add-hexagonal-feature/SKILL.md`        | Domain model → application boundaries → application service → unit tests                          |
-| Author Agent Skill       | `python/hexagonal/agents/skills/author-agent-skill/SKILL.md`           | Synced shared skill for creating, updating, or reviewing Agent Skill directories                  |
-| Interview Me             | `python/hexagonal/agents/skills/interview-me/SKILL.md`                 | Synced shared skill for clarifying underspecified user intent before planning or implementation   |
-| Idea refine              | `python/hexagonal/agents/skills/idea-refine/SKILL.md`                  | Synced shared skill for turning rough concepts into clearer options and direction                 |
-| Review plan              | `python/hexagonal/agents/skills/review-implementation-plan/SKILL.md`   | Synced shared skill for reviewing implementation plans before coding                              |
-| API design               | `python/hexagonal/agents/skills/api-and-interface-design/SKILL.md`     | Synced shared skill for designing stable ports, adapters, contracts, and module interfaces        |
-| Frontend UI              | `python/hexagonal/agents/skills/frontend-ui-engineering/SKILL.md`      | Synced shared skill for browser-facing UI implementation and refinement                           |
-| Context engineering      | `python/hexagonal/agents/skills/context-engineering/SKILL.md`          | Synced shared skill for improving task context before implementation                              |
-| Doubt-driven dev         | `python/hexagonal/agents/skills/doubt-driven-development/SKILL.md`     | Synced shared skill for adversarial review of high-stakes or unfamiliar implementation decisions  |
-| Add port                 | `python/hexagonal/agents/skills/python-add-port/SKILL.md`              | Define a focused input or output port contract in the application layer                           |
-| Add adapter              | `python/hexagonal/agents/skills/python-add-adapter/SKILL.md`           | Add an input (HTTP, CLI, event) or output (DB, API client) adapter with layered testing guidance  |
-| Update project docs      | `python/hexagonal/agents/skills/update-project-docs/SKILL.md`          | Synced shared skill for updating project-facing docs after visible changes                        |
-| Documentation and ADRs   | `python/hexagonal/agents/skills/documentation-and-adrs/SKILL.md`       | Synced shared skill for deciding between docs, ADRs, runbooks, or no durable documentation        |
-| Split Python module      | `python/hexagonal/agents/skills/split-python-module/SKILL.md`          | Split a growing module or package while preserving boundaries and intentional imports             |
-| Source-driven dev        | `python/hexagonal/agents/skills/source-driven-development/SKILL.md`    | Synced shared skill for grounding external library, framework, API, and standard usage in docs    |
-| Debugging                | `python/hexagonal/agents/skills/debugging-and-error-recovery/SKILL.md` | Synced shared skill for reproducing, localizing, fixing, and guarding failures                    |
-| Add observability        | `python/hexagonal/agents/skills/add-observability/SKILL.md`            | Synced shared skill for logs, metrics, traces, profiling, and operational notes                   |
-| Security hardening       | `python/hexagonal/agents/skills/security-and-hardening/SKILL.md`       | Synced shared skill for hardening adapters, configuration, secrets, and untrusted input handling  |
-| Performance optimization | `python/hexagonal/agents/skills/performance-optimization/SKILL.md`     | Synced shared skill for measurement-driven performance investigation and optimization             |
-| Write docstrings         | `python/hexagonal/agents/skills/write-python-docstrings/SKILL.md`      | Write concise Google-style docstrings and inline comments where they add value                    |
-| Write ADR                | `python/hexagonal/agents/skills/write-adr/SKILL.md`                    | Scaffold a numbered Architecture Decision Record under `docs/adr/`                                |
-| Test-driven dev          | `python/hexagonal/agents/skills/test-driven-development/SKILL.md`      | Synced shared skill for driving behavior changes with tests                                       |
-| Browser verification     | `python/hexagonal/agents/skills/browser-runtime-verification/SKILL.md` | Synced shared skill for verifying browser-facing behavior in a real browser                       |
-| Format Python code       | `python/hexagonal/agents/skills/format-python-code/SKILL.md`           | Run `ruff` formatting and safe auto-fixes                                                         |
-| Lint Python code         | `python/hexagonal/agents/skills/lint-python-code/SKILL.md`             | Run `ruff` linting and `mypy` type checking                                                       |
-| Write pytest tests       | `python/hexagonal/agents/skills/write-pytest-tests/SKILL.md`           | Write or refactor Python tests in clear, pytest-native style                                      |
-| Run Python tests         | `python/hexagonal/agents/skills/run-python-tests/SKILL.md`             | Run the Python test suite with `pytest`                                                           |
-| Local quality gate       | `python/hexagonal/agents/skills/run-local-quality-gate/SKILL.md`       | Orchestrate formatting, linting, type checking, and tests                                         |
-| Code review              | `python/hexagonal/agents/skills/code-review-and-quality/SKILL.md`      | Synced shared skill for reviewing correctness, architecture, tests, docs, and validation evidence |
-| Code simplification      | `python/hexagonal/agents/skills/code-simplification/SKILL.md`          | Synced shared skill for reducing unnecessary complexity without changing behavior                 |
-| Git workflow             | `python/hexagonal/agents/skills/git-workflow-and-versioning/SKILL.md`  | Synced shared skill for branch, commit, and version-control workflow work                         |
-| Conventional Commits     | `python/hexagonal/agents/skills/conventional-commits/SKILL.md`         | Synced shared skill for Conventional Commits v1.0.0 message syntax and review                     |
-| CI/CD automation         | `python/hexagonal/agents/skills/ci-cd-and-automation/SKILL.md`         | Synced shared skill for CI/CD pipeline and automation work                                        |
-| Deprecation migration    | `python/hexagonal/agents/skills/deprecation-and-migration/SKILL.md`    | Synced shared skill for deprecation, migration, and old-system removal work                       |
-| Shipping launch          | `python/hexagonal/agents/skills/shipping-and-launch/SKILL.md`          | Synced shared skill for deployment, launch, monitoring, and rollback-readiness work               |
+| Skill                     | Path                                                                   | Purpose                                                                                           |
+| ------------------------- | ---------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------- |
+| Using Agent Skills        | `python/hexagonal/agents/skills/using-agent-skills/SKILL.md`           | Synced shared skill for discovering and invoking the right skill for the current task             |
+| Local skill catalog       | `python/hexagonal/agents/skills/local-using-agent-skills/SKILL.md`     | Discovers Python hexagonal local skills at session start                                          |
+| Spec-driven dev           | `python/hexagonal/agents/skills/spec-driven-development/SKILL.md`      | Synced shared skill for clarifying requirements and acceptance criteria before code               |
+| Planning tasks            | `python/hexagonal/agents/skills/planning-and-task-breakdown/SKILL.md`  | Synced shared skill for breaking clear requirements into ordered implementable tasks              |
+| Incremental build         | `python/hexagonal/agents/skills/incremental-implementation/SKILL.md`   | Synced shared skill for landing changes in small validated slices                                 |
+| Bootstrap app             | `python/hexagonal/agents/skills/bootstrap-python-app/SKILL.md`         | Initialise a Python app repo with `uv`, `ruff`, `mypy`, `pytest`, and a hexagonal `src/` layout   |
+| Add hexagonal feature     | `python/hexagonal/agents/skills/add-hexagonal-feature/SKILL.md`        | Domain model → application boundaries → application service → unit tests                          |
+| Author Agent Skill        | `python/hexagonal/agents/skills/author-agent-skill/SKILL.md`           | Synced shared skill for creating, updating, or reviewing Agent Skill directories                  |
+| Interview Me              | `python/hexagonal/agents/skills/interview-me/SKILL.md`                 | Synced shared skill for clarifying underspecified user intent before planning or implementation   |
+| Idea refine               | `python/hexagonal/agents/skills/idea-refine/SKILL.md`                  | Synced shared skill for turning rough concepts into clearer options and direction                 |
+| Review plan               | `python/hexagonal/agents/skills/review-implementation-plan/SKILL.md`   | Synced shared skill for reviewing implementation plans before coding                              |
+| API design                | `python/hexagonal/agents/skills/api-and-interface-design/SKILL.md`     | Synced shared skill for designing stable ports, adapters, contracts, and module interfaces        |
+| Hexagonal vertical slices | `python/hexagonal/agents/skills/hexagonal-vertical-slices/SKILL.md`    | Synced shared skill for architecture decisions and boundary review in vertical-slice systems      |
+| Frontend UI               | `python/hexagonal/agents/skills/frontend-ui-engineering/SKILL.md`      | Synced shared skill for browser-facing UI implementation and refinement                           |
+| Context engineering       | `python/hexagonal/agents/skills/context-engineering/SKILL.md`          | Synced shared skill for improving task context before implementation                              |
+| Doubt-driven dev          | `python/hexagonal/agents/skills/doubt-driven-development/SKILL.md`     | Synced shared skill for adversarial review of high-stakes or unfamiliar implementation decisions  |
+| Add port                  | `python/hexagonal/agents/skills/python-add-port/SKILL.md`              | Define a focused input or output port contract in the application layer                           |
+| Add adapter               | `python/hexagonal/agents/skills/python-add-adapter/SKILL.md`           | Add an input (HTTP, CLI, event) or output (DB, API client) adapter with layered testing guidance  |
+| Update project docs       | `python/hexagonal/agents/skills/update-project-docs/SKILL.md`          | Synced shared skill for updating project-facing docs after visible changes                        |
+| Documentation and ADRs    | `python/hexagonal/agents/skills/documentation-and-adrs/SKILL.md`       | Synced shared skill for deciding between docs, ADRs, runbooks, or no durable documentation        |
+| Split Python module       | `python/hexagonal/agents/skills/split-python-module/SKILL.md`          | Split a growing module or package while preserving boundaries and intentional imports             |
+| Source-driven dev         | `python/hexagonal/agents/skills/source-driven-development/SKILL.md`    | Synced shared skill for grounding external library, framework, API, and standard usage in docs    |
+| Debugging                 | `python/hexagonal/agents/skills/debugging-and-error-recovery/SKILL.md` | Synced shared skill for reproducing, localizing, fixing, and guarding failures                    |
+| Add observability         | `python/hexagonal/agents/skills/add-observability/SKILL.md`            | Synced shared skill for logs, metrics, traces, profiling, and operational notes                   |
+| Security hardening        | `python/hexagonal/agents/skills/security-and-hardening/SKILL.md`       | Synced shared skill for hardening adapters, configuration, secrets, and untrusted input handling  |
+| Performance optimization  | `python/hexagonal/agents/skills/performance-optimization/SKILL.md`     | Synced shared skill for measurement-driven performance investigation and optimization             |
+| Write docstrings          | `python/hexagonal/agents/skills/write-python-docstrings/SKILL.md`      | Write concise Google-style docstrings and inline comments where they add value                    |
+| Write ADR                 | `python/hexagonal/agents/skills/write-adr/SKILL.md`                    | Scaffold a numbered Architecture Decision Record under `docs/adr/`                                |
+| Test-driven dev           | `python/hexagonal/agents/skills/test-driven-development/SKILL.md`      | Synced shared skill for driving behavior changes with tests                                       |
+| Browser verification      | `python/hexagonal/agents/skills/browser-runtime-verification/SKILL.md` | Synced shared skill for verifying browser-facing behavior in a real browser                       |
+| Format Python code        | `python/hexagonal/agents/skills/format-python-code/SKILL.md`           | Run `ruff` formatting and safe auto-fixes                                                         |
+| Lint Python code          | `python/hexagonal/agents/skills/lint-python-code/SKILL.md`             | Run `ruff` linting and `mypy` type checking                                                       |
+| Write pytest tests        | `python/hexagonal/agents/skills/write-pytest-tests/SKILL.md`           | Write or refactor Python tests in clear, pytest-native style                                      |
+| Run Python tests          | `python/hexagonal/agents/skills/run-python-tests/SKILL.md`             | Run the Python test suite with `pytest`                                                           |
+| Local quality gate        | `python/hexagonal/agents/skills/run-local-quality-gate/SKILL.md`       | Orchestrate formatting, linting, type checking, and tests                                         |
+| Code review               | `python/hexagonal/agents/skills/code-review-and-quality/SKILL.md`      | Synced shared skill for reviewing correctness, architecture, tests, docs, and validation evidence |
+| Code simplification       | `python/hexagonal/agents/skills/code-simplification/SKILL.md`          | Synced shared skill for reducing unnecessary complexity without changing behavior                 |
+| Git workflow              | `python/hexagonal/agents/skills/git-workflow-and-versioning/SKILL.md`  | Synced shared skill for branch, commit, and version-control workflow work                         |
+| Conventional Commits      | `python/hexagonal/agents/skills/conventional-commits/SKILL.md`         | Synced shared skill for Conventional Commits v1.0.0 message syntax and review                     |
+| CI/CD automation          | `python/hexagonal/agents/skills/ci-cd-and-automation/SKILL.md`         | Synced shared skill for CI/CD pipeline and automation work                                        |
+| Deprecation migration     | `python/hexagonal/agents/skills/deprecation-and-migration/SKILL.md`    | Synced shared skill for deprecation, migration, and old-system removal work                       |
+| Shipping launch           | `python/hexagonal/agents/skills/shipping-and-launch/SKILL.md`          | Synced shared skill for deployment, launch, monitoring, and rollback-readiness work               |
 
 #### Ruleset topics covered
 
