@@ -151,27 +151,6 @@ communicate with one another.
 
 ## Candidate Product Directions
 
-### Direction A: Prompt-native Cline Skill
-
-Create a portable Skill exposing `/sdlc`. It reads lifecycle artifacts,
-determines the next stage, requests approvals, invokes relevant skills, and guides
-Cline through incremental slices.
-
-Advantages:
-
-- smallest implementation;
-- natural fit for IDE and TUI sessions;
-- easy to distribute;
-- reuses existing skills;
-- tests the lifecycle before building a workflow engine.
-
-Limitations:
-
-- control flow partly relies on model compliance;
-- transitions and retry bounds are conventions rather than runtime enforcement;
-- unattended execution is limited;
-- correct resumption depends on accurately maintained artifacts.
-
 ### Direction B: Standalone Cline SDK Orchestrator
 
 Build a standalone tool that owns lifecycle transitions, stage prompts, Cline
@@ -230,23 +209,25 @@ Limitations:
 
 ## Preliminary Recommendation
 
-Start with Direction A, but design its artifacts and state transitions so they can
-later be controlled by Direction B.
+Choose between Direction B and Direction C based on the required approval model
+and runtime guarantees. Prefer the SDK orchestrator when deterministic approval
+policy and typed lifecycle events are required. Use a thin CLI wrapper only as a
+bounded proof of concept when process orchestration is sufficient.
 
-The first experiment should determine whether a Skill plus repository-visible
-state is reliable enough for real work. Building an SDK application first could
-automate the wrong process.
+In either case, define the repository-visible artifacts and lifecycle contract
+before automating the workflow so the runtime does not encode an unvalidated
+process.
 
 ```text
-Phase 1: Portable /sdlc Skill
-  -> validate the lifecycle on real work
-Phase 2: Thin CLI or SDK state-machine runner
+Phase 1: Lifecycle artifact and state contract
+  -> validate transitions, approvals, and resumption on real work
+Phase 2: CLI proof of concept or SDK state-machine runner
   -> enforce transitions, approvals, and resumption
 Phase 3: Optional CI, scheduling, or Agent Team integration
 ```
 
-This recommendation is provisional. If unattended cross-session execution is an
-immediate requirement, the SDK orchestrator may need to be the first version.
+This recommendation is provisional. Unattended cross-session execution or strict
+approval guarantees would favor the SDK orchestrator as the first version.
 
 ## Default Human-in-the-Loop Policy
 
@@ -386,8 +367,6 @@ should remain the portable source of truth.
 
 ## Key Assumptions to Validate
 
-- [ ] A prompt-native Skill can reliably maintain state across several slices.
-      Test it on a small real feature.
 - [ ] Markdown state is sufficient for cross-session resume. Resume the same work
       from a fresh Cline session.
 - [ ] A read-only subagent produces a meaningfully independent plan review.
@@ -406,7 +385,7 @@ should remain the portable source of truth.
 
 The smallest useful MVP should:
 
-- expose one `/sdlc` entry point;
+- expose one orchestrator entry point;
 - start from an idea, specification, plan, or partially completed plan;
 - use existing stage-specific skills;
 - support the balanced approval policy;
@@ -442,7 +421,7 @@ trusted for unattended changes.
 
 ### Product boundary
 
-- Is the first version an interactive `/sdlc` Skill or a standalone program?
+- Is the first standalone version an SDK application or a thin CLI wrapper?
 - Must the MVP run unattended across multiple sessions?
 - Is IDE support required, or is CLI/TUI sufficient initially?
 - Is the tool intended for a solo developer, a team, or both?
@@ -535,9 +514,8 @@ These findings were checked against Cline documentation available on 2026-07-22:
 
 Choose the first delivery direction:
 
-1. prompt-native `/sdlc` Skill;
-2. standalone Cline SDK orchestrator;
-3. thin Cline CLI wrapper.
+1. standalone Cline SDK orchestrator;
+2. thin Cline CLI wrapper.
 
 After that decision, convert this brief into a specification with concrete
 acceptance criteria. Create an implementation plan only after the specification
