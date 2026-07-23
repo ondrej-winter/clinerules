@@ -9,10 +9,10 @@
 
 ## Problem Statement
 
-How might we automate a software development lifecycle through the Cline
-ecosystem—from a rough idea, idea file, specification file, or implementation
-plan file through the remaining lifecycle stages—while retaining human control
-at important product, execution, and risk boundaries?
+How might we automate one bounded software development lifecycle stage through
+the Cline ecosystem—from a rough idea, idea file, specification file, or
+implementation plan file to the next major artifact boundary—while retaining
+human control between stages and at important execution and risk boundaries?
 
 The individual development procedures already exist as Agent Skills, but the
 user currently has to invoke and coordinate each stage. Progress, approval,
@@ -28,27 +28,49 @@ A user should provide exactly one of these inputs:
 - a path to a specification file;
 - a path to an implementation plan file.
 
-The orchestrator should inspect the supplied input, determine the earliest
-incomplete lifecycle stage, and create only the missing downstream artifacts. A
-partially implemented plan uses the implementation plan file as its input; its
-recorded lifecycle and progress state determines where implementation resumes.
+The input selects one bounded stage. The orchestrator should complete that stage
+and then stop at the next major artifact boundary:
+
+- a rough idea produces an accepted idea brief;
+- an idea file produces an accepted specification;
+- a specification produces an independently reviewed, revised, ready
+  implementation plan;
+- an implementation plan executes all remaining slices serially and produces a
+  completed implementation plan.
+
+The user starts each subsequent major stage through a new invocation with the
+new artifact. The orchestrator must not automatically cascade from idea through
+specification, planning, and implementation. A partially implemented plan uses
+the implementation plan file as its input; its recorded lifecycle and progress
+state determines where implementation resumes.
 
 The intended lifecycle is:
 
 ```text
 Idea
   -> Refine direction
+  -> Human accepts idea
+  -> Stop
+Idea file
   -> Create specification
   -> Human accepts specification
+  -> Stop
+Specification file
   -> Create implementation plan
   -> Independent plan review
   -> Revise and re-review plan
-  -> Human approves execution
+  -> Mark plan ready
+  -> Stop
+Implementation plan file
+  -> Invocation approves the exact ready plan revision
   -> Implement next vertical slice
   -> Test and verify slice
-  -> Record progress
+  -> Record progress and commit the slice
   -> Continue with next ready slice
   -> Final quality gate and review
+  -> Implement and commit remediation slices when needed
+  -> Mark plan complete
+  -> Stop
 ```
 
 The workflow should be resumable after a context reset, new Cline task, editor
@@ -211,49 +233,73 @@ Limitations:
 - concurrent writers require repository isolation;
 - product-level approval and artifact contracts are still necessary.
 
-## Preliminary Recommendation
+## Selected Product Direction
 
-Choose between Direction B and Direction C based on the required approval model
-and runtime guarantees. Prefer the SDK orchestrator when deterministic approval
-policy and typed lifecycle events are required. Use a thin CLI wrapper only as a
-bounded proof of concept when process orchestration is sufficient.
+Use Direction C: a standalone thin wrapper around Cline CLI. The existing manual
+lifecycle and specialist skills already work well. The first product should
+automate session orchestration, stage handoffs, bounded review, progress state,
+validation, and per-slice commits without reimplementing those skills.
 
-In either case, use the repository-visible artifacts and lifecycle contract
-defined in this brief as the initial contract. Validate it on real work before
-encoding it as rigid runtime behavior.
+The wrapper should attach the user directly to live Cline CLI sessions for idea
+and specification interviews. Specification-to-plan processing should run
+without routine intervention, using separate author and reviewer sessions and
+stopping only on a blocker or exhausted review loop. Plan implementation should
+use a fresh session for every slice and run unattended within a narrowly defined
+low-risk permission scope.
+
+Use the repository-visible artifacts and lifecycle contract defined in this
+brief as the initial contract. An SDK orchestrator remains a possible later
+direction if CLI process orchestration proves unable to enforce the required
+approval or recovery behavior.
 
 ```text
-Phase 1: Validate the lifecycle artifact and state contract
-  -> exercise the four inputs, transitions, approvals, and resumption on real work
-Phase 2: CLI proof of concept or SDK state-machine runner
-  -> enforce transitions, approvals, and resumption
+Phase 1: Specify and build the thin Cline CLI wrapper
+  -> exercise the four bounded inputs, session transitions, approvals, and resumption
+Phase 2: Harden CLI orchestration and recovery
+  -> enforce structured outcomes, permissions, retries, reconciliation, and commits
 Phase 3: Optional CI, scheduling, or Agent Team integration
 ```
 
-This recommendation is provisional. Unattended cross-session execution or strict
-approval guarantees would favor the SDK orchestrator as the first version.
+This direction should be reconsidered if the Cline CLI cannot provide reliable
+session outcomes, bounded auto-approval, interruption recovery, or fresh-session
+orchestration.
 
 ## Default Human-in-the-Loop Policy
 
 The preferred default is a balanced policy.
 
-### Human approval required
+### Human participation and approval required
 
 - confirm the refined direction when idea refinement is used;
 - accept the specification before planning depends on it;
-- approve the final reviewed plan before implementation;
+- deliberately invoke each subsequent major stage with its input artifact;
+- invoke implementation with a review-ready plan, which approves the exact
+  digest of that plan for execution;
 - approve destructive, irreversible, credential-sensitive, publishing,
-  deployment, or newly discovered high-risk operations;
+  deployment, network, dependency, or newly discovered high-risk operations;
 - approve material revisions to an already approved plan.
 
-### Automatic after plan approval
+Idea and specification creation remain interactive because their skills may need
+to interview the user. The wrapper should attach the user directly to the live
+Cline CLI session instead of mediating or duplicating those interviews.
+
+Specification-to-plan processing may automatically author, independently review,
+revise, and re-review the plan within the bounded review loop. It should stop at
+a ready plan without beginning implementation.
+
+### Automatic during plan implementation
 
 - select the next ready implementation slice;
-- implement the slice;
+- start a fresh Cline CLI session for the slice;
+- implement the slice using low-risk workspace edits;
 - run focused tests and checks;
 - update progress and validation evidence;
+- commit the implementation, tests or documentation, validation evidence, and
+  updated plan atomically;
 - proceed to the next low-risk slice;
-- run checkpoints and the final quality gate.
+- run a final fresh-context review and repository-wide quality gate;
+- create, implement, validate, and commit remediation slices for fixable final
+  findings.
 
 ### Stop conditions
 
@@ -268,6 +314,8 @@ Automation stops when:
 - repository state conflicts with recorded state;
 - validation repeatedly fails;
 - review or recovery limits are exhausted;
+- the working tree cannot be reconciled with the plan's recorded partial-slice
+  state;
 - required context or skills are unavailable.
 
 Possible later profiles are `supervised`, `balanced`, and `mostly-autonomous`.
@@ -286,7 +334,7 @@ The host repository should contain portable, human-reviewable artifacts:
 These artifacts also define the file-based inputs. An idea file, specification
 file, or implementation plan file enters the lifecycle at its corresponding
 stage. A rough idea is the only non-file input and produces an idea brief before
-the workflow continues. Existing host-repository conventions should determine
+that invocation stops. Existing host-repository conventions should determine
 artifact locations when available.
 
 One possible layout is:
@@ -298,8 +346,12 @@ docs/
   plans/<work-name>-plan.md
 ```
 
-The plan could initially contain lifecycle state so a separate state file is not
-required:
+The implementation plan contains the durable lifecycle and runtime state. The
+MVP should not introduce a separate `.cline/sdlc/<work-id>/state.yaml` file. Code,
+tests or documentation, validation evidence, and plan progress are committed
+together at the end of each successful slice.
+
+One possible plan state shape is:
 
 ```yaml
 profile: balanced
@@ -311,10 +363,15 @@ review_readiness: ready
 current_task: task-3
 current_slice: slice-3.1
 last_verified_checkpoint: checkpoint-a
+approved_digest: sha256:example
+slice_start_commit: abc123
+partial_slice_paths: []
 blocker: null
 ```
 
-This is conceptual, not a settled schema.
+This is conceptual, not a settled schema. The specification must define how the
+plan records enough partial-slice ownership information to distinguish a
+resumable failed slice from unrelated working-tree changes.
 
 ## Review and Revision Direction
 
@@ -334,7 +391,10 @@ indefinitely.
 
 ## Approval Validity Direction
 
-Review and approval should apply to an exact plan revision.
+Review and approval should apply to an exact plan revision. Explicitly invoking
+the implementation command with a review-ready plan counts as approval of the
+exact current plan digest. No separate persisted approval token is required for
+the MVP.
 
 Progress-only updates should not invalidate approval:
 
@@ -356,8 +416,9 @@ Material changes should invalidate approval:
 - newly discovered high-impact risks.
 
 A persisted approval note is audit evidence, but should not automatically
-authorize execution in a new session when the exact approval cannot be
-established.
+authorize execution in a new wrapper invocation when the exact approved digest
+cannot be established. Fresh slice sessions within the same approved invocation
+inherit that bounded approval only while the digest remains valid.
 
 ## Resumption Direction
 
@@ -371,6 +432,13 @@ On resume, the orchestrator should:
 6. invalidate approval when material divergence is found;
 7. preserve unrelated human changes;
 8. stop when ownership of existing changes is unclear.
+
+Initial implementation requires a Git repository, a clean working tree, and a
+non-protected branch. A failed slice is the deliberate exception to the clean
+tree requirement: leave its changes uncommitted, record the blocker and partial
+slice state in the plan, and stop. On the next invocation, resume that same slice
+only when the working-tree diff reconciles with the recorded state. Otherwise,
+stop for manual resolution.
 
 Session identifiers and Checkpoints may assist recovery, but repository artifacts
 should remain the portable source of truth.
@@ -386,7 +454,7 @@ should remain the portable source of truth.
 - [ ] Existing specialist skills have stable enough inputs and outputs for
       composition.
 - [ ] Cline can continue across at least three low-risk slices without losing task
-      boundaries.
+      boundaries, using a fresh session and atomic commit for each slice.
 - [ ] Material plan changes can be distinguished consistently from progress-only
       updates.
 - [ ] The lifecycle remains useful across different languages and architectures.
@@ -398,13 +466,18 @@ The smallest useful MVP should:
 - expose one orchestrator entry point;
 - accept exactly one rough idea, idea file, specification file, or implementation
   plan file;
+- execute exactly one major lifecycle stage per invocation and stop at the next
+  artifact boundary;
 - infer resumption of partially completed work from state recorded with the plan;
 - use existing stage-specific skills;
 - support the balanced approval policy;
 - perform independent plan review and a bounded revision loop;
-- implement one slice at a time;
+- implement one slice at a time in a fresh Cline CLI session;
 - discover and run project-specific validation;
-- update repository-visible progress;
+- atomically commit each successful slice with its repository-visible progress;
+- leave a failed slice uncommitted and resume it before starting another;
+- perform a final fresh-context review and quality gate, including committed
+  remediation slices when needed;
 - stop safely on risk, drift, or failure;
 - resume from recorded state.
 
@@ -414,8 +487,9 @@ trusted for unattended changes.
 ## Not Doing and Why
 
 - Ritebook integration or publication — this is a general Cline SDLC tool.
-- Automatic commits, pushes, pull requests, releases, or deployments — these
-  require separate authorization.
+- Automatic pushes, pull requests, releases, or deployments — these require
+  separate authorization. Local atomic commits are required after each
+  successful implementation or remediation slice.
 - A generic multi-agent organization — the mostly sequential lifecycle does not
   initially justify Agent Team complexity.
 - A database-backed service — repository-visible artifacts should be tested first.
@@ -433,72 +507,64 @@ trusted for unattended changes.
 
 ### Product boundary
 
-- Is the first standalone version an SDK application or a thin CLI wrapper?
-- Must the MVP run unattended across multiple sessions?
-- Is IDE support required, or is CLI/TUI sufficient initially?
-- Is the tool intended for a solo developer, a team, or both?
-- Does the lifecycle end after implementation and validation, or also include
-  review, merge, release, and deployment?
+- What observable limitation of CLI process orchestration would trigger a move to
+  the SDK?
 
 ### Runtime and packaging
 
-- If a standalone runtime is needed, should it use the SDK or wrap the CLI?
 - Where should the standalone tool be maintained?
 - How should it be installed and updated?
 - Should distribution expose or hide a Node.js dependency?
-- Which Cline and SDK versions should be supported?
+- Which Cline CLI versions should be supported, and how should required
+  capabilities be detected?
 
 ### State and artifacts
 
-- Should state live in the plan or `.cline/sdlc/<work-id>/state.yaml`?
-- Which artifacts should be committed?
-- How are concurrent work items identified?
-- How should revisions or digests be computed?
+- Which idea, specification, plan-review, and plan artifacts are required to be
+  committed before entering the next stage?
+- How are multiple serial work items identified in one repository?
+- How should revisions and approval digests be computed, and which progress-only
+  sections are excluded from material-change detection?
 - How should stale or manually edited state be detected?
+- How should partial-slice paths or diff ownership be represented in the plan?
 - How should existing repository spec and plan conventions be respected?
 
 ### Human approval
 
-- What exact user action counts as approval?
-- Can approval remain valid across sessions?
-- Are plan approval and Plan-to-Act transition one combined decision?
-- Which operations always require approval?
-- Are dependency, schema, migration, architecture, and security changes always
-  risk gates?
-- How should approval work in headless mode?
+- How should the wrapper classify low-risk local commands for auto-approval?
+- How should material plan drift be detected after progress-only plan updates?
+- Should a later headless mode require a stronger persisted approval record?
 
 ### Plan review
 
-- Does every plan require independent review or only complex plans?
 - Is one read-only subagent sufficient?
-- Should every re-review use a new subagent?
 - What findings schema and readiness labels should be used?
-- Should implementation receive a fresh-context review before completion?
+- How should final-review findings be converted into remediation slices without
+  silently expanding scope?
 
 ### Implementation loop
 
 - What is the maximum slice size?
-- Should all approved slices run in one session when context permits?
-- When should `/newtask` create a clean continuation task?
-- Does validation run after every slice, checkpoint, or both?
+- What structured session outcome tells the wrapper that a slice completed,
+  blocked, or requires approval?
+- Does focused validation run after every slice in addition to the final broad
+  quality gate?
 - How many automatic repair attempts are allowed?
-- Are commits optional checkpoints or entirely outside the orchestrator?
+- What commit message convention should identify implementation and remediation
+  slices?
 
 ### Safety and isolation
 
-- Must autonomous work use a sandbox, container, worktree, or clean branch?
 - Which commands are denied by default?
 - How are network operations handled?
-- How are unrelated working-tree changes detected and preserved?
-- Should protected branches be rejected?
+- Which branch patterns are protected by default and how are they configured?
+- How is a resumed dirty tree reconciled with partial-slice state in the plan?
 - What rollback guarantees are required beyond Checkpoints?
 
 ### Multi-agent behavior
 
 - Are subagents limited to read-only reviews?
-- When should Agent Teams implement independent slices?
-- Must multiple writers use separate Git worktrees?
-- How are independently implemented slices integrated and revalidated?
+- What evidence would justify introducing Agent Teams after the sequential MVP?
 
 ### Success criteria
 
@@ -524,11 +590,8 @@ These findings were checked against Cline documentation available on 2026-07-22:
 
 ## Next Decision
 
-Choose the first delivery direction:
-
-1. standalone Cline SDK orchestrator;
-2. thin Cline CLI wrapper.
-
-After that decision, convert this brief into a specification with concrete
-acceptance criteria. Create an implementation plan only after the specification
-has been reviewed and accepted.
+Convert this brief into a specification for the standalone thin Cline CLI wrapper
+with concrete acceptance criteria, a plan-state schema, structured Cline session
+outcomes, permission boundaries, Git safety rules, and interruption recovery.
+Create an implementation plan only after the specification has been reviewed and
+accepted.
