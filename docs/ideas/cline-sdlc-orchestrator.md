@@ -10,9 +10,9 @@
 ## Problem Statement
 
 How might we automate a software development lifecycle through the Cline
-ecosystem—from an initial idea or specification through planning, independent
-plan review, revision, and incremental implementation—while retaining human
-control at important product, execution, and risk boundaries?
+ecosystem—from a rough idea, idea file, specification file, or implementation
+plan file through the remaining lifecycle stages—while retaining human control
+at important product, execution, and risk boundaries?
 
 The individual development procedures already exist as Agent Skills, but the
 user currently has to invoke and coordinate each stage. Progress, approval,
@@ -21,13 +21,17 @@ explicit lifecycle contract.
 
 ## Desired User Experience
 
-A user should be able to start from:
+A user should provide exactly one of these inputs:
 
-- an unrefined idea;
-- an accepted idea brief;
-- a draft or accepted specification;
-- an existing implementation plan;
-- a partially implemented plan.
+- a rough idea supplied directly in the request;
+- a path to an idea file;
+- a path to a specification file;
+- a path to an implementation plan file.
+
+The orchestrator should inspect the supplied input, determine the earliest
+incomplete lifecycle stage, and create only the missing downstream artifacts. A
+partially implemented plan uses the implementation plan file as its input; its
+recorded lifecycle and progress state determines where implementation resumes.
 
 The intended lifecycle is:
 
@@ -214,13 +218,13 @@ and runtime guarantees. Prefer the SDK orchestrator when deterministic approval
 policy and typed lifecycle events are required. Use a thin CLI wrapper only as a
 bounded proof of concept when process orchestration is sufficient.
 
-In either case, define the repository-visible artifacts and lifecycle contract
-before automating the workflow so the runtime does not encode an unvalidated
-process.
+In either case, use the repository-visible artifacts and lifecycle contract
+defined in this brief as the initial contract. Validate it on real work before
+encoding it as rigid runtime behavior.
 
 ```text
-Phase 1: Lifecycle artifact and state contract
-  -> validate transitions, approvals, and resumption on real work
+Phase 1: Validate the lifecycle artifact and state contract
+  -> exercise the four inputs, transitions, approvals, and resumption on real work
 Phase 2: CLI proof of concept or SDK state-machine runner
   -> enforce transitions, approvals, and resumption
 Phase 3: Optional CI, scheduling, or Agent Team integration
@@ -278,6 +282,12 @@ The host repository should contain portable, human-reviewable artifacts:
 - an implementation plan;
 - plan-review findings;
 - lifecycle status and validation evidence.
+
+These artifacts also define the file-based inputs. An idea file, specification
+file, or implementation plan file enters the lifecycle at its corresponding
+stage. A rough idea is the only non-file input and produces an idea brief before
+the workflow continues. Existing host-repository conventions should determine
+artifact locations when available.
 
 One possible layout is:
 
@@ -386,7 +396,9 @@ should remain the portable source of truth.
 The smallest useful MVP should:
 
 - expose one orchestrator entry point;
-- start from an idea, specification, plan, or partially completed plan;
+- accept exactly one rough idea, idea file, specification file, or implementation
+  plan file;
+- infer resumption of partially completed work from state recorded with the plan;
 - use existing stage-specific skills;
 - support the balanced approval policy;
 - perform independent plan review and a bounded revision loop;
