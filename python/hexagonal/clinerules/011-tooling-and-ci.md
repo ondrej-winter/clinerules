@@ -4,7 +4,7 @@ This ruleset uses an opinionated toolchain:
 
 - `uv` for dependency management, environment management, and command execution
 - `ruff` for formatting, linting, and import cleanup
-- `mypy` for type checking
+- `ty` for type checking
 - `pytest` for tests
 
 Run project tooling through `uv run ...`. Keep tool configuration in `pyproject.toml`.
@@ -24,7 +24,7 @@ Use specialized skills when you need only one part of that workflow during itera
 
 ## Expectations
 
-- Generated code **must** pass `uv run ruff check .`, `uv run mypy .`, and `uv run pytest` with no unapproved failures.
+- Generated code **must** pass `uv run ruff check .`, `uv run ty check .`, and `uv run pytest` with no unapproved failures.
 - Code **must** be formatted with `uv run ruff format .`.
 - If behavior changes, you **must** add or update tests and run the relevant impacted suites.
 - Do not disable lint rules unless explicitly requested; prefer refactoring.

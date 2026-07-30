@@ -12,7 +12,7 @@
 - This ruleset is intentionally opinionated.
 - Use `uv` for dependency management, environment management, and command execution.
 - Use `ruff` for formatting, linting, and import cleanup.
-- Use `mypy` for type checking.
+- Use `ty` for type checking.
 - Use `pytest` for automated tests.
 - Use `pytest-asyncio` for async tests when async code is present.
 - Use Google-style docstrings.
@@ -122,7 +122,7 @@ Skills should own focused procedures.
 - `write-python-docstrings` - Write concise Google-style docstrings and inline comments where they add value
 - `write-adr` - Record significant architectural decisions and consequences
 - `format-python-code` - Formats Python code using ruff and applies safe auto-fixes
-- `lint-python-code` - Lints Python code using ruff and mypy for type checking
+- `lint-python-code` - Lints Python code using ruff and ty for type checking
 - `write-pytest-tests` - Writes or refactors Python tests in clear, pytest-native style
 - `run-python-tests` - Runs automated tests for a Python project using pytest
 - `run-local-quality-gate` - Orchestrates the execution of Python code formatting, linting, type checking, and testing
@@ -154,7 +154,7 @@ Interpret enforcement labels as follows:
 | Rule area                                           | Primary enforcement                                                                | Secondary enforcement                        |
 | --------------------------------------------------- | ---------------------------------------------------------------------------------- | -------------------------------------------- |
 | Naming, formatting, imports                         | `uv run ruff check . --fix`, `uv run ruff format .`, `uv run ruff check .`         | PR review                                    |
-| Type contracts and API drift                        | `uv run mypy .`                                                                    | PR review                                    |
+| Type contracts and API drift                        | `uv run ty check .`                                                                | PR review                                    |
 | Behavior changes and regressions                    | `uv run pytest`                                                                    | Targeted regression and contract tests       |
 | Architecture boundaries (hexagonal vertical slices) | Review-enforced against `003-architecture-guardrails.md`                           | Optional import-lint/custom boundary scripts |
 | Module/file structure conventions                   | Review-enforced against `006-module-structure.md`                                  | Optional project audit script                |
